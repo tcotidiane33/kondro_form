@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('instructors', function (Blueprint $table) {
             $table->id();
-            $table->string('name_en');
+            $table->string('name');
             // $table->string('name_bn')->nullable();
-            $table->string('contact_en')->unique();
+            $table->string('contact')->unique();
             // $table->string('contact_bn')->unique()->nullable();
             $table->string('email')->unique();
             $table->unsignedBigInteger('role_id')->index();

@@ -25,9 +25,9 @@ class UpdateRequest extends FormRequest
         $id = $this->route('instructor');
         $id = encryptor('decrypt', $id);
         return [
-            'fullName_en' => 'required|max:255',
+            'fullName' => 'required|max:255',
             'emailAddress' => 'required|unique:instructors,email,' . $id,
-            'contactNumber_en' => 'required|unique:instructors,contact_en,' . $id,
+            'contactNumber' => 'required|unique:instructors,contact_en,' . $id,
         ];
     }
 

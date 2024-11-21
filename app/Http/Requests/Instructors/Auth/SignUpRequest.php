@@ -17,7 +17,7 @@ class SignUpRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:instructors',
             'password' => 'required|string|min:8|confirmed',
-            'contact_en' => 'required|string|max:20',  // Ajoutez cette ligne
+            'contact' => 'required|string|max:20',  // Ajoutez cette ligne
         ];
     }
 }

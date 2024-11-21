@@ -10,4 +10,9 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        rollupOptions: {
+          external: ['slick-carousel/slick/slick.css', 'slick-carousel/slick/slick-theme.css']
+        }
+      }
 });

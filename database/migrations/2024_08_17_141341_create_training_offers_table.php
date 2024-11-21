@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,7 +24,7 @@ return new class extends Migration
             $table->json('features')->nullable();
             $table->json('platforms')->nullable();
             $table->json('technologies')->nullable();
-            $table->foreignId('certification_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('certification_id')->nullable()->constrained('certifications')->onDelete('set null');
             $table->datetime('start_date')->nullable();
             $table->datetime('end_date')->nullable();
             $table->boolean('is_live_event')->default(false);

@@ -17,8 +17,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'name_en',
-        'contact_en', // Ajoutez cette ligne si elle n'est pas déjà présente
+        'contact', // Ajoutez cette ligne si elle n'est pas déjà présente
         'role_id',
         'status',
         'instructor_id',

@@ -1,3 +1,572 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Styles personnalisés pour les composants réutilisables */
+
+.hero {
+  @apply bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-24 text-center;
+}
+
+.hero .content h1 {
+  @apply text-4xl font-extrabold sm:text-5xl md:text-6xl;
+}
+
+.hero .content p {
+  @apply mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl md:max-w-3xl;
+}
+
+.hero .actions {
+  @apply mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8;
+}
+
+.hero .actions .button {
+  @apply w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 md:py-4 md:text-lg md:px-10;
+}
+
+.partners {
+  @apply py-12 bg-white text-center;
+}
+
+.partners .sponsor-image img {
+  @apply mx-auto;
+}
+
+.why-kdn {
+  @apply py-12 bg-gray-50 text-center;
+}
+
+.why-kdn h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.why-kdn p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.why-kdn .features {
+  @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+}
+
+.why-kdn .feature {
+  @apply p-6 bg-white rounded-lg shadow-md;
+}
+
+.why-kdn .feature h3 {
+  @apply text-xl font-semibold text-gray-900;
+}
+
+.why-kdn .feature p {
+  @apply mt-2 text-base text-gray-500;
+}
+
+.content2 {
+  @apply py-12 bg-white flex flex-col md:flex-row items-center;
+}
+
+.content2 .videoo {
+  @apply w-full md:w-1/2;
+}
+
+.content2 .Nail {
+  @apply w-full md:w-1/2 text-center md:text-left;
+}
+
+.content2 .Nail h1 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.content2 .Nail p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.expert-section {
+  @apply py-12 bg-gray-50 text-center;
+}
+
+.expert-section .content h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.expert-section .content p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.expert-section .experts-carousel {
+  @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.expert-section .expert-card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden;
+}
+
+.expert-section .expert-card img {
+  @apply w-full h-48 object-cover;
+}
+
+.expert-section .expert-card .info {
+  @apply p-6;
+}
+
+.expert-section .expert-card .info h3 {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.expert-section .expert-card .info p {
+  @apply mt-2 text-base text-gray-500;
+}
+
+.learning-areas {
+  @apply py-12 bg-white text-center;
+}
+
+.learning-areas h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.learning-areas .areas {
+  @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+}
+
+.learning-areas .area {
+  @apply p-6 bg-white rounded-lg shadow-md;
+}
+
+.learning-areas .area img {
+  @apply mx-auto;
+}
+
+.learning-areas .area h3 {
+  @apply text-xl font-semibold text-gray-900;
+}
+
+.learning-areas .area .arrow {
+  @apply mt-2 text-indigo-600 hover:text-indigo-500;
+}
+
+.learning-paths {
+  @apply py-12 bg-gray-50 text-center;
+}
+
+.learning-paths h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.learning-paths p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.learning-paths .categories {
+  @apply mt-10 flex flex-col items-center;
+}
+
+.learning-paths .categories ul {
+  @apply flex space-x-4;
+}
+
+.learning-paths .categories li {
+  @apply text-base font-medium text-gray-500 hover:text-gray-900;
+}
+
+.learning-paths .cards-container {
+  @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.learning-paths .card {
+  @apply p-6 bg-white rounded-lg shadow-md;
+}
+
+.learning-paths .card h3 {
+  @apply text-xl font-semibold text-gray-900;
+}
+
+.learning-paths .card p {
+  @apply mt-2 text-base text-gray-500;
+}
+
+.featured-courses {
+    @apply py-12 bg-white text-center;
+  }
+
+  .featured-courses h2 {
+    @apply text-3xl font-extrabold text-gray-900;
+  }
+
+  .featured-courses p {
+    @apply mt-4 text-lg text-gray-700;
+  }
+
+  .featured-courses .categories {
+    @apply mt-10 flex flex-col items-center;
+  }
+
+  .featured-courses .categories ul {
+    @apply flex space-x-4;
+  }
+
+  .featured-courses .categories li {
+    @apply text-base font-medium text-gray-500 hover:text-gray-900;
+  }
+
+  .featured-courses .courses-container {
+    @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .featured-courses .course-card {
+    @apply p-6 bg-white rounded-lg shadow-md border-r-4;
+  }
+
+  .featured-courses .course-card .course-bg {
+    @apply w-full h-48 bg-cover bg-center rounded-t-lg;
+  }
+
+  .featured-courses .course-card p {
+    @apply mt-4 text-base font-medium text-gray-500;
+  }
+
+  .featured-courses .course-card h3 {
+    @apply text-xl font-semibold text-gray-900 mt-2;
+  }
+
+.training-section {
+  @apply py-12 bg-gray-50 text-center;
+}
+
+.training-section h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.training-section p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.training-section .buttons {
+  @apply mt-10 flex justify-center space-x-4;
+}
+
+.training-section .buttons .request-info {
+  @apply px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700;
+}
+
+.training-section .buttons .learn-more {
+  @apply px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-700;
+}
+
+.kdn-live-section {
+  @apply py-12 bg-white text-center;
+}
+
+.kdn-live-section h2 {
+  @apply text-3xl font-extrabold text-gray-900;
+}
+
+.kdn-live-section p {
+  @apply mt-4 text-lg text-gray-700;
+}
+
+.kdn-live-section .watch-now {
+  @apply mt-10 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700;
+}
+.contact-section {
+    @apply bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-12;
+  }
+
+  .contact-section .contact-info {
+    @apply w-full md:w-1/2 pr-8;
+  }
+
+  .contact-section .contact-info h3 {
+    @apply text-3xl font-extrabold;
+  }
+
+  .contact-section .contact-info p {
+    @apply mt-4 text-lg;
+  }
+
+  .contact-section .contact-form {
+    @apply w-full md:w-1/2 mt-8 md:mt-0;
+  }
+
+  .contact-section .contact-form form {
+    @apply bg-white p-8 rounded-lg shadow-md text-gray-900;
+  }
+
+  .contact-section .contact-form label {
+    @apply block text-sm font-medium text-gray-700;
+  }
+
+  .contact-section .contact-form input,
+  .contact-section .contact-form textarea {
+    @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm;
+  }
+
+  .contact-section .contact-form button {
+    @apply mt-4 w-full px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+
+
+.styles_cardsContainer {
+    @apply mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .styles_card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300;
+  }
+
+  .styles_date {
+    @apply block text-gray-500 text-sm p-4;
+  }
+
+  .styles_backgroundImage {
+    @apply w-full h-48 object-cover;
+  }
+
+  .styles_cardInfo {
+    @apply p-6;
+  }
+
+  .styles_authorImage {
+    @apply mb-4;
+  }
+
+  .styles_authorImage img {
+    @apply w-10 h-10 rounded-full;
+  }
+
+  .styles_author {
+    @apply block text-gray-700 text-sm mb-2;
+  }
+
+  .styles_card h3 {
+    @apply text-xl font-semibold text-gray-900 mb-2;
+  }
+
+  .styles_card p {
+    @apply text-gray-600 text-sm;
+  }
+
+  .styles_card a {
+    @apply text-indigo-600 hover:text-indigo-500 mt-4 inline-block;
+  }
+
+
+  /* .max-w-7xl {
+    @apply max-w-7xl;
+  }
+
+  .mx-auto {
+    @apply mx-auto;
+  }
+
+  .px-4 {
+    @apply px-4;
+  }
+
+  .sm\:px-6 {
+    @apply sm:px-6;
+  }
+
+  .lg\:px-8 {
+    @apply lg:px-8;
+  }
+
+  .py-8 {
+    @apply py-8;
+  }
+
+  .text-3xl {
+    @apply text-3xl;
+  }
+
+  .font-extrabold {
+    @apply font-extrabold;
+  }
+
+  .text-gray-900 {
+    @apply text-gray-900;
+  }
+
+  .mt-4 {
+    @apply mt-4;
+  }
+
+  .block {
+    @apply block;
+  }
+
+  .w-full {
+    @apply w-full;
+  }
+
+  .pl-10 {
+    @apply pl-10;
+  }
+
+  .pr-3 {
+    @apply pr-3;
+  }
+
+  .py-2 {
+    @apply py-2;
+  }
+
+  .border {
+    @apply border;
+  }
+
+  .border-gray-300 {
+    @apply border-gray-300;
+  }
+
+  .rounded-md {
+    @apply rounded-md;
+  }
+
+  .leading-5 {
+    @apply leading-5;
+  }
+
+  .bg-white {
+    @apply bg-white;
+  }
+
+  .placeholder-gray-500 {
+    @apply placeholder-gray-500;
+  }
+
+  .focus\:outline-none:focus {
+    @apply focus:outline-none;
+  }
+
+  .focus\:placeholder-gray-400:focus {
+    @apply focus:placeholder-gray-400;
+  }
+
+  .focus\:ring-1:focus {
+    @apply focus:ring-1;
+  }
+
+  .focus\:ring-indigo-500:focus {
+    @apply focus:ring-indigo-500;
+  }
+
+  .focus\:border-indigo-500:focus {
+    @apply focus:border-indigo-500;
+  }
+
+  .sm\:text-sm {
+    @apply sm:text-sm;
+  }
+
+  .mt-8 {
+    @apply mt-8;
+  }
+
+  .grid {
+    @apply grid;
+  }
+
+  .grid-cols-1 {
+    @apply grid-cols-1;
+  }
+
+  .md\:grid-cols-2 {
+    @apply md:grid-cols-2;
+  }
+
+  .lg\:grid-cols-3 {
+    @apply lg:grid-cols-3;
+  }
+
+  .gap-6 {
+    @apply gap-6;
+  }
+
+  .bg-white {
+    @apply bg-white;
+  }
+
+  .rounded-lg {
+    @apply rounded-lg;
+  }
+
+  .shadow {
+    @apply shadow;
+  }
+
+  .p-6 {
+    @apply p-6;
+  }
+
+  .text-lg {
+    @apply text-lg;
+  }
+
+  .font-medium {
+    @apply font-medium;
+  }
+
+  .text-gray-900 {
+    @apply text-gray-900;
+  }
+
+  .mt-2 {
+    @apply mt-2;
+  }
+
+  .text-sm {
+    @apply text-sm;
+  }
+
+  .text-gray-500 {
+    @apply text-gray-500;
+  }
+
+  .inline-flex {
+    @apply inline-flex;
+  }
+
+  .items-center {
+    @apply items-center;
+  }
+
+  .px-4 {
+    @apply px-4;
+  }
+
+  .py-2 {
+    @apply py-2;
+  }
+
+  .border {
+    @apply border;
+  }
+
+  .border-transparent {
+    @apply border-transparent;
+  }
+
+  .text-sm {
+    @apply text-sm;
+  }
+
+  .font-medium {
+    @apply font-medium;
+  }
+
+  .rounded-md {
+    @apply rounded-md;
+  }
+
+  .text-white {
+    @apply text-white;
+  }
+
+  .bg-indigo-600 {
+    @apply bg-indigo-600;
+  }
+
+  .hover\:bg-indigo-700:hover {
+    @apply hover:bg-indigo-700;
+  }*/

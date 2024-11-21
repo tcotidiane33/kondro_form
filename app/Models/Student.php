@@ -10,7 +10,7 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_en', 'contact_en', 'email', 'role_id', 'date_of_birth',
+        'name', 'contact', 'email', 'role_id', 'date_of_birth',
         'gender', 'status', 'password', 'language', 'access_block'
     ];
 
@@ -33,5 +33,5 @@ class Student extends Model
     {
         return $this->hasMany(Enrollment::class);
     }
-    
+
 }

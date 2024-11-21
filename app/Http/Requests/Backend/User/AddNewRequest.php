@@ -13,7 +13,7 @@ class AddNewRequest extends FormRequest
     {
         return true;
     }
- 
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,9 +22,9 @@ class AddNewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userName_en' => 'required|max:255',
+            'userName' => 'required|max:255',
             'emailAddress' => 'required|email|unique:users,email',
-            'contactNumber_en' => 'required|unique:users,contact_en',
+            'contactNumber' => 'required|unique:users,contact_en',
             'roleId' => 'required|exists:roles,id',
             'password' => 'required|min:8|confirmed',
             'fullAccess' => 'required|boolean',
@@ -32,4 +32,3 @@ class AddNewRequest extends FormRequest
         ];
     }
 }
- 
