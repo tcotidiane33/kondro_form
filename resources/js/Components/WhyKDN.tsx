@@ -3,7 +3,7 @@ import Background from '../assets/images/Container (1).png';
 const WhyKDN = () => {
   return (
     <section
-      className="why-kdn py-12 bg-cover bg-center text-white"
+      className="why-kdn py-12 bg-cover bg-center text-white mb-4 rounded-lg"
       style={{ backgroundImage: `url(${Background})` }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

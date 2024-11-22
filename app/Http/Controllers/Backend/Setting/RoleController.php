@@ -2,97 +2,63 @@
 
 namespace App\Http\Controllers\Backend\Setting;
 
-use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Permission;
+use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Backend\Role\AddNewRequest;
-use App\Http\Requests\Backend\Role\UpdateRequest;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data=Role::paginate(10);
-        return view('backend.role.index',compact('data'));
+        $roles = Role::all();
+        return Inertia::render('Roles/Index', ['roles' => $roles]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('backend.role.create');
+        $permissions = Permission::all();
+        return Inertia::render('Roles/Create', ['permissions' => $permissions]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(AddNewRequest $request)
+    public function store(Request $request)
     {
-        try{
-            $data=new Role();
-            $data->name=$request->Name;
-            $data->identity=$request->Identity;
-            if($data->save()){
-                $this->notice::success('Successfully saved');
-                return redirect()->route('role.index');
-            }
-        }catch(Exception $e){
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
-        }
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles',
+            'identity' => 'required|string|max:30|unique:roles',
+            'permissions' => 'array',
+        ]);
+
+        $role = Role::create($request->only('name', 'identity'));
+        $role->permissions()->sync($request->permissions);
+
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
+    public function edit(Role $role)
     {
-        //
+        $permissions = Permission::all();
+        return Inertia::render('Roles/Edit', ['role' => $role, 'permissions' => $permissions]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function update(Request $request, Role $role)
     {
-        $role=Role::findOrFail(encryptor('decrypt',$id));
-        return view('backend.role.edit',compact('role'));
+        $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            'identity' => 'required|string|max:30|unique:roles,identity,' . $role->id,
+            'permissions' => 'array',
+        ]);
+
+        $role->update($request->only('name', 'identity'));
+        $role->permissions()->sync($request->permissions);
+
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRequest $request, $id)
+    public function destroy(Role $role)
     {
-        try{
-            $data=Role::findOrFail(encryptor('decrypt',$id));
-            $data->name=$request->Name;
-            $data->identity=$request->Identity;
-            if($data->save()){
-                $this->notice::success('Successfully updated');
-                return redirect()->route('role.index');
-            }
-        }catch(Exception $e){
-            $this->notice::error('Please try again');
-            //dd($e);
-            return redirect()->back()->withInput();
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        $data= Role::findOrFail(encryptor('decrypt',$id));
-        if($data->delete()){
-            $this->notice::warning('Deleted Permanently!');
-            return redirect()->back();
-        }
+        $role->delete();
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

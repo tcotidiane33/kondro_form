@@ -5,7 +5,7 @@ import Image3 from '../assets/images/Container (3).png';
 
 const Experts = () => {
   return (
-    <section className="expert-section py-12 bg-gray-50 text-center">
+    <section className="expert-section py-12 bg-gradient-to-t from-gray-600 to-white-800 text-center rounded-lg mb-3">
       <div className="content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-extrabold text-gray-900">Learn From Industry Experts</h2>
         <hr className="my-4" />
@@ -20,7 +20,7 @@ const Experts = () => {
         <div className="expert-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-96">
           <img src={Image1} alt="Adriana Patterson" className="w-full h-2/3 object-cover" />
           <div className="info p-6">
-            <h3 className="text-xl font-semibold text-gray-900">Adriana Patterson</h3>
+            <h3 className="text-xl font-semibold text-gray-900">F. Prince ATTOBLA</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Data Science</p>
             <Link href="/experts/adriana-patterson" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
@@ -31,7 +31,7 @@ const Experts = () => {
         <div className="expert-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-96">
           <img src={Image2} alt="Alexis Perrier" className="w-full h-2/3 object-cover" />
           <div className="info p-6">
-            <h3 className="text-xl font-semibold text-gray-900">Alexis Perrier</h3>
+            <h3 className="text-xl font-semibold text-gray-900">Louis KOFFI</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Data Science</p>
             <Link href="/experts/alexis-perrier" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
@@ -42,7 +42,7 @@ const Experts = () => {
         <div className="expert-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-96">
           <img src={Image3} alt="Brian McGohan" className="w-full h-2/3 object-cover" />
           <div className="info p-6">
-            <h3 className="text-xl font-semibold text-gray-900">Brian McGohan</h3>
+            <h3 className="text-xl font-semibold text-gray-900"> B. Marcelin BALI</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Cybersecurity</p>
             <Link href="/experts/brian-mcgohan" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">

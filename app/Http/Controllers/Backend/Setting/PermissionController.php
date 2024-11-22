@@ -2,90 +2,54 @@
 
 namespace App\Http\Controllers\Backend\Setting;
 
-use App\Http\Controllers\Controller;
+use Inertia\Inertia;
+use Inertia\Controller;
 use App\Models\Permission;
 use Illuminate\Http\Request;
-use App\Models\Role;
-use App\Http\Requests\Backend\Permission\SaveRequest;
-use Exception;
 
 class PermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index($id)
+    public function index()
     {
-        $role = Role::findOrFail(encryptor('decrypt', $id));
-        $permission = Permission::where('role_id', encryptor('decrypt', $id))->get();
-        return view('backend.permission.index', compact('role', 'permission'));
+        $permissions = Permission::all();
+        return Inertia::render('Permissions/Index', ['permissions' => $permissions]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return Inertia::render('Permissions/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
- 
-    public function save(SaveRequest $request, $role)
-    { 
-        try { 
-            // delete permission before saved
-            Permission::where('role_id', encryptor('decrypt', $role))->delete();
-            foreach ($request->permission as $permission) {
-                $data = new Permission;
-                $data->role_id = encryptor('decrypt', $role);
-                $data->name = $permission;
-                $data->save();
-            }
-            $this->notice::success('Permission saved');
-            return redirect()->route('role.index');
-        } catch (Exception $e) {
-            $this->notice::error('Please try again');
-            dd($e);
-            return redirect()->back()->withInput();
-        }
+        $request->validate([
+            'name' => 'required|string|max:255|unique:permissions',
+        ]);
+
+        Permission::create($request->only('name'));
+
+        return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Permission $permission)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Permission $permission)
     {
-        //
+        return Inertia::render('Permissions/Edit', ['permission' => $permission]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Permission $permission)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:permissions,name,' . $permission->id,
+        ]);
+
+        $permission->update($request->only('name'));
+
+        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+        return redirect()->route('permissions.index')->with('success', 'Permission deleted successfully.');
     }
 }

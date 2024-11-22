@@ -45,7 +45,7 @@ const Partners = () => {
   };
 
   return (
-    <section className="partners py-12 bg-gray-50 text-center">
+    <section className="partners py-12 bg-gray-50 text-center mb-4 rounded-lg">
       <p className="text-lg text-gray-700 mb-8">Trust your upskilling to the organization that prioritizes hands-on training. Just like the world's top companies have.</p>
       <Slider {...settings}>
         <div className="sponsor-image">

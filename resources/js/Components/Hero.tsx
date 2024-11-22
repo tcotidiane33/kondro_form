@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 
 const Hero = () => {
   return (
-    <section className="hero bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-24 text-center">
+    <section className="hero  bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-24 text-center mb-4 rounded-lg">
       <div className="content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">In-depth Technical Training at a Practical Cost</h1>
         <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">

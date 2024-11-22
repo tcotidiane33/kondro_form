@@ -1,0 +1,1334 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le : ven. 22 nov. 2024 à 18:51
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `backend-xlearn`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `answers`
+--
+
+CREATE TABLE `answers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `question_id` bigint(20) UNSIGNED NOT NULL,
+  `answer` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `certifications`
+--
+
+CREATE TABLE `certifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(8,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `checkouts`
+--
+
+CREATE TABLE `checkouts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `cart_data` longtext NOT NULL,
+  `student_id` bigint(20) NOT NULL,
+  `txnid` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 active, 0 inactive',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `coupons`
+--
+
+CREATE TABLE `coupons` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `discount` decimal(8,2) NOT NULL,
+  `valid_from` date DEFAULT NULL,
+  `valid_until` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `courses`
+--
+
+CREATE TABLE `courses` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `course_category_id` bigint(20) UNSIGNED NOT NULL,
+  `instructor_id` bigint(20) UNSIGNED NOT NULL,
+  `type` enum('free','paid','subscription') NOT NULL DEFAULT 'paid',
+  `price` decimal(10,2) DEFAULT 0.00,
+  `old_price` decimal(10,2) DEFAULT NULL,
+  `subscription_price` decimal(10,2) DEFAULT NULL,
+  `start_from` timestamp NULL DEFAULT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `lesson` int(11) DEFAULT NULL,
+  `prerequisites` text DEFAULT NULL,
+  `difficulty` enum('beginner','intermediate','advanced') DEFAULT NULL,
+  `course_code` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `thumbnail_image` varchar(255) DEFAULT NULL,
+  `thumbnail_video` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0 pending, 1 inactive, 2 active',
+  `language` varchar(255) NOT NULL DEFAULT 'fr' COMMENT 'en, fr',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `tag` enum('popular','featured','upcoming') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `course_categories`
+--
+
+CREATE TABLE `course_categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `category_name` varchar(255) NOT NULL,
+  `category_status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=>active 2=>inactive',
+  `category_image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `discussions`
+--
+
+CREATE TABLE `discussions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `enrollments`
+--
+
+CREATE TABLE `enrollments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `enrollment_date` timestamp NOT NULL DEFAULT '2024-11-21 11:43:37',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `events`
+--
+
+CREATE TABLE `events` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `topic` text DEFAULT NULL,
+  `goal` text DEFAULT NULL,
+  `hosted_by` varchar(255) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `instructors`
+--
+
+CREATE TABLE `instructors` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `contact` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `bio` text DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `designation` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 active, 0 inactive',
+  `password` varchar(255) NOT NULL,
+  `language` varchar(255) NOT NULL DEFAULT 'fr' COMMENT 'fr, en',
+  `access_block` text DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `lessons`
+--
+
+CREATE TABLE `lessons` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `description` text DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `materials`
+--
+
+CREATE TABLE `materials` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `lesson_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `type` enum('video','document','quiz') NOT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `content_url` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sender_id` bigint(20) UNSIGNED NOT NULL,
+  `receiver_id` bigint(20) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2023_10_12_031415_create_roles_table', 1),
+(2, '2023_11_12_031401_create_instructors_table', 1),
+(3, '2023_11_12_031402_create_users_table', 1),
+(4, '2023_11_19_053448_create_course_categories_table', 1),
+(5, '2023_11_22_143059_create_permissions_table', 1),
+(6, '2023_11_25_034933_create_students_table', 1),
+(7, '2023_11_26_034558_create_courses_table', 1),
+(8, '2023_11_26_153556_create_enrollments_table', 1),
+(9, '2023_11_26_153557_create_lessons_table', 1),
+(10, '2023_11_26_153620_create_materials_table', 1),
+(11, '2023_11_26_153639_create_quizzes_table', 1),
+(12, '2023_11_26_153659_create_questions_table', 1),
+(13, '2023_11_26_153660_create_options_table', 1),
+(14, '2023_11_26_153719_create_answers_table', 1),
+(15, '2023_11_26_153735_create_reviews_table', 1),
+(16, '2023_11_26_153754_create_payments_table', 1),
+(17, '2023_11_26_153818_create_subscriptions_table', 1),
+(18, '2023_11_26_153844_create_progress_table', 1),
+(19, '2023_11_26_153902_create_discussions_table', 1),
+(20, '2023_11_26_153916_create_messages_table', 1),
+(21, '2023_12_09_135359_create_coupons_table', 1),
+(22, '2023_12_09_170943_create_checkouts_table', 1),
+(23, '2023_12_20_031354_create_watchlists_table', 1),
+(24, '2023_12_23_070253_add_tag_to_courses_table', 1),
+(25, '2024_01_01_121113_add_column_to_user_table', 1),
+(26, '2024_01_03_073449_create_events_table', 1),
+(27, '2024_08_15_212846_add_colum_role_intable_students', 1),
+(28, '2024_08_15_224631_add_access_block_to_students_table', 1),
+(29, '2024_08_16_152152_create_certifications_table', 2),
+(30, '2024_08_17_141341_create_training_offers_table', 2),
+(31, '2024_11_21_124642_create_cache_table', 2),
+(32, '2024_11_21_124844_create_sessions_table', 2),
+(33, '2024_11_21_135619_add_default_value_to_role_id_in_users_table', 3),
+(34, '2024_11_21_140342_add_default_value_to_instructor_id_in_users_table', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `options`
+--
+
+CREATE TABLE `options` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `question_id` bigint(20) UNSIGNED NOT NULL,
+  `option_text` varchar(255) NOT NULL,
+  `is_correct` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `currency_code` varchar(255) DEFAULT NULL,
+  `amount` decimal(10,2) DEFAULT NULL,
+  `currency_value` decimal(10,2) DEFAULT NULL,
+  `method` varchar(255) DEFAULT NULL,
+  `txnid` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '0 pending, 1 successfull, 2 fail',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `role_id`, `name`, `created_at`, `updated_at`) VALUES
+(185, 1, 'user.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(186, 1, 'user.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(187, 1, 'user.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(188, 1, 'user.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(189, 1, 'user.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(190, 1, 'role.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(191, 1, 'role.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(192, 1, 'role.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(193, 1, 'role.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(194, 1, 'role.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(195, 1, 'student.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(196, 1, 'student.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(197, 1, 'student.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(198, 1, 'student.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(199, 1, 'student.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(200, 1, 'instructor.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(201, 1, 'instructor.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(202, 1, 'instructor.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(203, 1, 'instructor.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(204, 1, 'instructor.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(205, 1, 'courseCategory.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(206, 1, 'courseCategory.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
+(207, 1, 'courseCategory.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(208, 1, 'courseCategory.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(209, 1, 'courseCategory.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(210, 1, 'course.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(211, 1, 'course.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(212, 1, 'course.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(213, 1, 'course.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(214, 1, 'course.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(215, 1, 'material.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(216, 1, 'material.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(217, 1, 'material.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(218, 1, 'material.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(219, 1, 'material.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(220, 1, 'quiz.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(221, 1, 'quiz.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(222, 1, 'quiz.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(223, 1, 'quiz.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(224, 1, 'quiz.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(225, 1, 'question.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(226, 1, 'question.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(227, 1, 'question.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(228, 1, 'question.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(229, 1, 'question.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(230, 1, 'option.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(231, 1, 'option.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(232, 1, 'option.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(233, 1, 'option.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(234, 1, 'option.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(235, 1, 'answer.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(236, 1, 'answer.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(237, 1, 'answer.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(238, 1, 'answer.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(239, 1, 'answer.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(240, 1, 'review.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(241, 1, 'review.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(242, 1, 'review.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(243, 1, 'review.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(244, 1, 'review.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(245, 1, 'discussion.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(246, 1, 'discussion.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(247, 1, 'discussion.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(248, 1, 'discussion.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
+(249, 1, 'discussion.destroy', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(250, 1, 'message.index', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(251, 1, 'message.create', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(252, 1, 'message.show', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(253, 1, 'message.edit', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(254, 1, 'message.destroy', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(255, 1, 'permission.list', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
+(256, 2, 'student.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(257, 2, 'student.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(258, 2, 'student.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(259, 2, 'student.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(260, 2, 'student.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(261, 2, 'instructor.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(262, 2, 'instructor.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(263, 2, 'instructor.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(264, 2, 'instructor.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(265, 2, 'instructor.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(266, 2, 'courseCategory.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(267, 2, 'courseCategory.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(268, 2, 'courseCategory.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(269, 2, 'courseCategory.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(270, 2, 'courseCategory.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(271, 2, 'course.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(272, 2, 'course.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(273, 2, 'course.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(274, 2, 'course.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(275, 2, 'course.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(276, 2, 'material.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(277, 2, 'material.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(278, 2, 'material.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(279, 2, 'material.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(280, 2, 'material.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(281, 2, 'quiz.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(282, 2, 'quiz.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(283, 2, 'quiz.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(284, 2, 'quiz.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(285, 2, 'quiz.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(286, 2, 'question.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
+(287, 2, 'question.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(288, 2, 'question.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(289, 2, 'question.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(290, 2, 'question.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(291, 2, 'option.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(292, 2, 'option.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(293, 2, 'option.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(294, 2, 'option.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(295, 2, 'option.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(296, 2, 'answer.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(297, 2, 'answer.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(298, 2, 'answer.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(299, 2, 'answer.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(300, 2, 'answer.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(301, 2, 'review.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(302, 2, 'review.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(303, 2, 'review.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(304, 2, 'review.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(305, 2, 'review.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(306, 2, 'discussion.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(307, 2, 'discussion.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(308, 2, 'discussion.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(309, 2, 'discussion.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(310, 2, 'discussion.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(311, 2, 'message.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(312, 2, 'message.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(313, 2, 'message.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(314, 2, 'message.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(315, 2, 'message.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
+(345, 3, 'user.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(346, 3, 'role.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(347, 3, 'student.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(348, 3, 'instructor.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(349, 3, 'courseCategory.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(350, 3, 'courseCategory.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(351, 3, 'courseCategory.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(352, 3, 'courseCategory.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(353, 3, 'courseCategory.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(354, 3, 'course.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(355, 3, 'course.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(356, 3, 'course.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(357, 3, 'course.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(358, 3, 'course.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(359, 3, 'material.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(360, 3, 'material.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(361, 3, 'material.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(362, 3, 'material.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(363, 3, 'material.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
+(364, 3, 'lesson.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(365, 3, 'lesson.create', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(366, 3, 'lesson.show', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(367, 3, 'lesson.edit', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(368, 3, 'lesson.destroy', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(369, 3, 'coupon.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(370, 3, 'coupon.create', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(371, 3, 'coupon.show', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(372, 3, 'coupon.edit', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(373, 3, 'coupon.destroy', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
+(374, 3, 'enrollment.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `progress`
+--
+
+CREATE TABLE `progress` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `progress_percentage` int(11) NOT NULL DEFAULT 0,
+  `completed` tinyint(1) NOT NULL DEFAULT 0,
+  `last_viewed_material_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `last_viewed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `quiz_id` bigint(20) UNSIGNED NOT NULL,
+  `content` text NOT NULL,
+  `type` enum('multiple_choice','true_false','short_answer') NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `quizzes`
+--
+
+CREATE TABLE `quizzes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `rating` int(11) NOT NULL,
+  `comment` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `identity` varchar(30) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `identity`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', 'superadmin', '2024-11-21 11:43:37', NULL),
+(2, 'Admin', 'admin', '2024-11-21 11:43:37', NULL),
+(3, 'Instructor', 'instructor', '2024-11-21 11:43:37', NULL),
+(4, 'Student', 'student', '2024-11-21 11:43:37', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('2x2IlRZIr7GOj7kn3CJ2RXYgyihrJSsqB2zGhXtJ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidFBmcVI4dFFjUUdXc0ZSdUVZWlRmWnNEZW5SdW9kWnVJOVhTaUFLaCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fX0=', 1732284581),
+('YcIwKEb2cvd2SxJkg47pGBnKdGUgM2HnpxulJlnd', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRngzYlVNM2dweFRoQWt0c0xTOXFzNThMVHZaU0Q5eHdlcFZobWoyRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1732291192);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `students`
+--
+
+CREATE TABLE `students` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `contact` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `gender` enum('homme','femme','autre') DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `profession` varchar(255) DEFAULT NULL,
+  `nationality` varchar(255) DEFAULT 'ivoirienne',
+  `address` text DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `postcode` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1 active, 0 inactive',
+  `password` varchar(255) NOT NULL,
+  `language` varchar(255) NOT NULL DEFAULT 'fr' COMMENT 'en = english, fr = français',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `access_block` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `subscriptions`
+--
+
+CREATE TABLE `subscriptions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `plan` enum('monthly','yearly') NOT NULL,
+  `start_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `end_date` timestamp NULL DEFAULT NULL,
+  `status` enum('active','canceled','expired') NOT NULL DEFAULT 'active',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `training_offers`
+--
+
+CREATE TABLE `training_offers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `instructor_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(8,2) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'pending',
+  `subscription_type` varchar(255) DEFAULT NULL,
+  `access_level` varchar(255) DEFAULT NULL,
+  `duration_months` int(11) DEFAULT NULL,
+  `max_participants` int(11) DEFAULT NULL,
+  `features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`features`)),
+  `platforms` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`platforms`)),
+  `technologies` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`technologies`)),
+  `certification_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `is_live_event` tinyint(1) NOT NULL DEFAULT 0,
+  `additional_materials` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`additional_materials`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `contact` varchar(255) DEFAULT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL DEFAULT 1,
+  `password` varchar(255) NOT NULL,
+  `language` varchar(255) NOT NULL DEFAULT 'fr',
+  `image` varchar(255) DEFAULT NULL,
+  `full_access` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1=>yes, 0=>no',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1=>active 2=>inactive',
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `instructor_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `contact`, `role_id`, `password`, `language`, `image`, `full_access`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `instructor_id`) VALUES
+(1, 'Admin', 'admin@gmail.com', NULL, 4, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'lT3OHHVr1mzEypMx9oGQ3XamFWq9D29CLHipUlLFWQcjPqW4GbiYQNcznrfU', '2024-11-21 13:04:18', '2024-11-21 13:04:18', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `watchlists`
+--
+
+CREATE TABLE `watchlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `student_id` bigint(20) UNSIGNED NOT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL,
+  `lesson_id` bigint(20) UNSIGNED NOT NULL,
+  `material_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `answers`
+--
+ALTER TABLE `answers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `answers_student_id_index` (`student_id`),
+  ADD KEY `answers_question_id_index` (`question_id`);
+
+--
+-- Index pour la table `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Index pour la table `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Index pour la table `certifications`
+--
+ALTER TABLE `certifications`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `checkouts`
+--
+ALTER TABLE `checkouts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `coupons`
+--
+ALTER TABLE `coupons`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `coupons_code_unique` (`code`);
+
+--
+-- Index pour la table `courses`
+--
+ALTER TABLE `courses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `courses_course_category_id_index` (`course_category_id`),
+  ADD KEY `courses_instructor_id_index` (`instructor_id`);
+
+--
+-- Index pour la table `course_categories`
+--
+ALTER TABLE `course_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `discussions`
+--
+ALTER TABLE `discussions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `discussions_user_id_index` (`user_id`),
+  ADD KEY `discussions_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `enrollments`
+--
+ALTER TABLE `enrollments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `enrollments_student_id_index` (`student_id`),
+  ADD KEY `enrollments_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `instructors`
+--
+ALTER TABLE `instructors`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `instructors_contact_en_unique` (`contact`),
+  ADD UNIQUE KEY `instructors_email_unique` (`email`),
+  ADD KEY `instructors_role_id_index` (`role_id`);
+
+--
+-- Index pour la table `lessons`
+--
+ALTER TABLE `lessons`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lessons_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `materials`
+--
+ALTER TABLE `materials`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `materials_lesson_id_index` (`lesson_id`);
+
+--
+-- Index pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messages_sender_id_index` (`sender_id`),
+  ADD KEY `messages_receiver_id_index` (`receiver_id`);
+
+--
+-- Index pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `options`
+--
+ALTER TABLE `options`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `options_question_id_index` (`question_id`);
+
+--
+-- Index pour la table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `permissions_role_id_index` (`role_id`);
+
+--
+-- Index pour la table `progress`
+--
+ALTER TABLE `progress`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `progress_student_id_index` (`student_id`),
+  ADD KEY `progress_course_id_index` (`course_id`),
+  ADD KEY `progress_last_viewed_material_id_index` (`last_viewed_material_id`);
+
+--
+-- Index pour la table `questions`
+--
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `questions_quiz_id_index` (`quiz_id`);
+
+--
+-- Index pour la table `quizzes`
+--
+ALTER TABLE `quizzes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `quizzes_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reviews_student_id_index` (`student_id`),
+  ADD KEY `reviews_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_unique` (`name`),
+  ADD UNIQUE KEY `roles_identity_unique` (`identity`);
+
+--
+-- Index pour la table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Index pour la table `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `students_email_unique` (`email`),
+  ADD KEY `students_role_id_foreign` (`role_id`);
+
+--
+-- Index pour la table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subscriptions_student_id_index` (`student_id`),
+  ADD KEY `subscriptions_course_id_index` (`course_id`);
+
+--
+-- Index pour la table `training_offers`
+--
+ALTER TABLE `training_offers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `training_offers_instructor_id_foreign` (`instructor_id`),
+  ADD KEY `training_offers_certification_id_foreign` (`certification_id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD UNIQUE KEY `users_contact_en_unique` (`contact`),
+  ADD KEY `users_role_id_index` (`role_id`),
+  ADD KEY `users_instructor_id_index` (`instructor_id`);
+
+--
+-- Index pour la table `watchlists`
+--
+ALTER TABLE `watchlists`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `watchlists_student_id_index` (`student_id`),
+  ADD KEY `watchlists_course_id_index` (`course_id`),
+  ADD KEY `watchlists_lesson_id_index` (`lesson_id`),
+  ADD KEY `watchlists_material_id_index` (`material_id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `answers`
+--
+ALTER TABLE `answers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `certifications`
+--
+ALTER TABLE `certifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `checkouts`
+--
+ALTER TABLE `checkouts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `coupons`
+--
+ALTER TABLE `coupons`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `courses`
+--
+ALTER TABLE `courses`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `course_categories`
+--
+ALTER TABLE `course_categories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `discussions`
+--
+ALTER TABLE `discussions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `enrollments`
+--
+ALTER TABLE `enrollments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `events`
+--
+ALTER TABLE `events`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `instructors`
+--
+ALTER TABLE `instructors`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `lessons`
+--
+ALTER TABLE `lessons`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `materials`
+--
+ALTER TABLE `materials`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT pour la table `options`
+--
+ALTER TABLE `options`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375;
+
+--
+-- AUTO_INCREMENT pour la table `progress`
+--
+ALTER TABLE `progress`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `questions`
+--
+ALTER TABLE `questions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `quizzes`
+--
+ALTER TABLE `quizzes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `students`
+--
+ALTER TABLE `students`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `training_offers`
+--
+ALTER TABLE `training_offers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `watchlists`
+--
+ALTER TABLE `watchlists`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `answers`
+--
+ALTER TABLE `answers`
+  ADD CONSTRAINT `answers_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `answers_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `courses`
+--
+ALTER TABLE `courses`
+  ADD CONSTRAINT `courses_course_category_id_foreign` FOREIGN KEY (`course_category_id`) REFERENCES `course_categories` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `courses_instructor_id_foreign` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `discussions`
+--
+ALTER TABLE `discussions`
+  ADD CONSTRAINT `discussions_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `discussions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `enrollments`
+--
+ALTER TABLE `enrollments`
+  ADD CONSTRAINT `enrollments_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `enrollments_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `instructors`
+--
+ALTER TABLE `instructors`
+  ADD CONSTRAINT `instructors_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `lessons`
+--
+ALTER TABLE `lessons`
+  ADD CONSTRAINT `lessons_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `materials`
+--
+ALTER TABLE `materials`
+  ADD CONSTRAINT `materials_lesson_id_foreign` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_receiver_id_foreign` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `options`
+--
+ALTER TABLE `options`
+  ADD CONSTRAINT `options_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `progress`
+--
+ALTER TABLE `progress`
+  ADD CONSTRAINT `progress_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `progress_last_viewed_material_id_foreign` FOREIGN KEY (`last_viewed_material_id`) REFERENCES `materials` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `progress_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `questions`
+--
+ALTER TABLE `questions`
+  ADD CONSTRAINT `questions_quiz_id_foreign` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `quizzes`
+--
+ALTER TABLE `quizzes`
+  ADD CONSTRAINT `quizzes_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD CONSTRAINT `reviews_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reviews_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `students`
+--
+ALTER TABLE `students`
+  ADD CONSTRAINT `students_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL;
+
+--
+-- Contraintes pour la table `subscriptions`
+--
+ALTER TABLE `subscriptions`
+  ADD CONSTRAINT `subscriptions_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `subscriptions_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `training_offers`
+--
+ALTER TABLE `training_offers`
+  ADD CONSTRAINT `training_offers_certification_id_foreign` FOREIGN KEY (`certification_id`) REFERENCES `certifications` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `training_offers_instructor_id_foreign` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_instructor_id_foreign` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `watchlists`
+--
+ALTER TABLE `watchlists`
+  ADD CONSTRAINT `watchlists_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `watchlists_lesson_id_foreign` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `watchlists_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `materials` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `watchlists_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

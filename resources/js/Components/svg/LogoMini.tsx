@@ -1,11 +1,6 @@
-import { SVGAttributes } from 'react';
-
-export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
+const LogoMini = () => {
     return (
-
-            <svg version="1.1"
-            {...props}
-            viewBox="0 0 2096 113" width="1512" height="616" xmlns="http://www.w3.org/2000/svg">
+        <svg version="1.1" viewBox="0 0 2048 513" width="300" height="40" xmlns="http://www.w3.org/2000/svg">
             <path transform="translate(36,10)"
                 d="m0 0h2l-1 29 2 14 6 16 8 14 9 11 7 8 22 18 20 14 38 24 21 14 11 9 26 24 12 14 8 12 5-1 10-6 14-7 15-5 10-2h26l12 3 16 8 9 7-2 2-11 4-12 7-12 12-9 14-8 15-14 32-18 44-14 29-14 23-10 13-9 11-18 18-16 12-22 12-21 8-14 4-16 3 2-4 16-15 9-9 9-11 8-10 12-18 8-16 6-15 4-16 1-6v-31l-3-15-5-17-9-20-10-18-12-18-9-12-11-14-11-13-9-11-12-14-9-11-13-15-9-11-12-15-12-18-6-13-4-12-2-13v-19l3-19 5-16 6-15z"
                 fill="#4387C5" />
@@ -116,4 +111,6 @@ export default function ApplicationLogo(props: SVGAttributes<SVGElement>) {
         </svg>
 
     );
-}
+};
+
+export default LogoMini;

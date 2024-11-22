@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { FaUserShield } from 'react-icons/fa';
 import { Laptop, Book, Clock, Award } from 'lucide-react';
 import EnrolledCourses from '../Components/dashboard/EnrolledCourses';
 import ProgressChart from '../Components/dashboard/ProgressChart';
@@ -16,6 +17,18 @@ export default function Dashboard() {
             }
         >
             <Head title="Dashboard" />
+            <nav className="px-6 justify-center bg-gradient-to-r from-white/50 to-green-500/50 dark:bg-white pb-1 text-black/80">
+                {/* Link to Roles and Permissions Management */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <FaUserShield className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href={route('roles.index')}
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Manage Roles and Permissions
+                    </Link>
+                </div>
+            </nav>
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

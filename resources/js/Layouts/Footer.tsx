@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import { BookOpen, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
@@ -15,74 +15,74 @@ const Footer = () => {
               Empowering professionals through expert-led technology training and certification.
             </p>
           </div>
-          
+
           <div>
             <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Platform</h3>
             <ul className="mt-4 space-y-4">
               <li>
-                <Link to="/courses" className="text-base text-gray-300 hover:text-white">
+                <Link href="/courses" className="text-base text-gray-300 hover:text-white">
                   Courses
                 </Link>
               </li>
               <li>
-                <Link to="/paths" className="text-base text-gray-300 hover:text-white">
+                <Link href="/paths" className="text-base text-gray-300 hover:text-white">
                   Learning Paths
                 </Link>
               </li>
               <li>
-                <Link to="/labs" className="text-base text-gray-300 hover:text-white">
+                <Link href="/labs" className="text-base text-gray-300 hover:text-white">
                   Labs
                 </Link>
               </li>
               <li>
-                <Link to="/certifications" className="text-base text-gray-300 hover:text-white">
+                <Link href="/certifications" className="text-base text-gray-300 hover:text-white">
                   Certifications
                 </Link>
               </li>
               <li>
-                <Link to="/video-library" className="text-base text-gray-300 hover:text-white">
+                <Link href="/video-library" className="text-base text-gray-300 hover:text-white">
                   Video Library
                 </Link>
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Company</h3>
             <ul className="mt-4 space-y-4">
               <li>
-                <Link to="/about" className="text-base text-gray-300 hover:text-white">
+                <Link href="/about" className="text-base text-gray-300 hover:text-white">
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-base text-gray-300 hover:text-white">
+                <Link href="/contact" className="text-base text-gray-300 hover:text-white">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link to="/support" className="text-base text-gray-300 hover:text-white">
+                <Link href="/support" className="text-base text-gray-300 hover:text-white">
                   Support
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-base text-gray-300 hover:text-white">
+                <Link href="/faq" className="text-base text-gray-300 hover:text-white">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/terms-of-service" className="text-base text-gray-300 hover:text-white">
+                <Link href="/terms-of-service" className="text-base text-gray-300 hover:text-white">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-base text-gray-300 hover:text-white">
+                <Link href="/privacy-policy" className="text-base text-gray-300 hover:text-white">
                   Privacy Policy
                 </Link>
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Follow Us</h3>
             <div className="mt-4 flex space-x-6">
@@ -101,7 +101,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-8 border-t border-gray-700 pt-8">
           <p className="text-base text-gray-400 text-center">
             © 2024 KondroNetworks. All rights reserved.
