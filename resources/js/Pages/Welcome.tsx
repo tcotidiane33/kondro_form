@@ -80,9 +80,11 @@ export default function Welcome({
                             </nav>
                         </header>
                         <main className='mt-4'>
+                            <Hero />
+                            <Partners />
                             <WhyKDN />
                             <VideoSection />
-                            {/*<Experts />*/}
+                            <Experts />
                             <LearningAreas />
                             <LearningPaths />
                              <FeaturedCourses />

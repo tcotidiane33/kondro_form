@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import Image1 from '../assets/images/image 1.png';
 import Image2 from '../assets/images/Container (2).png';
 import Image3 from '../assets/images/Container (3).png';
@@ -23,7 +23,7 @@ const Experts = () => {
             <h3 className="text-xl font-semibold text-gray-900">Adriana Patterson</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Data Science</p>
-            <Link to="/experts/adriana-patterson" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
+            <Link href="/experts/adriana-patterson" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
               Learn More &#8594;
             </Link>
           </div>
@@ -34,7 +34,7 @@ const Experts = () => {
             <h3 className="text-xl font-semibold text-gray-900">Alexis Perrier</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Data Science</p>
-            <Link to="/experts/alexis-perrier" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
+            <Link href="/experts/alexis-perrier" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
               Learn More &#8594;
             </Link>
           </div>
@@ -45,7 +45,7 @@ const Experts = () => {
             <h3 className="text-xl font-semibold text-gray-900">Brian McGohan</h3>
             <hr className="my-2" />
             <p className="text-base text-gray-500">Cybersecurity</p>
-            <Link to="/experts/brian-mcgohan" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
+            <Link href="/experts/brian-mcgohan" className="text-indigo-600 hover:text-indigo-500 mt-4 inline-block">
               Learn More &#8594;
             </Link>
           </div>
