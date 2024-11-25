@@ -1,34 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Courses; 
+namespace App\Http\Controllers\Backend\Courses;
 
-use App\Http\Controllers\Controller;
+use File;
+use Exception;
+use Inertia\Inertia;
 use App\Models\Course;
+use App\Models\Instructor;
 use Illuminate\Http\Request;
+use App\Models\CourseCategory;
+use App\Http\Controllers\Controller;
+use App\Services\RabbitMQ\DataSyncProducer;
 use App\Http\Requests\Backend\Course\Courses\AddNewRequest;
 use App\Http\Requests\Backend\Course\Courses\UpdateRequest;
-use App\Models\CourseCategory;
-use App\Models\Instructor;
-use App\Models\Lesson;
-use App\Models\Material;
-use Exception;
-use File; 
 
 class CourseController extends Controller
-{ 
+{
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $course = Course::paginate(10);
-        return view('backend.course.courses.index', compact('course'));
-    }
-
-    public function indexForAdmin()
-    {
-        $course = Course::paginate(10);
-        return view('backend.course.courses.indexForAdmin', compact('course'));
+        $courses = Course::with('courseCategory', 'instructor')->paginate(10);
+        return Inertia::render('Courses/Index', ['courses' => $courses]);
     }
 
     /**
@@ -36,9 +30,9 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $courseCategory = CourseCategory::get();
-        $instructor = Instructor::get();
-        return view('backend.course.courses.create', compact('courseCategory', 'instructor'));
+        $courseCategories = CourseCategory::all();
+        $instructors = Instructor::all();
+        return Inertia::render('Courses/Create', ['courseCategories' => $courseCategories, 'instructors' => $instructors]);
     }
 
     /**
@@ -48,8 +42,8 @@ class CourseController extends Controller
     {
         try {
             $course = new Course;
-            $course->title_en = $request->courseTitle_en;
-            $course->description_en = $request->courseDescription_en; 
+            $course->title = $request->courseTitle;
+            $course->description = $request->courseDescription;
             $course->course_category_id = $request->categoryId;
             $course->instructor_id = $request->instructorId;
             $course->type = $request->courseType;
@@ -61,9 +55,9 @@ class CourseController extends Controller
             $course->lesson = $request->lesson;
             $course->difficulty = $request->courseDifficulty;
             $course->course_code = $request->course_code;
-            $course->prerequisites_en = $request->prerequisites_en;
+            $course->prerequisites = $request->prerequisites;
             $course->thumbnail_video = $request->thumbnail_video;
-            $course->tag = $request->tag; 
+            $course->tag = $request->tag;
             $course->language = 'fr';
 
             if ($request->hasFile('image')) {
@@ -76,64 +70,51 @@ class CourseController extends Controller
                 $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
                 $course->thumbnail_image = $thumbnailImageName;
             }
-            if ($course->save())
-                return redirect()->route('course.index')->with('success', 'Data Saved');
-            else
+
+            if ($course->save()) {
+                // Envoyer une mise à jour des données via RabbitMQ
+                DataSyncProducer::sendDataUpdate($course->id, $course->toArray());
+                return redirect()->route('courses.index')->with('success', 'Course created successfully.');
+            } else {
                 return redirect()->back()->withInput()->with('error', 'Please try again');
+            }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->withInput()->with('error', 'Please try again');
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        // 
-    }
-
-    public function frontShow($id)
-    {
-        $course = Course::findOrFail(encryptor('decrypt', $id));
-        // dd($course); 
-        return view('frontend.courseDetails', compact('course'));
-    } 
-
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
     {
-        $courseCategory = CourseCategory::get();
-        $instructor = Instructor::get();
-        $course = Course::findOrFail(encryptor('decrypt', $id));
-        return view('backend.course.courses.edit', compact('courseCategory', 'instructor', 'course'));
+        $course = Course::findOrFail($id);
+        $courseCategories = CourseCategory::all();
+        $instructors = Instructor::all();
+        return Inertia::render('Courses/Edit', ['course' => $course, 'courseCategories' => $courseCategories, 'instructors' => $instructors]);
     }
 
-    /** 
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateRequest $request, $id)
     {
         try {
-            $course = Course::findOrFail(encryptor('decrypt', $id));
-            $course->title_en = $request->courseTitle_en;
-            $course->description_en = $request->courseDescription_en;
+            $course = Course::findOrFail($id);
+            $course->title = $request->courseTitle;
+            $course->description = $request->courseDescription;
             $course->course_category_id = $request->categoryId;
             $course->instructor_id = $request->instructorId;
             $course->type = $request->courseType;
             $course->price = $request->coursePrice;
-            $course->old_price = $request->courseOldPrice; 
+            $course->old_price = $request->courseOldPrice;
             $course->subscription_price = $request->subscriptionPrice;
             $course->start_from = $request->start_from;
             $course->duration = $request->duration;
             $course->lesson = $request->lesson;
             $course->difficulty = $request->courseDifficulty;
             $course->course_code = $request->course_code;
-            $course->prerequisites_en = $request->prerequisites_en;
+            $course->prerequisites = $request->prerequisites;
             $course->thumbnail_video = $request->thumbnail_video;
             $course->tag = $request->tag;
             $course->language = 'fr';
@@ -148,55 +129,15 @@ class CourseController extends Controller
                 $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
                 $course->thumbnail_image = $thumbnailImageName;
             }
-            if ($course->save())
-                return redirect()->route('course.index')->with('success', 'Data Saved');
-            else
-                return redirect()->back()->withInput()->with('error', 'Please try again');
-        } catch (Exception $e) {
-            // dd($e);
-            return redirect()->back()->withInput()->with('error', 'Please try again');
-        }
-    }
 
-    public function updateforAdmin(UpdateRequest $request, $id)
-    {
-        try {
-            $course = Course::findOrFail(encryptor('decrypt', $id));
-            $course->title_en = $request->courseTitle_en;
-            $course->description_en = $request->courseDescription_en;
-            $course->course_category_id = $request->categoryId;
-            $course->instructor_id = $request->instructorId;
-            $course->type = $request->courseType;
-            $course->price = $request->coursePrice;
-            $course->old_price = $request->courseOldPrice; 
-            $course->subscription_price = $request->subscriptionPrice;
-            $course->start_from = $request->start_from;
-            $course->duration = $request->duration;
-            $course->lesson = $request->lesson;
-            $course->difficulty = $request->courseDifficulty;
-            $course->course_code = $request->course_code;
-            $course->prerequisites_en = $request->prerequisites_en;
-            $course->thumbnail_video = $request->thumbnail_video;
-            $course->tag = $request->tag;
-            $course->status = $request->status;
-            $course->language = 'fr';
-
-            if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/courses'), $imageName);
-                $course->image = $imageName;
-            }
-            if ($request->hasFile('thumbnail_image')) {
-                $thumbnailImageName = rand(111, 999) . time() . '.' . $request->thumbnail_image->extension();
-                $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
-                $course->thumbnail_image = $thumbnailImageName;
-            }
-            if ($course->save())
-                return redirect()->route('courseList')->with('success', 'Data Saved');
-            else
+            if ($course->save()) {
+                // Envoyer une mise à jour des données via RabbitMQ
+                DataSyncProducer::sendDataUpdate($course->id, $course->toArray());
+                return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
+            } else {
                 return redirect()->back()->withInput()->with('error', 'Please try again');
+            }
         } catch (Exception $e) {
-            // dd($e);
             return redirect()->back()->withInput()->with('error', 'Please try again');
         }
     }
@@ -206,14 +147,17 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $data = Course::findOrFail(encryptor('decrypt', $id));
-        $image_path = public_path('uploads/courses') . $data->image;
-
-        if ($data->delete()) {
-            if (File::exists($image_path))
-                File::delete($image_path);
-
-            return redirect()->back();
+        try {
+            $course = Course::findOrFail($id);
+            if ($course->delete()) {
+                // Envoyer une mise à jour des données via RabbitMQ
+                DataSyncProducer::sendDataUpdate($course->id, ['deleted' => true]);
+                return redirect()->route('courses.index')->with('success', 'Course deleted successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Please try again');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Please try again');
         }
     }
 }

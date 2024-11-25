@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 22 nov. 2024 à 18:51
+-- Généré le : lun. 25 nov. 2024 à 18:58
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -340,7 +340,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (31, '2024_11_21_124642_create_cache_table', 2),
 (32, '2024_11_21_124844_create_sessions_table', 2),
 (33, '2024_11_21_135619_add_default_value_to_role_id_in_users_table', 3),
-(34, '2024_11_21_140342_add_default_value_to_instructor_id_in_users_table', 4);
+(34, '2024_11_21_140342_add_default_value_to_instructor_id_in_users_table', 4),
+(35, '2024_11_22_192851_create_permission_role_table', 5),
+(36, '2024_11_25_101516_create_telescope_entries_table', 6);
 
 -- --------------------------------------------------------
 
@@ -563,6 +565,62 @@ INSERT INTO `permissions` (`id`, `role_id`, `name`, `created_at`, `updated_at`) 
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `permission_role`
+--
+
+CREATE TABLE `permission_role` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `permission_role`
+--
+
+INSERT INTO `permission_role` (`id`, `role_id`, `permission_id`, `created_at`, `updated_at`) VALUES
+(1, 8, 185, NULL, NULL),
+(2, 8, 190, NULL, NULL),
+(3, 1, 185, NULL, NULL),
+(4, 1, 186, NULL, NULL),
+(5, 1, 187, NULL, NULL),
+(6, 1, 188, NULL, NULL),
+(7, 1, 189, NULL, NULL),
+(8, 1, 190, NULL, NULL),
+(9, 1, 191, NULL, NULL),
+(10, 1, 192, NULL, NULL),
+(11, 1, 193, NULL, NULL),
+(12, 1, 194, NULL, NULL),
+(13, 7, 374, NULL, NULL),
+(14, 7, 371, NULL, NULL),
+(15, 7, 369, NULL, NULL),
+(16, 3, 192, NULL, NULL),
+(17, 3, 200, NULL, NULL),
+(18, 3, 206, NULL, NULL),
+(19, 3, 208, NULL, NULL),
+(20, 3, 210, NULL, NULL),
+(21, 3, 212, NULL, NULL),
+(22, 3, 214, NULL, NULL),
+(23, 3, 216, NULL, NULL),
+(24, 3, 220, NULL, NULL),
+(25, 3, 218, NULL, NULL),
+(26, 3, 222, NULL, NULL),
+(27, 3, 224, NULL, NULL),
+(28, 3, 226, NULL, NULL),
+(29, 3, 221, NULL, NULL),
+(30, 3, 217, NULL, NULL),
+(31, 3, 213, NULL, NULL),
+(32, 3, 211, NULL, NULL),
+(33, 3, 209, NULL, NULL),
+(34, 3, 207, NULL, NULL),
+(35, 3, 203, NULL, NULL),
+(36, 3, 205, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `progress`
 --
 
@@ -636,7 +694,7 @@ CREATE TABLE `reviews` (
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(20) NOT NULL,
-  `identity` varchar(30) NOT NULL,
+  `identity` varchar(30) NOT NULL DEFAULT 'guest',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -649,7 +707,9 @@ INSERT INTO `roles` (`id`, `name`, `identity`, `created_at`, `updated_at`) VALUE
 (1, 'Super Admin', 'superadmin', '2024-11-21 11:43:37', NULL),
 (2, 'Admin', 'admin', '2024-11-21 11:43:37', NULL),
 (3, 'Instructor', 'instructor', '2024-11-21 11:43:37', NULL),
-(4, 'Student', 'student', '2024-11-21 11:43:37', NULL);
+(4, 'Student', 'student', '2024-11-21 11:43:37', NULL),
+(7, 'Pro', 'guest', '2024-11-22 18:31:55', '2024-11-22 18:31:55'),
+(8, 'test', 'REST1', '2024-11-22 18:40:35', '2024-11-22 18:40:35');
 
 -- --------------------------------------------------------
 
@@ -671,8 +731,13 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('2x2IlRZIr7GOj7kn3CJ2RXYgyihrJSsqB2zGhXtJ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidFBmcVI4dFFjUUdXc0ZSdUVZWlRmWnNEZW5SdW9kWnVJOVhTaUFLaCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fX0=', 1732284581),
-('YcIwKEb2cvd2SxJkg47pGBnKdGUgM2HnpxulJlnd', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiRngzYlVNM2dweFRoQWt0c0xTOXFzNThMVHZaU0Q5eHdlcFZobWoyRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1732291192);
+('CKKyu705uUkdHgSqRA0cu7n1p6ipNJqfEM84zFmO', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidjBCbXlWbFhGUWZ2eENqcU5Za2RENVBzenJvRzdnZ01iZUdhVjl5VCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2NvdXJzZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1732556765),
+('iLU74DscJVjuNyn32RKhSIc8Jn2o2rb8ZJSg8Bnt', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidmlUUDlXQ09GeXJVNEEwY1lUdlBuNW9OWXExT0J2SUkwQmQ4eHFrciI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3JvbGVzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1732556239),
+('lUuKRDLRPw87eUPA2iF833WK7eZ03xdlr4vtUJiJ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiamFha2VLS0QzYTRzckRGdktaRmtpaElvb1ZjTk5vOE5NQlE1YnBGdiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvcm9sZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1732531705),
+('rVm4DwLZM95Ggffnzy9psZ2JcB3a1qIVibT6I7YS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTWU4bGJzOUY3VVozV05oZkIyMVNSSFhrU200c1cxcjAwY0NzSFVRTCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1732538863),
+('sIevXN6J4nK40Ldxrcb2LbQQMYs0aTywUn8AMzfx', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUjV2MDNFRHNqYmFualR5MGtpbHJ0V1hSdGNYTkpXNmpDWkpTR2FWYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732526785),
+('w7h8wdF9VzLaUWqiwlf4CwwyxJLtdj64aAtKF3ww', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiNVZsZFRnR3VmOEQxTjBOVEtQRTJjblM3SHMzSUJGZHZ5V1pIOTlZYSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1732527455),
+('YcrWxp3aTorR74F82xNwFGchlLoHRLYsBb3o5i9W', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNDFCVVdjR250Ym1KRUVTYVZVMzFaQWxUQjhXQnVCbVNqZ0NHbVMwZSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732527275);
 
 -- --------------------------------------------------------
 
@@ -940,6 +1005,14 @@ ALTER TABLE `permissions`
   ADD KEY `permissions_role_id_index` (`role_id`);
 
 --
+-- Index pour la table `permission_role`
+--
+ALTER TABLE `permission_role`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `permission_role_role_id_foreign` (`role_id`),
+  ADD KEY `permission_role_permission_id_foreign` (`permission_id`);
+
+--
 -- Index pour la table `progress`
 --
 ALTER TABLE `progress`
@@ -1116,7 +1189,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT pour la table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `options`
@@ -1135,6 +1208,12 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `permissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375;
+
+--
+-- AUTO_INCREMENT pour la table `permission_role`
+--
+ALTER TABLE `permission_role`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `progress`
@@ -1164,7 +1243,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT pour la table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `students`
@@ -1264,6 +1343,13 @@ ALTER TABLE `options`
 --
 ALTER TABLE `permissions`
   ADD CONSTRAINT `permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `permission_role`
+--
+ALTER TABLE `permission_role`
+  ADD CONSTRAINT `permission_role_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `permission_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `progress`

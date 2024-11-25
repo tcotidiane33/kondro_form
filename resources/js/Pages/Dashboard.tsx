@@ -5,7 +5,10 @@ import { Laptop, Book, Clock, Award } from 'lucide-react';
 import EnrolledCourses from '../Components/dashboard/EnrolledCourses';
 import ProgressChart from '../Components/dashboard/ProgressChart';
 import UpcomingLessons from '../Components/dashboard/UpcomingLessons';
-
+import SendNotification from '../Components/Notification/SendNotification';
+import SendQuizResult from '../Components/Quiz/SendQuizResult';
+import RequestCertificate from '../Components/Certificate/RequestCertificate';
+import SendDataUpdate from '../Components/Data/SendDataUpdate';
 
 export default function Dashboard() {
     return (
@@ -17,7 +20,7 @@ export default function Dashboard() {
             }
         >
             <Head title="Dashboard" />
-            <nav className="px-6 justify-center bg-gradient-to-r from-white/50 to-green-500/50 dark:bg-white pb-1 text-black/80">
+            <nav className="flex pt-0 px-6 justify-center bg-gradient-to-r from-white/50 to-green-500/50 dark:bg-white pb-1 text-black/80">
                 {/* Link to Roles and Permissions Management */}
                 <div className="mt-8 flex items-center space-x-4">
                     <FaUserShield className="text-2xl text-[#FF2D20]" />
@@ -28,7 +31,59 @@ export default function Dashboard() {
                         Manage Roles and Permissions
                     </Link>
                 </div>
+                {/* Link to Courses Management */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Book className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href={route('courses.index')}
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Manage Courses
+                    </Link>
+                </div>
+                {/* Link to Notifications */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Laptop className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href="#send-notification"
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Send Notification
+                    </Link>
+                </div>
+                {/* Link to Quiz Results */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Clock className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href="#send-quiz-result"
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Send Quiz Result
+                    </Link>
+                </div>
+                {/* Link to Certificates */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Award className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href="#request-certificate"
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Request Certificate
+                    </Link>
+                </div>
+                {/* Link to Data Updates */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Laptop className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href="#send-data-update"
+                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Send Data Update
+                    </Link>
+                </div>
             </nav>
+
+
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -38,6 +93,20 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+                <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="bg-white shadow-md rounded-lg p-4">
+                            <SendNotification />
+                        </div>
+                        <div className="bg-white shadow-md rounded-lg p-4">
+                            <SendQuizResult />
+                        </div>
+                        <div className="bg-white shadow-md rounded-lg p-4">
+                            <RequestCertificate />
+                        </div>
+                        <div className="bg-white shadow-md rounded-lg p-4">
+                            <SendDataUpdate />
+                        </div>
+                    </div>
             </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Stats */}

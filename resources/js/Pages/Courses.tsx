@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import CourseCard from '../Components/courses/CourseCard';
-import CourseFilter from '../Components/courses/CourseFilter';
+import CourseCard from '../Components/Courses/CourseCard';
+import CourseFilter from '../Components/Courses/CourseFilter';
 import { Course } from '../types/course';
 
 const Courses = () => {

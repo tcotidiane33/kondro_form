@@ -2,114 +2,55 @@
 
 namespace App\Http\Controllers\Backend\Courses;
 
-use App\Http\Controllers\Controller;
 use App\Models\CourseCategory;
+use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Backend\Course\CourseCategory\AddNewRequest;
 use App\Http\Requests\Backend\Course\CourseCategory\UpdateRequest;
-
-use Exception;
-use File;
 
 class CourseCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $data = CourseCategory::paginate(10);
-        return view('backend.course.courseCategory.index', compact('data'));
+        $courseCategories = CourseCategory::all();
+        return Inertia::render('CourseCategories/Index', ['courseCategories' => $courseCategories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('backend.course.courseCategory.create');
+        return Inertia::render('CourseCategories/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(AddNewRequest $request)
+    public function store(Request $request)
     {
-        try {
-            $data = new CourseCategory;
-            $data->category_name = $request->category_name;
-            $data->category_status = $request->category_status;
+        $request->validate([
+            'category_name' => 'required|max:255',
+            'category_status' => 'required|boolean',
+            'category_image' => 'nullable|string|max:255',
+        ]);
 
-            if ($request->hasFile('category_image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->category_image->extension();
-                $request->category_image->move(public_path('uploads/courseCategories'), $imageName);
-                $data->category_image = $imageName;
-            }
-            if ($data->save())
-                return redirect()->route('courseCategory.index')->with('success', 'Data Saved');
-            else
-                return redirect()->back()->withInput()->with('error', 'Please try again');
-        } catch (Exception $e) {
-            // dd($e);
-            return redirect()->back()->withInput()->with('error', 'Please try again');
-        }
+        CourseCategory::create($request->all());
+
+        return redirect()->route('course-categories.index')->with('success', 'Course category created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(CourseCategory $courseCategory)
+    public function update(UpdateRequest $request, CourseCategory $courseCategory)
     {
-        //
+        $courseCategory->update($request->validated());
+
+        return redirect()->route('course-categories.index')->with('success', 'Course category updated successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function destroy(CourseCategory $courseCategory)
     {
-        $data = CourseCategory::findOrFail($id);
-        return view('backend.course.courseCategory.edit', compact('data'));
+        $courseCategory->delete();
+
+        return redirect()->route('course-categories.index')->with('success', 'Course category deleted successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRequest $request, $id)
+    public function edit(CourseCategory $courseCategory)
     {
-        try {
-            $data = CourseCategory::findOrFail($id);
-            $data->category_name = $request->category_name;
-            $data->category_status = $request->category_status;
-
-            if ($request->hasFile('category_image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->category_image->extension();
-                $request->category_image->move(public_path('uploads/courseCategories'), $imageName);
-                $data->category_image = $imageName;
-            }
-            if ($data->save())
-                return redirect()->route('courseCategory.index')->with('success', 'Data Saved');
-            else
-                return redirect()->back()->withInput()->with('error', 'Please try again');
-        } catch (Exception $e) {
-            // dd($e);
-            return redirect()->back()->withInput()->with('error', 'Please try again');
-        }
+        return Inertia::render('CourseCategories/Edit', ['courseCategory' => $courseCategory]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        $data = CourseCategory::findOrFail($id);
-        $image_path = public_path('uploads/courseCategories/') . $data->category_image;
-
-        if ($data->delete()) {
-            if (File::exists($image_path))
-                File::delete($image_path);
-
-            return redirect()->back();
-        }
-    }
 }
