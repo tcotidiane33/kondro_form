@@ -9,7 +9,7 @@
 
 <img src="./public/preview.png" alt="Kondronetworks Preview">
 
-# Kondronetworks - Platform E-Learning 
+# Kondronetworks - Platform E-Learning
 
 ## Fonctionnalités
 

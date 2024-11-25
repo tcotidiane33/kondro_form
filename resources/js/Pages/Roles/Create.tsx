@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm, Link, usePage } from '@inertiajs/react';
+import { useForm, Link } from '@inertiajs/react';
 
 const Create = () => {
   const { permissions } = usePage().props;

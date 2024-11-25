@@ -9,19 +9,11 @@ interface Permission {
 interface Role {
   id: number;
   name: string;
+  identity: string;
   permissions: Permission[];
 }
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 interface PageProps {
-  auth: {
-    user: User;
-  };
   role: Role;
   permissions: Permission[];
 }
@@ -30,6 +22,7 @@ const Edit = () => {
   const { role, permissions } = usePage<PageProps>().props;
   const { data, setData, put, errors } = useForm({
     name: role.name || '',
+    identity: role.identity || '',
     permissions: role.permissions ? role.permissions.map(permission => permission.id) : [],
   });
 
@@ -61,6 +54,17 @@ const Edit = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           {errors.name && <div className="text-red-500 text-sm mt-2">{errors.name}</div>}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="identity" className="block text-gray-700 font-bold mb-2">Identity</label>
+          <input
+            type="text"
+            id="identity"
+            value={data.identity}
+            onChange={(e) => setData('identity', e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {errors.identity && <div className="text-red-500 text-sm mt-2">{errors.identity}</div>}
         </div>
         <div className="mb-4">
           <label htmlFor="permissions" className="block text-gray-700 font-bold mb-2">Permissions</label>
