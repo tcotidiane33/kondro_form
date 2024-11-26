@@ -12,8 +12,13 @@ class CourseCategoryController extends Controller
 {
     public function index()
     {
-        $courseCategories = CourseCategory::all();
-        return Inertia::render('CourseCategories/Index', ['courseCategories' => $courseCategories]);
+        $categories = CourseCategory::all();
+        return Inertia::render('CourseCategories/Index', [
+            'auth' => [
+                'user' => auth()->user()
+            ],
+            'categories' => $categories
+        ]);
     }
 
     public function create()
@@ -24,7 +29,7 @@ class CourseCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required|max:255',
+            'category_name' => 'required|string|max:255',
             'category_status' => 'required|boolean',
             'category_image' => 'nullable|string|max:255',
         ]);

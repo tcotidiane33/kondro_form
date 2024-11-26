@@ -1,67 +1,74 @@
-import React from 'react';
-import { Link } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+// import { route } from 'ziggy-js';
+import CategoryCard from '../../Components/Courses/CategoryCard';
+import { CourseCategory } from '../../types/course';
 
-const CourseCategories = ({ courseCategories }) => {
-    const handleDelete = (id) => {
-        if (confirm('Are you sure you want to delete this category?')) {
-            // Make a request to delete the category
-            axios.delete(route('course-categories.destroy', id))
-                .then(response => {
-                    // Handle successful deletion
-                    window.location.reload();
-                })
-                .catch(error => {
-                    // Handle error
-                    console.error('There was an error deleting the category!', error);
-                });
-        }
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
+
+interface PageProps {
+    auth: {
+        user: User;
     };
+    categories: {
+        data: CourseCategory[];
+    };
+    [key: string]: any; // Ajout de la signature d'index pour satisfaire la contrainte
+}
+
+const Index: React.FC = () => {
+    const { auth, categories } = usePage<PageProps>().props;
+
+    useEffect(() => {
+        console.log('Categories:', categories);
+    }, [categories]);
+
+    if (!categories) {
+        return <div>Loading...</div>;
+    }
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">Course Categories</h1>
-            <Link href={route('course-categories.create')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">
-                Create New Category
-            </Link>
-            <table className="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
-                <thead>
-                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Name</th>
-                        <th className="py-3 px-6 text-left">Status</th>
-                        <th className="py-3 px-6 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody className="text-gray-600 text-sm font-light">
-                    {courseCategories.map(category => (
-                        <tr key={category.id} className="border-b border-gray-200 hover:bg-gray-100">
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
-                                <span className="font-medium">{category.category_name}</span>
-                            </td>
-                            <td className="py-3 px-6 text-left whitespace-nowrap">
-                                <span className={`font-medium ${category.category_status ? 'text-green-500' : 'text-red-500'}`}>
-                                    {category.category_status ? 'Active' : 'Inactive'}
-                                </span>
-                            </td>
-                            <td className="py-3 px-6 text-center">
-                                <div className="flex item-center justify-center">
-                                    <Link href={route('course-categories.edit', category.id)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12H9m4 8H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v4m-4 8v-4m0 0h4m-4 0H9" />
-                                        </svg>
-                                    </Link>
-                                    <button onClick={() => handleDelete(category.id)} className="w-4 mr-2 transform hover:text-red-500 hover:scale-110">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-3xl font-bold text-gray-800">Categories</h1>
+                <Link href={route('course-categories.create')} className="btn btn-primary flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    <span>Create New Category</span>
+                </Link>
+            </div>
+            <h1>Welcome, {auth.user.name}</h1>
+            <h1>Welcome, {auth.user.email}</h1>
+            {/* <div>
+                {categories.data.map(category => (
+                    <div key={category.id}>
+                        <div>{category.category_name}</div>
+                        <div>{category.category_status}</div>
+                        <div>{category.category_image}</div>
+                    </div>
+                ))}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {categories.data.map(category => (
+                    <CategoryCard key={category.id} category={category} />
+                ))}
+            </div> */}
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {categories.data.map(category => {
+                    console.log('Category:', category);
+                    return <CategoryCard key={category.id} category={category} />;
+                })}
+            </div> */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {/* Placeholder content to check grid layout */}
+                <div className="bg-gray-200 h-48"></div>
+                <div className="bg-gray-200 h-48"></div>
+                <div className="bg-gray-200 h-48"></div>
+            </div>
         </div>
     );
 };
 
-export default CourseCategories;
+export default Index;

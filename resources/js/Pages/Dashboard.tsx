@@ -26,7 +26,7 @@ export default function Dashboard() {
                     <FaUserShield className="text-2xl text-[#FF2D20]" />
                     <Link
                         href={route('roles.index')}
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Manage Roles and Permissions
                     </Link>
@@ -36,9 +36,19 @@ export default function Dashboard() {
                     <Book className="text-2xl text-[#FF2D20]" />
                     <Link
                         href={route('courses.index')}
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Manage Courses
+                    </Link>
+                </div>
+                {/* Link to Category Courses Management */}
+                <div className="mt-8 flex items-center space-x-4">
+                    <Book className="text-2xl text-[#FF2D20]" />
+                    <Link
+                        href={route('course-categories.index')}
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                    >
+                        Category Courses
                     </Link>
                 </div>
                 {/* Link to Notifications */}
@@ -46,7 +56,7 @@ export default function Dashboard() {
                     <Laptop className="text-2xl text-[#FF2D20]" />
                     <Link
                         href="#send-notification"
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Send Notification
                     </Link>
@@ -56,7 +66,7 @@ export default function Dashboard() {
                     <Clock className="text-2xl text-[#FF2D20]" />
                     <Link
                         href="#send-quiz-result"
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Send Quiz Result
                     </Link>
@@ -66,7 +76,7 @@ export default function Dashboard() {
                     <Award className="text-2xl text-[#FF2D20]" />
                     <Link
                         href="#request-certificate"
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Request Certificate
                     </Link>
@@ -76,14 +86,12 @@ export default function Dashboard() {
                     <Laptop className="text-2xl text-[#FF2D20]" />
                     <Link
                         href="#send-data-update"
-                        className="rounded-md px-4 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+                        className="rounded-md px-3 text-sm font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
                     >
                         Send Data Update
                     </Link>
                 </div>
             </nav>
-
-
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -94,19 +102,19 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        <div className="bg-white shadow-md rounded-lg p-4">
-                            <SendNotification />
-                        </div>
-                        <div className="bg-white shadow-md rounded-lg p-4">
-                            <SendQuizResult />
-                        </div>
-                        <div className="bg-white shadow-md rounded-lg p-4">
-                            <RequestCertificate />
-                        </div>
-                        <div className="bg-white shadow-md rounded-lg p-4">
-                            <SendDataUpdate />
-                        </div>
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <SendNotification />
                     </div>
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <SendQuizResult />
+                    </div>
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <RequestCertificate />
+                    </div>
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <SendDataUpdate />
+                    </div>
+                </div>
             </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Stats */}
