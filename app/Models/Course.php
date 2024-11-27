@@ -32,6 +32,16 @@ class Course extends Model
         'tag',
     ];
 
+    protected $casts = [
+        'price' => 'decimal:2',
+        'old_price' => 'decimal:2',
+        'subscription_price' => 'decimal:2',
+        'start_from' => 'datetime',
+        'duration' => 'integer',
+        'lesson' => 'integer',
+        'status' => 'integer',
+    ];
+
     public function courseCategory()
     {
         return $this->belongsTo(CourseCategory::class);

@@ -13,11 +13,15 @@ export default defineConfig({
     build: {
         rollupOptions: {
           external: ['slick-carousel/slick/slick.css', 'slick-carousel/slick/slick-theme.css']
-        }
+        },
+        minify: process.env.APP_ENV === 'production' ? 'esbuild' : false,
+        cssMinify: process.env.APP_ENV === 'production',
       },
       resolve: {
         alias: {
-          ziggy: '/resources/js/ziggy.js', 
+          ziggy: '/resources/js/ziggy.js',
+          '@': '/resources/js',
+
         },
       },
 });

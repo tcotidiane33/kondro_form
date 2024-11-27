@@ -21,8 +21,10 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('courseCategory', 'instructor')->paginate(10);
-        return Inertia::render('Courses/Index', ['courses' => $courses]);
+        $courses = Course::all();
+        return Inertia::render('Courses/Index', [
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -35,7 +37,7 @@ class CourseController extends Controller
         return Inertia::render('Courses/Create', ['courseCategories' => $courseCategories, 'instructors' => $instructors]);
     }
 
-    /**
+     /**
      * Store a newly created resource in storage.
      */
     public function store(AddNewRequest $request)
@@ -79,6 +81,7 @@ class CourseController extends Controller
                 return redirect()->back()->withInput()->with('error', 'Please try again');
             }
         } catch (Exception $e) {
+            \Log::error('Error creating course: ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Please try again');
         }
     }
