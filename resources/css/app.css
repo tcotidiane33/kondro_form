@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import 'flowbite-react/dist/flowbite.css';
 
 /* Styles personnalisés pour les composants réutilisables */
 

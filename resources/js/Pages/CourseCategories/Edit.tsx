@@ -5,7 +5,7 @@ const EditCourseCategory = () => {
   const { courseCategory } = usePage().props;
   const { data, setData, put, errors } = useForm({
     category_name: courseCategory.category_name || '',
-    category_status: courseCategory.category_status || true,
+    category_status: courseCategory.category_status ? '1' : '0',
     category_image: courseCategory.category_image || '',
   });
 
@@ -37,8 +37,8 @@ const EditCourseCategory = () => {
             onChange={(e) => setData('category_status', e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
-            <option value={true}>Active</option>
-            <option value={false}>Inactive</option>
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
           </select>
           {errors.category_status && <div className="text-red-500 text-sm mt-2">{errors.category_status}</div>}
         </div>

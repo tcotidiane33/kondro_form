@@ -57,5 +57,4 @@ class CourseCategoryController extends Controller
     {
         return Inertia::render('CourseCategories/Edit', ['courseCategory' => $courseCategory]);
     }
-
 }
