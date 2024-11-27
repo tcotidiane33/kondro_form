@@ -64,12 +64,16 @@ const CreateCourse = () => {
             const file = files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                setData(field, reader.result as string);
+                const result = reader.result as string;
+                if (result.length <= 255) {
+                    setData(field, result);
+                } else {
+                    alert(`Le fichier ${field} est trop grand. Veuillez choisir un fichier plus petit.`);
+                }
             };
             reader.readAsDataURL(file);
         }
     };
-
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Créer un nouveau cours</h1>

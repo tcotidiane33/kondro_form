@@ -7,6 +7,7 @@ use Exception;
 use Inertia\Inertia;
 use App\Models\Course;
 use App\Models\Instructor;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CourseCategory;
 use App\Http\Controllers\Controller;
@@ -37,41 +38,42 @@ class CourseController extends Controller
         return Inertia::render('Courses/Create', ['courseCategories' => $courseCategories, 'instructors' => $instructors]);
     }
 
-     /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(AddNewRequest $request)
     {
         try {
             $course = new Course;
-            $course->title = $request->courseTitle;
-            $course->description = $request->courseDescription;
-            $course->course_category_id = $request->categoryId;
-            $course->instructor_id = $request->instructorId;
-            $course->type = $request->courseType;
-            $course->price = $request->coursePrice;
-            $course->old_price = $request->courseOldPrice;
-            $course->subscription_price = $request->subscriptionPrice;
+            $course->title = $request->title;
+            $course->description = $request->description;
+            $course->course_category_id = $request->course_category_id;
+            $course->instructor_id = $request->instructor_id;
+            $course->type = $request->type;
+            $course->price = $request->price;
+            $course->old_price = $request->old_price;
+            $course->subscription_price = $request->subscription_price;
             $course->start_from = $request->start_from;
             $course->duration = $request->duration;
             $course->lesson = $request->lesson;
-            $course->difficulty = $request->courseDifficulty;
+            $course->difficulty = $request->difficulty;
             $course->course_code = $request->course_code;
             $course->prerequisites = $request->prerequisites;
             $course->thumbnail_video = $request->thumbnail_video;
             $course->tag = $request->tag;
-            $course->language = 'fr';
+            $course->language = $request->language;
+            $course->status = $request->status;
 
-            if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/courses'), $imageName);
-                $course->image = $imageName;
+            if ($request->image) {
+                $imageData = $this->saveBase64Image($request->image, 'courses/images');
+                $course->image = $imageData['filename'];
             }
-            if ($request->hasFile('thumbnail_image')) {
-                $thumbnailImageName = rand(111, 999) . time() . '.' . $request->thumbnail_image->extension();
-                $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
-                $course->thumbnail_image = $thumbnailImageName;
+
+            if ($request->thumbnail_image) {
+                $thumbnailImageData = $this->saveBase64Image($request->thumbnail_image, 'courses/thumbnails');
+                $course->thumbnail_image = $thumbnailImageData['filename'];
             }
+
 
             if ($course->save()) {
                 // Envoyer une mise à jour des données via RabbitMQ
@@ -163,4 +165,13 @@ class CourseController extends Controller
             return redirect()->back()->with('error', 'Please try again');
         }
     }
+
+    private function saveBase64Image($base64Image, $path)
+{
+    $image = str_replace('data:image/png;base64,', '', $base64Image);
+    $image = str_replace(' ', '+', $image);
+    $imageName = Str::random(10) . '.png';
+    File::put(public_path($path) . '/' . $imageName, base64_decode($image));
+    return ['filename' => $imageName];
+}
 }
