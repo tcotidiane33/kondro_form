@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, usePage, Link } from '@inertiajs/react';
 
 interface CourseCategory {
@@ -53,9 +53,15 @@ const CreateCourse = () => {
         tag: 'popular',
     });
 
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [thumbnailImagePreview, setThumbnailImagePreview] = useState<string | null>(null);
+    const [thumbnailVideoPreview, setThumbnailVideoPreview] = useState<string | null>(null);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('courses.store'));
+        post(route('courses.store'), {
+            forceFormData: true,
+        });
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
@@ -65,15 +71,19 @@ const CreateCourse = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const result = reader.result as string;
-                if (result.length <= 255) {
-                    setData(field, result);
-                } else {
-                    alert(`Le fichier ${field} est trop grand. Veuillez choisir un fichier plus petit.`);
+                setData(field, result);
+                if (field === 'image') {
+                    setImagePreview(result);
+                } else if (field === 'thumbnail_image') {
+                    setThumbnailImagePreview(result);
+                } else if (field === 'thumbnail_video') {
+                    setThumbnailVideoPreview(result);
                 }
             };
             reader.readAsDataURL(file);
         }
     };
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Créer un nouveau cours</h1>
@@ -258,6 +268,7 @@ const CreateCourse = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {errors.image && <div className="text-red-500 text-sm mt-2">{errors.image}</div>}
+                    {imagePreview && <img src={imagePreview} alt="Aperçu de l'image" className="mt-2" />}
                 </div>
                 <div className="mb-4">
                     <label htmlFor="thumbnail_image" className="block text-gray-700 font-bold mb-2">Image miniature</label>
@@ -268,6 +279,7 @@ const CreateCourse = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {errors.thumbnail_image && <div className="text-red-500 text-sm mt-2">{errors.thumbnail_image}</div>}
+                    {thumbnailImagePreview && <img src={thumbnailImagePreview} alt="Aperçu de l'image miniature" className="mt-2" />}
                 </div>
                 <div className="mb-4">
                     <label htmlFor="thumbnail_video" className="block text-gray-700 font-bold mb-2">Vidéo de présentation</label>
@@ -279,6 +291,7 @@ const CreateCourse = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                     {errors.thumbnail_video && <div className="text-red-500 text-sm mt-2">{errors.thumbnail_video}</div>}
+                    {thumbnailVideoPreview && <video src={thumbnailVideoPreview} controls className="mt-2" />}
                 </div>
                 <div className="mb-4">
                     <label htmlFor="status" className="block text-gray-700 font-bold mb-2">Statut</label>

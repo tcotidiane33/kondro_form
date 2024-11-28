@@ -64,15 +64,18 @@ class CourseController extends Controller
             $course->language = $request->language;
             $course->status = $request->status;
 
-            if ($request->image) {
-                $imageData = $this->saveBase64Image($request->image, 'courses/images');
-                $course->image = $imageData['filename'];
-            }
 
-            if ($request->thumbnail_image) {
-                $thumbnailImageData = $this->saveBase64Image($request->thumbnail_image, 'courses/thumbnails');
-                $course->thumbnail_image = $thumbnailImageData['filename'];
-            }
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->image->getClientOriginalName();
+            $request->image->move(public_path('uploads/courses/images'), $imageName);
+            $course->image = $imageName;
+        }
+
+        if ($request->hasFile('thumbnail_image')) {
+            $thumbnailImageName = time() . '_' . $request->thumbnail_image->getClientOriginalName();
+            $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
+            $course->thumbnail_image = $thumbnailImageName;
+        }
 
 
             if ($course->save()) {
@@ -124,13 +127,16 @@ class CourseController extends Controller
             $course->tag = $request->tag;
             $course->language = 'fr';
 
+            $course->fill($request->all());
+
             if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/courses'), $imageName);
+                $imageName = time() . '_' . $request->image->getClientOriginalName();
+                $request->image->move(public_path('uploads/courses/images'), $imageName);
                 $course->image = $imageName;
             }
+
             if ($request->hasFile('thumbnail_image')) {
-                $thumbnailImageName = rand(111, 999) . time() . '.' . $request->thumbnail_image->extension();
+                $thumbnailImageName = time() . '_' . $request->thumbnail_image->getClientOriginalName();
                 $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
                 $course->thumbnail_image = $thumbnailImageName;
             }
@@ -143,6 +149,7 @@ class CourseController extends Controller
                 return redirect()->back()->withInput()->with('error', 'Please try again');
             }
         } catch (Exception $e) {
+            \Log::error('Error updating course: ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Please try again');
         }
     }
@@ -167,11 +174,11 @@ class CourseController extends Controller
     }
 
     private function saveBase64Image($base64Image, $path)
-{
-    $image = str_replace('data:image/png;base64,', '', $base64Image);
-    $image = str_replace(' ', '+', $image);
-    $imageName = Str::random(10) . '.png';
-    File::put(public_path($path) . '/' . $imageName, base64_decode($image));
-    return ['filename' => $imageName];
-}
+    {
+        $image = str_replace('data:image/png;base64,', '', $base64Image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = Str::random(10) . '.png';
+        File::put(public_path($path) . '/' . $imageName, base64_decode($image));
+        return ['filename' => $imageName];
+    }
 }
