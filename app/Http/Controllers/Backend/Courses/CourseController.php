@@ -64,19 +64,15 @@ class CourseController extends Controller
             $course->language = $request->language;
             $course->status = $request->status;
 
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public');
+                $course->image = $imagePath;
+            }
 
-        if ($request->hasFile('image')) {
-            $imageName = time() . '_' . $request->image->getClientOriginalName();
-            $request->image->move(public_path('uploads/courses/images'), $imageName);
-            $course->image = $imageName;
-        }
-
-        if ($request->hasFile('thumbnail_image')) {
-            $thumbnailImageName = time() . '_' . $request->thumbnail_image->getClientOriginalName();
-            $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
-            $course->thumbnail_image = $thumbnailImageName;
-        }
-
+            if ($request->hasFile('thumbnail_image')) {
+                $thumbnailImagePath = $request->file('thumbnail_image')->store('thumbnails', 'public');
+                $course->thumbnail_image = $thumbnailImagePath;
+            }
 
             if ($course->save()) {
                 // Envoyer une mise à jour des données via RabbitMQ
@@ -130,15 +126,13 @@ class CourseController extends Controller
             $course->fill($request->all());
 
             if ($request->hasFile('image')) {
-                $imageName = time() . '_' . $request->image->getClientOriginalName();
-                $request->image->move(public_path('uploads/courses/images'), $imageName);
-                $course->image = $imageName;
+                $imagePath = $request->file('image')->store('images', 'public');
+                $course->image = $imagePath;
             }
 
             if ($request->hasFile('thumbnail_image')) {
-                $thumbnailImageName = time() . '_' . $request->thumbnail_image->getClientOriginalName();
-                $request->thumbnail_image->move(public_path('uploads/courses/thumbnails'), $thumbnailImageName);
-                $course->thumbnail_image = $thumbnailImageName;
+                $thumbnailImagePath = $request->file('thumbnail_image')->store('thumbnails', 'public');
+                $course->thumbnail_image = $thumbnailImagePath;
             }
 
             if ($course->save()) {

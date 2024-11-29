@@ -64,14 +64,15 @@ const CreateCourse = () => {
         });
     };
 
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
         const files = e.target.files;
         if (files && files[0]) {
             const file = files[0];
+            setData(field, file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 const result = reader.result as string;
-                setData(field, result);
                 if (field === 'image') {
                     setImagePreview(result);
                 } else if (field === 'thumbnail_image') {

@@ -1,6 +1,6 @@
-import React from 'react';
-import { InertiaLink } from '@inertiajs/inertia-react';
-import { Inertia } from '@inertiajs/inertia';
+import React, { useState } from 'react';
+import CourseFilter from '../../Components/Courses/CourseFilter';
+import CourseCard from '../../Components/Courses/CourseCard';
 
 interface Course {
   id: number;
@@ -8,6 +8,10 @@ interface Course {
   course_category_id: number;
   instructor_id: number;
   price: number;
+  description: string;
+  image: string;
+  category: string;
+  instructor: string;
 }
 
 interface IndexProps {
@@ -15,59 +19,40 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = ({ courses }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
   if (!Array.isArray(courses)) {
     return <div>Loading...</div>;
   }
 
+  const filteredCourses = courses.filter(course => {
+    const matchesCategory = selectedCategory === 'all' || course.category.toLowerCase() === selectedCategory.toLowerCase();
+    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         course.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Liste des cours</h1>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b">Titre</th>
-              <th className="py-2 px-4 border-b">Catégorie</th>
-              <th className="py-2 px-4 border-b">Instructeur</th>
-              <th className="py-2 px-4 border-b">Prix</th>
-              <th className="py-2 px-4 border-b">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course) => (
-              <tr key={course.id} className="hover:bg-gray-100">
-                <td className="py-2 px-4 border-b">{course.title}</td>
-                <td className="py-2 px-4 border-b">{course.course_category_id}</td>
-                <td className="py-2 px-4 border-b">{course.instructor_id}</td>
-                <td className="py-2 px-4 border-b">{course.price}</td>
-                <td className="py-2 px-4 border-b">
-                  <div className="flex space-x-2">
-                    <InertiaLink href={route('courses.edit', course.id)}>
-                      <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Modifier</button>
-                    </InertiaLink>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
-                          Inertia.post(route('courses.destroy', course.id), {
-                            _method: 'delete',
-                          });
-                        }
-                      }}
-                    >
-                      <button type="submit" className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">Supprimer</button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
+      <div className="flex flex-col md:flex-row gap-8">
+        <aside className="w-full md:w-64">
+          <CourseFilter
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            onSearchChange={setSearchQuery}
+            searchQuery={searchQuery}
+          />
+        </aside>
+
+        <main className="flex-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCourses.map(course => (
+              <CourseCard key={course.id} course={course} />
             ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-4">
-        <InertiaLink href={route('courses.create')}>
-          <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Ajouter un nouveau cours</button>
-        </InertiaLink>
+          </div>
+        </main>
       </div>
     </div>
   );

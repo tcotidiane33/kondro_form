@@ -43,8 +43,17 @@ export interface Course {
   image?: string;
   thumbnail_image?: string;
   thumbnail_video?: string;
-  status: 0 | 1 | 2; 
+  status: 0 | 1 | 2;
   language: 'fr' | 'en';
 
   tag?: 'popular' | 'featured' | 'upcoming';
+
+  description: string;
+  image: string;
+  category: string;
+  instructor: string;
+  instructor_avatar: string;
+  instructor_bio: string;
+  duration: string;
+  level: string;
 }
