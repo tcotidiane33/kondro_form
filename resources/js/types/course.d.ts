@@ -49,11 +49,11 @@ export interface Course {
   tag?: 'popular' | 'featured' | 'upcoming';
 
   description: string;
-  image: string;
-  category: string;
-  instructor: string;
+//   image: string;
+//   category: string;
+//   instructor: string;
   instructor_avatar: string;
   instructor_bio: string;
-  duration: string;
+//   duration: string;
   level: string;
 }
