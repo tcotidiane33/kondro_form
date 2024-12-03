@@ -20,7 +20,7 @@ class InstructorController extends Controller
     /**
      * Display a listing of the resource.
      */
-  
+
     public function index()
     {
         $instructor = Instructor::paginate(10);
@@ -45,8 +45,8 @@ class InstructorController extends Controller
         try {
             DB::beginTransaction();
             $instructor = new Instructor;
-            $instructor->name_en = $request->fullName_en;
-            $instructor->contact_en = $request->contactNumber_en;
+            $instructor->name = $request->fullName;
+            $instructor->contact = $request->contactNumber;
             $instructor->email = $request->emailAddress;
             $instructor->role_id = $request->roleId;
             $instructor->bio = $request->bio;
@@ -57,7 +57,7 @@ class InstructorController extends Controller
             $instructor->language = 'fr';
             $instructor->access_block = $request->access_block;
             if ($request->hasFile('image')) {
-                $imageName = (Role::find($request->roleId)->name) . '_' .  $request->fullName_en . '_' . rand(999, 111) .  '.' . $request->image->extension();
+                $imageName = (Role::find($request->roleId)->name) . '_' .  $request->fullName . '_' . rand(999, 111) .  '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/users'), $imageName);
                 $instructor->image = $imageName;
             }
@@ -65,9 +65,9 @@ class InstructorController extends Controller
             if ($instructor->save()) {
                 $user = new User;
                 $user->instructor_id = $instructor->id;
-                $user->name_en = $request->fullName_en;
+                $user->name = $request->fullName;
                 $user->email = $request->emailAddress;
-                $user->contact_en = $request->contactNumber_en;
+                $user->contact = $request->contactNumber;
                 $user->role_id = $request->roleId;
                 $user->status = $request->status;
                 $user->password = Hash::make($request->password);
@@ -98,7 +98,7 @@ class InstructorController extends Controller
     public function frontShow($id)
     {
         $instructor = Instructor::findOrFail(encryptor('decrypt', $id));
-        // dd($course); 
+        // dd($course);
         return view('frontend.instructorProfile', compact('instructor'));
     }
 
@@ -119,8 +119,8 @@ class InstructorController extends Controller
     {
         try {
             $instructor = Instructor::findOrFail(encryptor('decrypt', $id));
-            $instructor->name_en = $request->fullName_en;
-            $instructor->contact_en = $request->contactNumber_en;
+            $instructor->name = $request->fullName;
+            $instructor->contact = $request->contactNumber;
             $instructor->email = $request->emailAddress;
             $instructor->role_id = $request->roleId;
             $instructor->bio = $request->bio;
@@ -131,7 +131,7 @@ class InstructorController extends Controller
             $instructor->language = 'fr';
             $instructor->access_block = $request->access_block;
             if ($request->hasFile('image')) {
-                $imageName = (Role::find($request->roleId)->name) . '_' .  $request->fullName_en . '_' . rand(999, 111) .  '.' . $request->image->extension();
+                $imageName = (Role::find($request->roleId)->name) . '_' .  $request->fullName . '_' . rand(999, 111) .  '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/users'), $imageName);
                 $instructor->image = $imageName;
             }
@@ -139,9 +139,9 @@ class InstructorController extends Controller
             if ($instructor->save()) {
                 $user = User::where('instructor_id', $instructor->id)->first();
                 $user->instructor_id = $instructor->id;
-                $user->name_en = $request->fullName_en;
+                $user->name = $request->fullName;
                 $user->email = $request->emailAddress;
-                $user->contact_en = $request->contactNumber_en;
+                $user->contact = $request->contactNumber;
                 $user->role_id = $request->roleId;
                 $user->status = $request->status;
                 $user->password = Hash::make($request->password);
@@ -178,7 +178,7 @@ class InstructorController extends Controller
     }
 
 
-    // Auth Systeme 
+    // Auth Systeme
     public function signUpForm()
     {
         return view('backend.instructor.auth.register');
@@ -189,19 +189,19 @@ class InstructorController extends Controller
         try {
             DB::beginTransaction();
             $instructor = new Instructor;
-            $instructor->name_en = $request->name;
+            $instructor->name = $request->name;
             $instructor->email = $request->email;
             $instructor->password = Hash::make($request->password);
-            $instructor->contact_en = $request->contact_en;  // Ajoutez cette ligne
+            $instructor->contact = $request->contact;  // Ajoutez cette ligne
             $instructor->role_id = Role::where('name', 'instructor')->first()->id;
             $instructor->status = 1; // Actif par défaut, peut être changé selon vos besoins
 
             if ($instructor->save()) {
                 $user = new User;
                 $user->instructor_id = $instructor->id;
-                $user->name_en = $request->name;
+                $user->name = $request->name;
                 $user->email = $request->email;
-                $user->contact_en = $request->contact_en; // Ajoutez cette ligne
+                $user->contact = $request->contact; // Ajoutez cette ligne
                 $user->role_id = $instructor->role_id;
                 $user->status = $instructor->status;
                 $user->password = $instructor->password;
@@ -245,7 +245,7 @@ class InstructorController extends Controller
     {
         request()->session()->put([
             'instructorId' => encryptor('encrypt', $instructor->id),
-            'instructorName' => encryptor('encrypt', $instructor->name_en),
+            'instructorName' => encryptor('encrypt', $instructor->name),
             'instructorEmail' => encryptor('encrypt', $instructor->email),
             'instructorLogin' => 1,
             'instructorImage' => $instructor->image ?? 'No Image Found'

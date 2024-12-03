@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Backend\Courses;
 
+use Exception;
+use Inertia\Inertia;
+use App\Models\Lesson;
 use App\Models\Material;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Course\Materials\AddNewRequest;
 use App\Http\Requests\Backend\Course\Materials\UpdateRequest;
-use App\Models\Lesson;
-use Exception;
 
 class MaterialController extends Controller
 {
@@ -17,8 +18,8 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $material = Material::paginate(10);
-        return view('backend.course.material.index', compact('material'));
+        $materials = Material::all();
+        return Inertia::render('Backend/Courses/Materials/Index', ['materials' => $materials]);
     }
 
     /**
@@ -26,8 +27,9 @@ class MaterialController extends Controller
      */
     public function create()
     {
-        $lesson= Lesson::get();
-        return view('backend.course.material.create', compact('lesson'));
+        // $lesson= Lesson::get();
+        $lessons = Lesson::all();
+        return Inertia::render('Backend/Courses/Materials/Create', ['lessons' => $lessons]);
     }
 
     /**
@@ -62,9 +64,10 @@ class MaterialController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Material $material)
+    public function show($id)
     {
-        //
+        $material = Material::findOrFail($id);
+        return Inertia::render('Backend/Courses/Materials/Show', ['material' => $material]);
     }
 
     /**
@@ -77,7 +80,7 @@ class MaterialController extends Controller
         return view('backend.course.material.edit', compact('lesson', 'material'));
     }
 
-    /** 
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateRequest $request, $id)
@@ -87,6 +90,7 @@ class MaterialController extends Controller
             $material->title = $request->materialTitle;
             $material->lesson_id = $request->lessonId;
             $material->type = $request->materialType;
+            $material->content = $request->content;
             $material->content_url = $request->contentURL;
 
             if ($request->hasFile('content')) {
@@ -113,10 +117,15 @@ class MaterialController extends Controller
      */
     public function destroy($id)
     {
-        $data = Material::findOrFail(encryptor('decrypt', $id));
-        if ($data->delete()) {
-            $this->notice::error('Data Deleted!');
-            return redirect()->back();
+        try {
+            $material = Material::findOrFail($id);
+            if ($material->delete()) {
+                return redirect()->route('material.index')->with('success', 'Data Deleted');
+            } else {
+                return redirect()->back()->with('error', 'Please try again');
+            }
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Please try again');
         }
     }
 }

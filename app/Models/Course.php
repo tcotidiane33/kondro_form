@@ -47,11 +47,14 @@ class Course extends Model
         return $this->belongsTo(CourseCategory::class);
     }
 
+    // public function instructor()
+    // {
+    //     return $this->belongsTo(Instructor::class);
+    // }
     public function instructor()
     {
-        return $this->belongsTo(Instructor::class);
+        return $this->belongsTo(User::class, 'instructor_id');
     }
-
     public function material()
     {
         return $this->hasMany(Material::class);

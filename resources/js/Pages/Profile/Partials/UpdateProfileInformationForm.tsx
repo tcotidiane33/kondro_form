@@ -5,28 +5,56 @@ import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import React from 'react';
 
-export default function UpdateProfileInformation({
-    mustVerifyEmail,
-    status,
-    className = '',
-}: {
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    contact?: string;
+    role_id?: number;
+    status?: number;
+    image?: string;
+    role?: {
+        id: number;
+        name: string;
+    };
+}
+
+interface UpdateProfileInformationFormProps {
     mustVerifyEmail: boolean;
     status?: string;
     className?: string;
-}) {
-    const user = usePage().props.auth.user;
+}
+
+export default function UpdateProfileInformationForm({
+    mustVerifyEmail,
+    status,
+    className = '',
+}: UpdateProfileInformationFormProps) {
+    const user: User = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
-            email: user.email,
+            name: user.name || '',
+            email: user.email || '',
+            contact: user.contact || '',
+            role_id: user.role_id || 0,
+            status: user.status || 0,
+            image: null as File | null,
         });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        patch(route('profile.update', user.id));
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files && files[0]) {
+            setData('image', files[0]);
+        }
     };
 
     return (
@@ -72,6 +100,46 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="contact" value="Contact" />
+
+                    <TextInput
+                        id="contact"
+                        className="mt-1 block w-full"
+                        value={data.contact}
+                        onChange={(e) => setData('contact', e.target.value)}
+                        autoComplete="contact"
+                        placeholder="Enter your contact number"
+                    />
+
+                    <InputError className="mt-2" message={errors.contact} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="image" value="Profile Image" />
+
+                    <input
+                        id="image"
+                        type="file"
+                        onChange={handleFileChange}
+                        className="mt-1 block w-full"
+                        title="Choose a profile image"
+                    />
+
+                    <InputError className="mt-2" message={errors.image} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="role" value="Role" />
+
+                    <TextInput
+                        id="role"
+                        className="mt-1 block w-full bg-gray-100"
+                        value={user.role ? user.role.name : ''}
+                        readOnly
+                    />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

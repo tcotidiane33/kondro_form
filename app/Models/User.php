@@ -34,6 +34,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function isAdmin()
+    {
+        return $this->role->name === 'Admin';
+    }
+
+    public function isInstructor()
+    {
+        return $this->role->name === 'Instructor';
+    }
+
+    public function isStudent()
+    {
+        return $this->role->name === 'Student';
+    }
+
     // relation with role
     public function role()
     {
@@ -56,7 +72,12 @@ class User extends Authenticatable
     }
 
     public function enrollments()
-{
-    return $this->hasMany(Enrollment::class);
-}
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'instructor_id');
+    }
 }

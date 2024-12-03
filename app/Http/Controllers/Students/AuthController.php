@@ -10,19 +10,21 @@ use App\Http\Requests\Students\Auth\SignUpRequest;
 use App\Http\Requests\Students\Auth\SignInRequest;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use Inertia\Inertia;
+
 
 class AuthController extends Controller
 {
     public function signUpForm()
     {
-        return view('students.auth.register');
+        return Inertia::render('Students/Auth/Register');
     }
 
     public function signUpStore(SignUpRequest $request,$back_route)
     {
         try {
             $student = new Student;
-            $student->name_en = $request->name;
+            $student->name = $request->name;
             $student->email = $request->email;
             $student->password = Hash::make($request->password);
             if ($student->save()){
@@ -37,7 +39,7 @@ class AuthController extends Controller
 
     public function signInForm()
     {
-        return view('students.auth.login');
+        return Inertia::render('Students/Auth/Login');
     }
 
     public function signInCheck(SignInRequest $request,$back_route)
@@ -66,10 +68,10 @@ class AuthController extends Controller
         return request()->session()->put(
             [
                 'userId' => encryptor('encrypt', $student->id),
-                'userName' => encryptor('encrypt', $student->name_en),
+                'userName' => encryptor('encrypt', $student->name),
                 'emailAddress' => encryptor('encrypt', $student->email),
                 'studentLogin' => 1,
-                'image' => $student->image ?? 'No Image Found' 
+                'image' => $student->image ?? 'No Image Found'
             ]
         );
     }

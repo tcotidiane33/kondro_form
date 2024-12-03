@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Students;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Exception;
 use App\Models\Student;
 use App\Models\Enrollment;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
@@ -14,22 +16,37 @@ class ProfileController extends Controller
     {
         $student_info = Student::find(currentUserId());
         $enrollment = Enrollment::where('student_id', currentUserId())->get();
-        return view('students.profile', compact('student_info', 'enrollment'));
+        return Inertia::render('Students/Profile', [
+            'student_info' => $student_info,
+            'enrollment' => $enrollment,
+        ]);
     }
 
     public function save_profile(Request $request)
     {
+        $request->validate([
+            'fullName' => 'required|string|max:255',
+            'contactNumber' => 'nullable|string|max:255',
+            'emailAddress' => 'required|string|email|max:255',
+            'dob' => 'nullable|date',
+            'gender' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'profession' => 'nullable|string|max:255',
+            'nationality' => 'nullable|string|max:255',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
         try {
             $data = Student::find(currentUserId());
-            $data->name_en = $request->fullName_en;
-            $data->contact_en = $request->contactNumber_en;
+            $data->name = $request->fullName;
+            $data->contact = $request->contactNumber;
             $data->email = $request->emailAddress;
             $data->date_of_birth = $request->dob;
             $data->gender = $request->gender;
             $data->bio = $request->bio;
             $data->profession = $request->profession;
             $data->nationality = $request->nationality;
-            $data->language = 'en';
+            $data->language = 'fr';
 
             if ($request->hasFile('image')) {
                 $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
@@ -41,13 +58,17 @@ class ProfileController extends Controller
                 return redirect()->back()->with('success', 'Your Changes Have been Saved');
             }
         } catch (Exception $e) {
-            // dd($e);
             return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again');
         }
     }
 
     public function change_password(Request $request)
     {
+        $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|string|confirmed|min:8',
+        ]);
+
         try {
             $data = Student::find(currentUserId());
 
@@ -64,7 +85,6 @@ class ProfileController extends Controller
                 return redirect()->back()->with('success', 'Password Have been Changed');
             }
         } catch (Exception $e) {
-            // dd($e); 
             return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again');
         }
     }
@@ -74,7 +94,7 @@ class ProfileController extends Controller
         return request()->session()->put(
             [
                 'userId' => encryptor('encrypt', $student->id),
-                'userName' => encryptor('encrypt', $student->name_en),
+                'userName' => encryptor('encrypt', $student->name),
                 'emailAddress' => encryptor('encrypt', $student->email),
                 'studentLogin' => 1,
                 'image' => $student->image ?? 'No Image Found'
@@ -82,7 +102,6 @@ class ProfileController extends Controller
         );
     }
 
-    // ProfileController.php
     public function changeImage(Request $request)
     {
         try {
@@ -98,8 +117,7 @@ class ProfileController extends Controller
             } else {
                 return redirect()->back()->with('error', 'Please select a valid image file.');
             }
-        } catch (\Exception $e) {
-            // dd($e);
+        } catch (Exception $e) {
             return redirect()->back()->with('error', 'An error occurred. Please try again.');
         }
     }

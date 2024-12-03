@@ -7,17 +7,22 @@ use App\Models\Student;
 use App\Models\Enrollment;
 use App\Models\Course;
 use App\Models\Checkout;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index()
     {
         $student_info = Student::find(currentUserId());
-        $enrollment = Enrollment::where('student_id', currentUserId())->get();
-        $course = Course::get();
+        $enrollment = Enrollment::where('student_id', currentUserId())->with('course')->get();
+        $courses = Course::all();
         $checkout = Checkout::where('student_id', currentUserId())->get();
-        // $purchaseHistory = Enrollment::with(['course', 'checkout'])->orderBy('enrollment_date', 'desc')->get();
-        return view('students.dashboard', compact('student_info','enrollment', 'course','checkout'));
+
+        return Inertia::render('Students/Dashboard', [
+            'student_info' => $student_info,
+            'enrollment' => $enrollment,
+            'courses' => $courses,
+            'checkout' => $checkout,
+        ]);
     }
 }

@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->group('admin', [
+            \App\Http\Middleware\AdminMiddleware::class,
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {

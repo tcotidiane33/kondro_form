@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 25 nov. 2024 à 18:58
+-- Généré le : mar. 03 déc. 2024 à 14:29
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -143,6 +143,14 @@ CREATE TABLE `courses` (
   `tag` enum('popular','featured','upcoming') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `courses`
+--
+
+INSERT INTO `courses` (`id`, `title`, `description`, `course_category_id`, `instructor_id`, `type`, `price`, `old_price`, `subscription_price`, `start_from`, `duration`, `lesson`, `prerequisites`, `difficulty`, `course_code`, `image`, `thumbnail_image`, `thumbnail_video`, `status`, `language`, `created_at`, `updated_at`, `deleted_at`, `tag`) VALUES
+(1, 'COMMENT APPRENDRE À APPRENDRE', 'DESCRIPTIONS, COMMENT APPRENDRE 🟢✅♻', 1, 5, 'subscription', 190000.00, 200000.00, 150000.00, '2024-11-26 23:00:00', 200, 32, 'ENGLISH-SPEAKING ,', 'beginner', 'C223', NULL, NULL, 'https://youtu.be/5zr1Q8UqG2k', 0, 'fr', '2024-11-27 18:11:21', '2024-11-27 18:11:21', NULL, 'popular'),
+(2, 'APPRENDRE LE RÉSEAU ', 'DESCRIPTIONS, COMMENT APPRENDRE LE RÉSEAU 🟢♻', 4, 5, 'paid', 1190000.00, 2000000.00, 1150000.00, '2024-11-26 23:00:00', 300, 321, 'CIBERSÉCURITÉ, RÉSEAU ET PROTOCOLE ', 'intermediate', 'C223', NULL, NULL, 'https://youtu.be/5zr1Q8UqG2k', 0, 'fr', '2024-11-27 18:11:21', '2024-11-27 18:11:21', NULL, 'popular');
+
 -- --------------------------------------------------------
 
 --
@@ -158,6 +166,16 @@ CREATE TABLE `course_categories` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `course_categories`
+--
+
+INSERT INTO `course_categories` (`id`, `category_name`, `category_status`, `category_image`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'RÉSEAU ET SÉCURITÉ', 1, NULL, '2024-11-25 18:50:51', '2024-11-27 09:02:06', NULL),
+(3, 'COMPTABILITÉ', 0, NULL, '2024-11-27 10:34:30', '2024-11-27 10:51:40', NULL),
+(4, 'ISE', 1, NULL, '2024-11-27 10:52:45', '2024-11-27 10:52:45', NULL),
+(5, 'CCNP', 1, NULL, '2024-11-27 10:52:56', '2024-11-27 10:52:56', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,6 +256,13 @@ CREATE TABLE `instructors` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `instructors`
+--
+
+INSERT INTO `instructors` (`id`, `name`, `contact`, `email`, `role_id`, `bio`, `title`, `designation`, `image`, `status`, `password`, `language`, `access_block`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(5, 'Bill Cosby', '0147582596', 'cosby@gmail.com', 3, 'Instructor Ultime', 'Ingénieur Logiciels', 'REACT NEXT LARAVEL ', NULL, 1, '', 'fr', NULL, NULL, '2024-11-27 12:23:44', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -731,13 +756,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('CKKyu705uUkdHgSqRA0cu7n1p6ipNJqfEM84zFmO', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidjBCbXlWbFhGUWZ2eENqcU5Za2RENVBzenJvRzdnZ01iZUdhVjl5VCI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2NvdXJzZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1732556765),
-('iLU74DscJVjuNyn32RKhSIc8Jn2o2rb8ZJSg8Bnt', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoidmlUUDlXQ09GeXJVNEEwY1lUdlBuNW9OWXExT0J2SUkwQmQ4eHFrciI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czoyNzoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3JvbGVzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1732556239),
-('lUuKRDLRPw87eUPA2iF833WK7eZ03xdlr4vtUJiJ', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiamFha2VLS0QzYTRzckRGdktaRmtpaElvb1ZjTk5vOE5NQlE1YnBGdiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvcm9sZXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1732531705),
-('rVm4DwLZM95Ggffnzy9psZ2JcB3a1qIVibT6I7YS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTWU4bGJzOUY3VVozV05oZkIyMVNSSFhrU200c1cxcjAwY0NzSFVRTCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1732538863),
-('sIevXN6J4nK40Ldxrcb2LbQQMYs0aTywUn8AMzfx', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:133.0) Gecko/20100101 Firefox/133.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUjV2MDNFRHNqYmFualR5MGtpbHJ0V1hSdGNYTkpXNmpDWkpTR2FWYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732526785),
-('w7h8wdF9VzLaUWqiwlf4CwwyxJLtdj64aAtKF3ww', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiNVZsZFRnR3VmOEQxTjBOVEtQRTJjblM3SHMzSUJGZHZ5V1pIOTlZYSI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1732527455),
-('YcrWxp3aTorR74F82xNwFGchlLoHRLYsBb3o5i9W', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNDFCVVdjR250Ym1KRUVTYVZVMzFaQWxUQjhXQnVCbVNqZ0NHbVMwZSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1732527275);
+('gh9s9dP0ZefyHLiAoP4GeaWmIFeu4meQWyUGtZcb', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoid2xMMXVCeklYRzBDUzRVbGJva0g4dm9QbFYxamc2Zko1TTZNRjlRUiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9wcm9maWxlIjt9fQ==', 1733231851);
 
 -- --------------------------------------------------------
 
@@ -849,7 +868,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `contact`, `role_id`, `password`, `language`, `image`, `full_access`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `instructor_id`) VALUES
-(1, 'Admin', 'admin@gmail.com', NULL, 4, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'lT3OHHVr1mzEypMx9oGQ3XamFWq9D29CLHipUlLFWQcjPqW4GbiYQNcznrfU', '2024-11-21 13:04:18', '2024-11-21 13:04:18', NULL, NULL);
+(1, 'Admin', 'admin@gmail.com', '+2250769469844', 2, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 13:04:18', '2024-11-21 13:04:18', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1135,13 +1154,13 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT pour la table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `course_categories`
 --
 ALTER TABLE `course_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `discussions`
@@ -1165,7 +1184,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT pour la table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `lessons`
