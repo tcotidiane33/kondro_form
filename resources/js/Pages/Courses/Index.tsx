@@ -10,15 +10,27 @@ interface Course {
   price: number;
   description: string;
   image: string;
-  category: string;
-  instructor: string;
+  category: {
+    id: number;
+    category_name: string;
+  };
+  instructor: {
+    id: number;
+    name: string;
+  };
+}
+
+interface CourseCategory {
+  id: number;
+  category_name: string;
 }
 
 interface IndexProps {
   courses: Course[];
+  categories: CourseCategory[];
 }
 
-const Index: React.FC<IndexProps> = ({ courses }) => {
+const Index: React.FC<IndexProps> = ({ courses, categories }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -27,7 +39,7 @@ const Index: React.FC<IndexProps> = ({ courses }) => {
   }
 
   const filteredCourses = courses.filter(course => {
-    const matchesCategory = selectedCategory === 'all' || course.category.toLowerCase() === selectedCategory.toLowerCase();
+    const matchesCategory = selectedCategory === 'all' || course.category.category_name.toLowerCase() === selectedCategory.toLowerCase();
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          course.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -43,6 +55,7 @@ const Index: React.FC<IndexProps> = ({ courses }) => {
             onCategoryChange={setSelectedCategory}
             onSearchChange={setSearchQuery}
             searchQuery={searchQuery}
+            categories={categories}
           />
         </aside>
 

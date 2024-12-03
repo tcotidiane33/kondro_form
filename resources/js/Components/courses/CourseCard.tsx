@@ -31,7 +31,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <User className="h-4 w-4 text-gray-400 mr-1" />
-            <span className="text-sm text-gray-600">{course.instructor}</span>
+            {/* <span className="text-sm text-gray-600">{course.instructor}</span> */}
           </div>
           <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-colors duration-300">
             Enroll Now
@@ -39,14 +39,14 @@ const CourseCard = ({ course }: CourseCardProps) => {
         </div>
 
         <div className="flex items-center">
-          <img
+         <img
             src={course.instructor_avatar}
             alt={course.instructor}
             className="h-10 w-10 rounded-full object-cover mr-2"
           />
-          <div>
-            <p className="text-sm font-medium text-gray-900">{course.instructor}</p>
-            <p className="text-sm text-gray-500">{course.instructor_bio}</p>
+           <div>
+            {/* <p className="text-sm font-medium text-gray-900">{course.instructor}</p> */}
+            {/* <p className="text-sm text-gray-500">{course.instructor_bio}</p> */}
           </div>
         </div>
       </div>

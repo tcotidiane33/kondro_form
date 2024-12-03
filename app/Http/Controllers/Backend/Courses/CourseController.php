@@ -22,10 +22,13 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::all();
-        return Inertia::render('Courses/Index', [
-            'courses' => $courses
-        ]);
+        $courses = Course::with('courseCategory', 'instructor')->get();
+    $categories = CourseCategory::all();
+
+    return Inertia::render('Courses/Index', [
+        'courses' => $courses,
+        'categories' => $categories,
+    ]);
     }
 
     /**

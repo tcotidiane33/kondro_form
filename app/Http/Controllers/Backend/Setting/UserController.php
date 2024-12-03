@@ -130,4 +130,35 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
+    public function updateProfile(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255',
+        'contact' => 'nullable|string|max:255',
+        'image' => 'nullable|image|max:2048',
+    ]);
+
+    try {
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->contact = $request->contact;
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/users'), $imageName);
+            $user->image = $imageName;
+        }
+
+        if ($user->save()) {
+            return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Failed to update profile');
+        }
+    } catch (Exception $e) {
+        \Log::error($e->getMessage());
+        return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
+    }
+}
 }
