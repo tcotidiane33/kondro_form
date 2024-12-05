@@ -1,22 +1,30 @@
 {
     "compilerOptions": {
-        "allowJs": true,
-        "module": "ESNext",
-        "moduleResolution": "bundler",
-        "jsx": "react-jsx",
-        "strict": true,
-        "isolatedModules": true,
-        "target": "ESNext",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "sourceMap": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
-        "noEmit": true,
-        "paths": {
-            "@/*": ["./resources/js/*"],
-            "ziggy-js": ["./vendor/tightenco/ziggy"]
-        }
+      "allowJs": true,                               // Permet d'utiliser des fichiers JS
+      "module": "ESNext",                            // Spécifie le système de module
+      "moduleResolution": "bundler",                // Résolution des modules pour ESModules
+      "jsx": "react-jsx",                            // Support de JSX pour React
+      "strict": true,                                // Active le mode strict
+      "isolatedModules": true,                      // Chaque fichier est traité comme un module
+      "target": "ESNext",                            // Spécifie la cible JavaScript (moderne)
+      "esModuleInterop": true,                      // Interopérabilité avec les modules CommonJS
+      "forceConsistentCasingInFileNames": true,     // Respect de la casse dans les noms de fichiers
+      "sourceMap": true,                            // Génération des fichiers source map
+      "skipLibCheck": true,                         // Ignore la vérification des types des fichiers .d.ts
+      "baseUrl": ".",                               // Définit la racine pour les chemins relatifs
+      "noEmit": true,                               // Empêche l'émission de fichiers JS lors de la compilation
+      "paths": {
+        "@/*": ["resources/js/*"],                 // Alias pour tous les fichiers JS
+        "@components/*": ["resources/js/components/*"], // Alias pour les composants
+        "@layouts/*": ["resources/js/layouts/*"],       // Alias pour les layouts
+        "@pages/*": ["resources/js/pages/*"],           // Alias pour les pages
+        "ziggy-js": ["./vendor/tightenco/ziggy"]        // Alias pour Ziggy
+      }
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts", "react-slick.d.ts"]
-}
+    "include": [
+      "resources/js/**/*.ts",                     // Inclut tous les fichiers TypeScript
+      "resources/js/**/*.tsx",                    // Inclut tous les fichiers TypeScript React
+      "resources/js/**/*.d.ts",                   // Inclut les fichiers de déclaration TypeScript
+      "react-slick.d.ts"                          // Inclut une déclaration personnalisée pour react-slick
+    ]
+  }

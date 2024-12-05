@@ -13,18 +13,22 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans], // Police principale
             },
             colors: {
-                'gray-900': '#1a202c',
-                'gray-800': '#2d3748',
-                'gray-700': '#4a5568',
-                'blue-400': '#63b3ed',
-                'blue-300': '#90cdf4',
-                'green-500': '#48bb78',
+                // Palette de couleurs inspirée par INE
+                'ine-blue': '#003b6f', // Couleur principale d'INE
+                'ine-light-blue': '#0074d9', // Bleu clair
+                'ine-dark-blue': '#001f3f', // Bleu foncé
+                'ine-gray': '#e0e1e2', // Gris neutre
+                'ine-green': '#2ecc71', // Vert d'accent
+                'ine-orange': '#ff851b', // Orange pour des alertes ou boutons
             },
             backgroundImage: {
-                'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
+                // Dégradé inspiré de la charte graphique d'INE
+                'gradient-ine': 'linear-gradient(to right, #003b6f, #0074d9, #2ecc71)', // Dégradé bleu-vert
+                'gradient-ine-light': 'linear-gradient(to right, #0074d9, #ff851b)', // Dégradé bleu-orange
+                'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))', // Dégradé par défaut
             },
         },
     },

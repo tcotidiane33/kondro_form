@@ -86,7 +86,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
     Route::get('/admin/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Routes pour la gestion des utilisateurs
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
@@ -97,12 +97,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
     // Routes pour la gestion des cours
-    Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
-    Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
-    Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
-    Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
-    Route::put('/courses/{id}', [CourseController::class, 'update'])->name('admin.courses.update');
-    Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+    // Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
+    // Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
+    // Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
+    // Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+    // Route::put('/courses/{id}', [CourseController::class, 'update'])->name('admin.courses.update');
+    // Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
 
     // Routes pour la gestion des leçons
     Route::get('/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');

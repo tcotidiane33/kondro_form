@@ -4,6 +4,8 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
+import { FaUserShield } from 'react-icons/fa';
+import { Book, Monitor, Clock, Award } from 'react-feather'; // Assurez-vous d'importer les icônes nécessaires
 
 export default function Authenticated({
     header,
@@ -32,6 +34,55 @@ export default function Authenticated({
                                     active={route().current('dashboard')}
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink
+                                    href={route('roles.index')}
+                                    active={route().current('roles.index')}
+                                >
+                                    <FaUserShield className="inline-block text-2xl text-[#FF2D20]" />
+                                    Roles and Permissions
+                                </NavLink>
+                                <NavLink
+                                    href={route('courses.index')}
+                                    active={route().current('courses.index')}
+                                >
+                                    <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                    Courses
+                                </NavLink>
+                                <NavLink
+                                    href={route('course-categories.index')}
+                                    active={route().current('course-categories.index')}
+                                >
+                                    <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                    Category Courses
+                                </NavLink>
+                                <NavLink
+                                    href="#send-notification"
+                                    active={route().current('send-notification')}
+                                >
+                                    <Monitor className="inline-block text-2xl text-[#FF2D20]" />
+                                    Send Notification
+                                </NavLink>
+                                <NavLink
+                                    href="#send-quiz-result"
+                                    active={route().current('send-quiz-result')}
+                                >
+                                    <Clock className="inline-block text-2xl text-[#FF2D20]" />
+                                    Send Quiz Result
+                                </NavLink>
+                                <NavLink
+                                    href="#request-certificate"
+                                    active={route().current('request-certificate')}
+                                >
+                                    <Award className="inline-block text-2xl text-[#FF2D20]" />
+                                    Request Certificate
+                                </NavLink>
+                                <NavLink
+                                    href="#send-data-update"
+                                    active={route().current('send-data-update')}
+                                >
+                                    <Monitor className="inline-block text-2xl text-[#FF2D20]" /> {/* Remplacez 'Laptop' par 'Monitor' */}
+                                    Send Data Update
                                 </NavLink>
                             </div>
                         </div>
