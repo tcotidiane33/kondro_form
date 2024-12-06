@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-import { useForm } from '@inertiajs/react';
+import React from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { PageProps } from '@/types';
+import { Head } from '@inertiajs/react';
 
 interface ProfileProps {
-    student_info: {
+    student: {
         id: number;
         name: string;
         email: string;
@@ -13,159 +14,110 @@ interface ProfileProps {
         bio?: string;
         profession?: string;
         nationality?: string;
+        address?: string;
+        city?: string;
+        state?: string;
+        postcode?: string;
+        country?: string;
         image?: string;
     };
-    enrollment: {
+    enrollments: {
         id: number;
         course: {
             title: string;
         };
     }[];
+    courses: {
+        id: number;
+        title: string;
+    }[];
+    checkout: {
+        id: number;
+        course: {
+            title: string;
+        };
+        amount: number;
+        status: string;
+    }[];
 }
 
-const Profile: React.FC<ProfileProps> = ({ student_info, enrollment }) => {
-    const { data, setData, post, errors } = useForm({
-        fullName: student_info.name || '',
-        contactNumber: student_info.contact || '',
-        emailAddress: student_info.email || '',
-        dob: student_info.date_of_birth || '',
-        gender: student_info.gender || '',
-        bio: student_info.bio || '',
-        profession: student_info.profession || '',
-        nationality: student_info.nationality || '',
-        image: null as File | null,
-    });
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post('/students/profile/save_profile');
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files && files[0]) {
-            setData('image', files[0]);
-        }
-    };
-
+const Profile: React.FC<ProfileProps> = ({ student, enrollments, courses, checkout }) => {
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Profil de l'étudiant</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Nom complet</label>
-                    <input
-                        id="fullName"
-                        type="text"
-                        value={data.fullName}
-                        onChange={(e) => setData('fullName', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.fullName && <div className="text-red-500 text-sm mt-2">{errors.fullName}</div>}
+        <AuthenticatedLayout
+            header={
+                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                    Profil de l'étudiant
+                </h2>
+            }
+        >
+            <Head title="Profil de l'étudiant" />
+
+            <div className="py-12">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 bg-white border-b border-gray-200">
+                            <div className="flex items-center space-x-4">
+                                {student.image && (
+                                    <img src={`/storage/${student.image}`} alt="Profile" className="w-32 h-32 rounded-full" />
+                                )}
+                                <div>
+                                    <h3 className="text-lg font-medium text-gray-900">{student.name}</h3>
+                                    <p className="text-sm text-gray-600">{student.email}</p>
+                                    <p className="text-sm text-gray-600">{student.contact}</p>
+                                </div>
+                            </div>
+                            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 className="text-md font-semibold text-gray-800">Informations personnelles</h4>
+                                    <p><strong>Date de naissance:</strong> {student.date_of_birth}</p>
+                                    <p><strong>Genre:</strong> {student.gender}</p>
+                                    <p><strong>Nationalité:</strong> {student.nationality}</p>
+                                    <p><strong>Adresse:</strong> {student.address}</p>
+                                    <p><strong>Ville:</strong> {student.city}</p>
+                                    <p><strong>État:</strong> {student.state}</p>
+                                    <p><strong>Code postal:</strong> {student.postcode}</p>
+                                    <p><strong>Pays:</strong> {student.country}</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-md font-semibold text-gray-800">Informations professionnelles</h4>
+                                    <p><strong>Profession:</strong> {student.profession}</p>
+                                    <p><strong>Bio:</strong> {student.bio}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-8">
+                        <h3 className="text-lg font-medium text-gray-900">Cours inscrits</h3>
+                        <ul className="list-disc list-inside">
+                            {enrollments.map((enroll) => (
+                                <li key={enroll.id}>{enroll.course.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="mt-8">
+                        <h3 className="text-lg font-medium text-gray-900">Tous les cours</h3>
+                        <ul className="list-disc list-inside">
+                            {courses.map((course) => (
+                                <li key={course.id}>{course.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div className="mt-8">
+                        <h3 className="text-lg font-medium text-gray-900">Historique des paiements</h3>
+                        <ul className="list-disc list-inside">
+                            {checkout.map((payment) => (
+                                <li key={payment.id}>
+                                    {payment.course.title} - {payment.amount} - {payment.status}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-700">Numéro de contact</label>
-                    <input
-                        id="contactNumber"
-                        type="text"
-                        value={data.contactNumber}
-                        onChange={(e) => setData('contactNumber', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.contactNumber && <div className="text-red-500 text-sm mt-2">{errors.contactNumber}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700">Adresse email</label>
-                    <input
-                        id="emailAddress"
-                        type="email"
-                        value={data.emailAddress}
-                        onChange={(e) => setData('emailAddress', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.emailAddress && <div className="text-red-500 text-sm mt-2">{errors.emailAddress}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date de naissance</label>
-                    <input
-                        id="dob"
-                        type="date"
-                        value={data.dob}
-                        onChange={(e) => setData('dob', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.dob && <div className="text-red-500 text-sm mt-2">{errors.dob}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Genre</label>
-                    <select
-                        id="gender"
-                        value={data.gender}
-                        onChange={(e) => setData('gender', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    >
-                        <option value="">Sélectionnez un genre</option>
-                        <option value="male">Homme</option>
-                        <option value="female">Femme</option>
-                        <option value="other">Autre</option>
-                    </select>
-                    {errors.gender && <div className="text-red-500 text-sm mt-2">{errors.gender}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="bio" className="block text-sm font-medium text-gray-700">Biographie</label>
-                    <textarea
-                        id="bio"
-                        value={data.bio}
-                        onChange={(e) => setData('bio', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.bio && <div className="text-red-500 text-sm mt-2">{errors.bio}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="profession" className="block text-sm font-medium text-gray-700">Profession</label>
-                    <input
-                        id="profession"
-                        type="text"
-                        value={data.profession}
-                        onChange={(e) => setData('profession', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.profession && <div className="text-red-500 text-sm mt-2">{errors.profession}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="nationality" className="block text-sm font-medium text-gray-700">Nationalité</label>
-                    <input
-                        id="nationality"
-                        type="text"
-                        value={data.nationality}
-                        onChange={(e) => setData('nationality', e.target.value)}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.nationality && <div className="text-red-500 text-sm mt-2">{errors.nationality}</div>}
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image de profil</label>
-                    <input
-                        id="image"
-                        type="file"
-                        onChange={handleFileChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                    />
-                    {errors.image && <div className="text-red-500 text-sm mt-2">{errors.image}</div>}
-                </div>
-                <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
-                    Enregistrer
-                </button>
-            </form>
-            <div className="mt-8">
-                <h2 className="text-xl font-bold mb-4">Cours inscrits</h2>
-                <ul>
-                    {enrollment.map((enroll) => (
-                        <li key={enroll.id}>{enroll.course.title}</li>
-                    ))}
-                </ul>
             </div>
-        </div>
+        </AuthenticatedLayout>
     );
 };
 

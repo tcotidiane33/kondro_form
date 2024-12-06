@@ -3,65 +3,119 @@
 namespace App\Http\Controllers\Students;
 
 use Exception;
+use Inertia\Inertia;
 use App\Models\Student;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
+    /**
+     * Afficher le profil de l'étudiant.
+     */
     public function index()
     {
-        $student_info = Student::find(currentUserId());
-        $enrollment = Enrollment::where('student_id', currentUserId())->get();
+        $student = Auth::user();
+        $enrollments = Enrollment::where('student_id', $student->id)->get();
         return Inertia::render('Students/Profile', [
-            'student_info' => $student_info,
-            'enrollment' => $enrollment,
+            'student' => $student,
+            'enrollments' => $enrollments,
         ]);
     }
 
-    public function save_profile(Request $request)
+    /**
+     * Mettre à jour le profil de l'étudiant.
+     */
+    public function save_profile(ProfileUpdateRequest $request)
+    {
+        try {
+            $user = Auth::user();
+            $student = Student::where('email', $user->email)->first();
+            $student->fill([
+                'name' => $request->fullName,
+                'contact' => $request->contactNumber,
+                'email' => $request->emailAddress,
+                'date_of_birth' => $request->dob,
+                'gender' => $request->gender,
+                'bio' => $request->bio,
+                'profession' => $request->profession,
+                'nationality' => $request->nationality,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'postcode' => $request->postcode,
+                'country' => $request->country,
+            ]);
+
+            if ($request->hasFile('image')) {
+                // Supprimer l'ancienne image si elle existe
+                if ($student->image) {
+                    Storage::disk('public')->delete($student->image);
+                }
+
+                // Enregistrer la nouvelle image
+                $imagePath = $request->file('image')->store('images', 'public');
+                $student->image = $imagePath;
+            }
+
+            $student->save();
+
+            return redirect()->back()->with('success', 'Profile updated successfully');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
+    }
+    public function edit()
+    {
+        $user = Auth::user();
+        $student = Student::where('email', $user->email)->first();
+        return Inertia::render('Students/EditProfile', [
+            'student' => $student,
+        ]);
+    }
+    /**
+     * Changer l'image de profil de l'étudiant.
+     */
+    public function changeImage(Request $request)
     {
         $request->validate([
-            'fullName' => 'required|string|max:255',
-            'contactNumber' => 'nullable|string|max:255',
-            'emailAddress' => 'required|string|email|max:255',
-            'dob' => 'nullable|date',
-            'gender' => 'nullable|string|max:255',
-            'bio' => 'nullable|string',
-            'profession' => 'nullable|string|max:255',
-            'nationality' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'required|image|max:2048',
         ]);
 
         try {
-            $data = Student::find(currentUserId());
-            $data->name = $request->fullName;
-            $data->contact = $request->contactNumber;
-            $data->email = $request->emailAddress;
-            $data->date_of_birth = $request->dob;
-            $data->gender = $request->gender;
-            $data->bio = $request->bio;
-            $data->profession = $request->profession;
-            $data->nationality = $request->nationality;
-            $data->language = 'fr';
+            $student = Auth::user();
 
             if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/students'), $imageName);
-                $data->image = $imageName;
-            }
-            if ($data->save()) {
-                $this->setSession($data);
-                return redirect()->back()->with('success', 'Your Changes Have been Saved');
+                // Supprimer l'ancienne image si elle existe
+                if ($student->image) {
+                    Storage::disk('public')->delete($student->image);
+                }
+
+                // Enregistrer la nouvelle image
+                $imagePath = $request->file('image')->store('images', 'public');
+                $student->image = $imagePath;
+
+                if ($student->save()) {
+                    return redirect()->back()->with('success', 'Profile image updated successfully');
+                } else {
+                    return redirect()->back()->with('error', 'Failed to update profile image');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Please select a valid image file');
             }
         } catch (Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again');
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
+    /**
+     * Changer le mot de passe de l'étudiant.
+     */
     public function change_password(Request $request)
     {
         $request->validate([
@@ -70,55 +124,23 @@ class ProfileController extends Controller
         ]);
 
         try {
-            $data = Student::find(currentUserId());
+            $student = Auth::user();
 
-            // Validate current password
-            if (!Hash::check($request->current_password, $data->password)) {
-                return redirect()->back()->with('error', 'Current password is incorrect.');
+            // Valider le mot de passe actuel
+            if (!Hash::check($request->current_password, $student->password)) {
+                return redirect()->back()->with('error', 'Current password is incorrect');
             }
-            // Proceed with password change
-            $data->password = Hash::make($request->password);
-            $data->language = 'en';
 
-            if ($data->save()) {
-                $this->setSession($data);
-                return redirect()->back()->with('success', 'Password Have been Changed');
-            }
-        } catch (Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again');
-        }
-    }
+            // Mettre à jour le mot de passe
+            $student->password = Hash::make($request->password);
 
-    public function setSession($student)
-    {
-        return request()->session()->put(
-            [
-                'userId' => encryptor('encrypt', $student->id),
-                'userName' => encryptor('encrypt', $student->name),
-                'emailAddress' => encryptor('encrypt', $student->email),
-                'studentLogin' => 1,
-                'image' => $student->image ?? 'No Image Found'
-            ]
-        );
-    }
-
-    public function changeImage(Request $request)
-    {
-        try {
-            $user = Student::find(currentUserId());
-
-            if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/students'), $imageName);
-                $user->image = $imageName;
-                $user->save();
-
-                return redirect()->back()->with('success', 'Image changed successfully.');
+            if ($student->save()) {
+                return redirect()->back()->with('success', 'Password changed successfully');
             } else {
-                return redirect()->back()->with('error', 'Please select a valid image file.');
+                return redirect()->back()->with('error', 'Failed to change password');
             }
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred. Please try again.');
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 }

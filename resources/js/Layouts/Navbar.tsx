@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import LogoMini from '@/Components/svg/LogoMini';
 import { BookOpen, Search, User, Menu, X } from 'lucide-react';
 
-const Navbar = ({ auth }) => {
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const { auth } = usePage().props;
+    const user = auth.user;
+
+    const getDashboardRoute = () => {
+        if (user.role === 'Admin') {
+            return route('admin.dashboard');
+        } else if (user.role === 'Instructor') {
+            return route('instructor.dashboard');
+        } else {
+            return route('student.dashboard');
+        }
+    };
 
     return (
         <header className="bg-gradient-to-r from-white/50 to-gray-500/50 dark:bg-white pb-1 text-black/80">
@@ -46,7 +59,7 @@ const Navbar = ({ auth }) => {
                                         Contact
                                     </Link>
                                 </div>
-                                <Link href={route('dashboard')} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                                <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                                     <BookOpen className="h-6 w-6 text-indigo-600" />
                                     <span>Dashboard</span>
                                 </Link>
@@ -117,10 +130,10 @@ const Navbar = ({ auth }) => {
                             <Link href="/contact" className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                                 Contact
                             </Link>
-                            <Link href={route('dashboard')} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
-                                    <BookOpen className="h-6 w-6 text-indigo-600" />
-                                    <span>Dashboard</span>
-                                </Link>
+                            <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                                <BookOpen className="h-6 w-6 text-indigo-600" />
+                                <span>Dashboard</span>
+                            </Link>
                         </div>
                     </div>
                 )}

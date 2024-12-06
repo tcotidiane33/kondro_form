@@ -11,7 +11,9 @@ class Student extends Model
 
     protected $fillable = [
         'name', 'contact', 'email', 'role_id', 'date_of_birth',
-        'gender', 'status', 'password', 'language', 'access_block'
+        'gender', 'image', 'bio', 'profession', 'nationality',
+        'address', 'city', 'state', 'postcode', 'country',
+        'status', 'password', 'language', 'access_block'
     ];
 
     public function role()
@@ -29,9 +31,8 @@ class Student extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function enrollemnt()
+    public function enrollment()
     {
         return $this->hasMany(Enrollment::class);
     }
-
 }

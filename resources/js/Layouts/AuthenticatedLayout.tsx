@@ -11,10 +11,21 @@ export default function Authenticated({
     header,
     children,
 }: PropsWithChildren<{ header?: ReactNode }>) {
-    const user = usePage().props.auth.user;
+    const { auth } = usePage().props;
+    const user = auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const getProfileEditRoute = () => {
+        if (user.role === 'Admin') {
+            return route('admin.profile.edit');
+        } else if (user.role === 'Instructor') {
+            return route('instructor.profile.edit');
+        } else {
+            return route('student.profile.edit');
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -116,7 +127,7 @@ export default function Authenticated({
 
                                     <Dropdown.Content>
                                         <Dropdown.Link
-                                            href={route('profile.edit')}
+                                            href={getProfileEditRoute()}
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -201,7 +212,7 @@ export default function Authenticated({
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>
+                            <ResponsiveNavLink href={getProfileEditRoute()}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
