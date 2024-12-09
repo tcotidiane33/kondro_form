@@ -40,61 +40,86 @@ export default function Authenticated({
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                                <NavLink
-                                    href={route('roles.index')}
-                                    active={route().current('roles.index')}
-                                >
-                                    <FaUserShield className="inline-block text-2xl text-[#FF2D20]" />
-                                    Roles and Permissions
-                                </NavLink>
-                                <NavLink
-                                    href={route('courses.index')}
-                                    active={route().current('courses.index')}
-                                >
-                                    <Book className="inline-block text-2xl text-[#FF2D20]" />
-                                    Courses
-                                </NavLink>
-                                <NavLink
-                                    href={route('course-categories.index')}
-                                    active={route().current('course-categories.index')}
-                                >
-                                    <Book className="inline-block text-2xl text-[#FF2D20]" />
-                                    Category Courses
-                                </NavLink>
-                                <NavLink
-                                    href="#send-notification"
-                                    active={route().current('send-notification')}
-                                >
-                                    <Monitor className="inline-block text-2xl text-[#FF2D20]" />
-                                    Send Notification
-                                </NavLink>
-                                <NavLink
-                                    href="#send-quiz-result"
-                                    active={route().current('send-quiz-result')}
-                                >
-                                    <Clock className="inline-block text-2xl text-[#FF2D20]" />
-                                    Send Quiz Result
-                                </NavLink>
-                                <NavLink
-                                    href="#request-certificate"
-                                    active={route().current('request-certificate')}
-                                >
-                                    <Award className="inline-block text-2xl text-[#FF2D20]" />
-                                    Request Certificate
-                                </NavLink>
-                                <NavLink
-                                    href="#send-data-update"
-                                    active={route().current('send-data-update')}
-                                >
-                                    <Monitor className="inline-block text-2xl text-[#FF2D20]" /> {/* Remplacez 'Laptop' par 'Monitor' */}
-                                    Send Data Update
-                                </NavLink>
+
+                                {auth.user.role === 'Admin' && (
+                                    <div>
+                                        <NavLink href={route('dashboard.admin')} active={route().current('dashboard')}>
+                                            Dashboard
+                                        </NavLink>
+                                        <NavLink href={route('roles.index')} active={route().current('roles.index')}>
+                                            <FaUserShield className="inline-block text-2xl text-[#FF2D20]" />
+                                            Roles and Permissions
+                                        </NavLink>
+                                        <NavLink href={route('courses.index')} active={route().current('courses.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Courses
+                                        </NavLink>
+                                        <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Category Courses
+                                        </NavLink>
+                                        <NavLink href="#send-notification" active={route().current('send-notification')}>
+                                            <Monitor className="inline-block text-2xl text-[#FF2D20]" />
+                                            Send Notification
+                                        </NavLink>
+                                        <NavLink href="#send-quiz-result" active={route().current('send-quiz-result')}>
+                                            <Clock className="inline-block text-2xl text-[#FF2D20]" />
+                                            Send Quiz Result
+                                        </NavLink>
+                                        <NavLink href="#request-certificate" active={route().current('request-certificate')}>
+                                            <Award className="inline-block text-2xl text-[#FF2D20]" />
+                                            Request Certificate
+                                        </NavLink>
+                                        <NavLink href="#send-data-update" active={route().current('send-data-update')}>
+                                            <Monitor className="inline-block text-2xl text-[#FF2D20]" />
+                                            Send Data Update
+                                        </NavLink>
+                                    </div>
+                                )}
+
+                                {auth.user.role === 'Instructor' && (
+                                    <div>
+                                        <NavLink href={route('dashboard.instructor')} active={route().current('dashboard')}>
+                                            Dashboard
+                                        </NavLink>
+                                        <NavLink href={route('courses.index')} active={route().current('courses.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Courses
+                                        </NavLink>
+                                        <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Category Courses
+                                        </NavLink>
+                                        <NavLink href="#send-quiz-result" active={route().current('send-quiz-result')}>
+                                            <Clock className="inline-block text-2xl text-[#FF2D20]" />
+                                            Send Quiz Result
+                                        </NavLink>
+                                        <NavLink href="#request-certificate" active={route().current('request-certificate')}>
+                                            <Award className="inline-block text-2xl text-[#FF2D20]" />
+                                            Request Certificate
+                                        </NavLink>
+                                    </div>
+                                )}
+
+                                {auth.user.role === 'Student' && (
+                                    <div>
+                                        <NavLink href={route('dashboard.student')} active={route().current('dashboard')}>
+                                            Dashboard
+                                        </NavLink>
+                                        <NavLink href={route('courses.index')} active={route().current('courses.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Courses
+                                        </NavLink>
+                                        <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
+                                            <Book className="inline-block text-2xl text-[#FF2D20]" />
+                                            Category Courses
+                                        </NavLink>
+                                        <NavLink href="#request-certificate" active={route().current('request-certificate')}>
+                                            <Award className="inline-block text-2xl text-[#FF2D20]" />
+                                            Request Certificate
+                                        </NavLink>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

@@ -36,12 +36,13 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $role_id = $request->role === 'instructor' ? 2 : 3; // 2 pour Instructor, 3 pour Student
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => 4, // Fournir une valeur pour 'role_id'
-            'instructor_id' => $request->instructor_id ?? null, // Fournir une valeur pour 'instructor_id'
+            'role_id' => $role_id,
         ]);
 
         event(new Registered($user));

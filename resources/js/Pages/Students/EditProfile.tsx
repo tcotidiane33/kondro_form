@@ -4,6 +4,29 @@ import { PageProps } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
 export default function EditProfile({ student }: PageProps<{ student: any }>) {
+    if (!student) {
+        return (
+            <AuthenticatedLayout
+                header={
+                    <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                        Modifier le profil de l'étudiant
+                    </h2>
+                }
+            >
+                <Head title="Modifier le profil de l'étudiant" />
+                <div className="py-12">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 bg-white border-b border-gray-200">
+                                <p>Les informations de l'étudiant ne sont pas disponibles.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </AuthenticatedLayout>
+        );
+    }
+
     const { data, setData, post, errors } = useForm({
         fullName: student.name || '',
         contactNumber: student.contact || '',
@@ -91,6 +114,7 @@ export default function EditProfile({ student }: PageProps<{ student: any }>) {
                                             value={data.gender}
                                             onChange={(e) => setData('gender', e.target.value)}
                                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                                            title="Sélectionnez votre genre"
                                         >
                                             <option value="">Sélectionnez votre genre</option>
                                             <option value="homme">Homme</option>
@@ -189,8 +213,13 @@ export default function EditProfile({ student }: PageProps<{ student: any }>) {
                                         <label className="block text-sm font-medium text-gray-700">Image de profil</label>
                                         <input
                                             type="file"
-                                            onChange={(e) => setData('image', e.target.files[0])}
+                                            onChange={(e) => {
+                                                if (e.target.files && e.target.files[0]) {
+                                                    setData('image', e.target.files[0]);
+                                                }
+                                            }}
                                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                                            title="Sélectionnez une image de profil"
                                         />
                                         {errors.image && <div className="text-red-500 text-sm mt-2">{errors.image}</div>}
                                     </div>

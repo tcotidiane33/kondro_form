@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\Courses\CourseController;
 use App\Http\Controllers\Backend\Quizzes\AnswerController;
 use App\Http\Controllers\Backend\Courses\MaterialController;
 use App\Http\Controllers\Backend\Quizzes\QuestionController;
+use App\Http\Controllers\Backend\Students\StudentController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
 
@@ -55,10 +56,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
     Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+      Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+    Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+    Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
 
     Route::get('/student/profile', [App\Http\Controllers\Students\ProfileController::class, 'index'])->name('student.profile');
     Route::get('/student/profile/edit', [App\Http\Controllers\Students\ProfileController::class, 'edit'])->name('student.profile.edit');
-    Route::post('/student/profile/update', [App\Http\Controllers\Students\ProfileController::class, 'save_profile'])->name('student.profile.update');
+    Route::post('/student/profile/update', [App\Http\Controllers\Students\ProfileController::class, 'update'])->name('student.profile.update');
+    // Route::post('/student/profile/update', [App\Http\Controllers\Students\ProfileController::class, 'save_profile'])->name('student.profile.update');
     Route::post('/student/profile/change-image', [App\Http\Controllers\Students\ProfileController::class, 'changeImage'])->name('student.profile.changeImage');
     Route::get('/student/courses', [CourseController::class, 'index'])->name('student.courses');
     Route::get('/student/courses/{id}', [CourseController::class, 'show'])->name('student.courses.show');

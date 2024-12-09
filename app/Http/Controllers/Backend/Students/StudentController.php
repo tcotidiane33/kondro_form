@@ -11,6 +11,8 @@ use App\Models\Role;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 use File;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -19,8 +21,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data = Student::paginate();
-        return view('backend.student.index', compact('data'));
+        $students = Student::paginate();
+        return Inertia::render('Students/StudentIndex', [
+            'students' => $students,
+        ]);
     }
 
     /**
@@ -29,7 +33,10 @@ class StudentController extends Controller
     public function create()
     {
         $role = Role::get();
-        return view('backend.student.create', compact('role'));
+        return Inertia::render('Students/StudentCreate', [
+            'role' => $role,
+        ]);
+        // return view('backend.student.create', compact('role'));
     }
 
     /**
@@ -40,8 +47,8 @@ class StudentController extends Controller
         \Log::info('Validated data:', $request->validated());
         try {
             $student = new Student();
-            $student->name_en = $request->fullName_en;
-            $student->contact_en = $request->contactNumber_en;
+            $student->name = $request->fullName;
+            $student->contact = $request->contactNumber;
             $student->email = $request->emailAddress;
             $student->role_id = $request->roleId;
             $student->date_of_birth = $request->birthDate;
@@ -89,7 +96,11 @@ class StudentController extends Controller
         $role = Role::get();
         $student = Student::findOrFail(encryptor('decrypt', $id));
 
-        return view('backend.student.edit', compact('role', 'student'));
+        return Inertia::render('Students/StudentEdit', [
+            'role' => $role,
+            'student' => $student,
+        ]);
+        // return view('backend.student.edit', compact('role', 'student'));
     }
 
     /**
@@ -100,8 +111,8 @@ class StudentController extends Controller
         try {
 
             $student = Student::findOrFail(encryptor('decrypt', $id));
-            $student->name_en = $request->fullName_en;
-            $student->contact_en = $request->contactNumber_en;
+            $student->name = $request->fullName;
+            $student->contact = $request->contactNumber;
             $student->email = $request->emailAddress;
             $student->role_id = $request->roleId;
             $student->date_of_birth = $request->birthDate;

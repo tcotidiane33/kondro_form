@@ -72,11 +72,54 @@ class ProfileController extends Controller
     }
     public function edit()
     {
-        $user = Auth::user();
-        $student = Student::where('email', $user->email)->first();
+        // $user = Auth::user();
+        $student = Auth::user();
+        // $student = Student::where('email', $user->email)->first();
         return Inertia::render('Students/EditProfile', [
             'student' => $student,
         ]);
+    }
+
+    /**
+     * Mettre à jour le profil de l'étudiant.
+     */
+    public function update(ProfileUpdateRequest $request)
+    {
+        try {
+            $student = Auth::user();
+            $student->fill([
+                'name' => $request->fullName,
+                'contact' => $request->contactNumber,
+                'email' => $request->emailAddress,
+                'date_of_birth' => $request->dob,
+                'gender' => $request->gender,
+                'bio' => $request->bio,
+                'profession' => $request->profession,
+                'nationality' => $request->nationality,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'postcode' => $request->postcode,
+                'country' => $request->country,
+            ]);
+
+            if ($request->hasFile('image')) {
+                // Supprimer l'ancienne image si elle existe
+                if ($student->image) {
+                    Storage::disk('public')->delete($student->image);
+                }
+
+                // Enregistrer la nouvelle image
+                $imagePath = $request->file('image')->store('images', 'public');
+                $student->image = $imagePath;
+            }
+
+            $student->save();
+
+            return redirect()->route('student.profile')->with('success', 'Profil mis à jour avec succès');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue: ' . $e->getMessage());
+        }
     }
     /**
      * Changer l'image de profil de l'étudiant.
