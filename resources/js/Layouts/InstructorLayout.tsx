@@ -18,7 +18,7 @@ export default function InstructorLayout({
     const getProfileEditRoute = () => route('instructor.profile.edit');
 
     return (
-        <div className="min-h-screen bg-purple-100">
+        <div className="min-h-screen bg-purple-100 p-6">
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">

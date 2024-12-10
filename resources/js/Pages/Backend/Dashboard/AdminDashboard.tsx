@@ -19,7 +19,11 @@ interface AdminDashboardProps {
     monthlyRevenue: Record<string, number>;
 }
 
-const AdminDashboard: React.FC<PageProps<AdminDashboardProps>> = ({ props }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = (props) => {
+    if (!props) {
+        return <div>Loading...</div>;
+    }
+
     const {
         totalStudents,
         totalInstructors,

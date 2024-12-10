@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Setting;
+namespace App\Http\Controllers\Authentication;
 
-use Exception;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,97 +10,54 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Authentication\SignInRequest;
 use App\Http\Requests\Authentication\SignUpRequest;
+use Inertia\Inertia;
 
 class AuthenticationController extends Controller
 {
-    public function signUpForm()
+    public function showSignInForm()
     {
-        return view('backend.Authentication.register');
+        return Inertia::render('Auth/SignIn');
     }
 
-    public function signUpStore(SignUpRequest $request)
+    public function signIn(SignInRequest $request)
     {
-        try {
-            $user = new User;
-            $user->name_en = $request->name;
-            $user->contact_en = $request->contact_en;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->role_id = 4;
-            // dd($request->all()); 
-            if ($user->save())
-                return redirect('login')->with('success', 'Successfully Registered');
-            else
-                return redirect('login')->with('danger', 'Please Try Again');
-        } catch (Exception $e) {
-            dd($e);
-            return redirect('login')->with('danger', 'Please Try Again');
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
         }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
-    public function signInForm()
+    public function showSignUpForm()
     {
-        return view('backend.Authentication.login');
+        return Inertia::render('Auth/SignUp');
     }
 
-    public function signInCheck(SignInRequest $request)
-{
-    try {
-        $user = User::where(function($query) use ($request) {
-            $query->where('contact_en', $request->username)
-                  ->orWhere('email', $request->username);
-        })->with('role')->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return redirect()->route('login')->with('error', 'Invalid credentials');
-        }
-
-        if ($user->status != 1) {
-            return redirect()->route('login')->with('error', 'Account is inactive');
-        }
+    public function signUp(SignUpRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
         Auth::login($user);
-        $this->setSession($user);
-        return redirect()->route('dashboard')->with('success', 'Successfully Logged In');
 
-    } catch (Exception $e) {
-        \Log::error('Login error: ' . $e->getMessage());
-        return redirect()->route('login')->with('error', 'An error occurred. Please try again.');
-    }
-}
-
-public function setSession($user)
-{
-    $sessionData = [
-        'userId' => encryptor('encrypt', $user->id),
-        'userName' => encryptor('encrypt', $user->name_en),
-        'emailAddress' => encryptor('encrypt', $user->email),
-        'role_id' => encryptor('encrypt', $user->role_id),
-        'accessType' => encryptor('encrypt', $user->full_access),
-        'language' => encryptor('encrypt', $user->language),
-        'image' => $user->image ?? 'No Image Found',
-    ];
-
-    if ($user->role) {
-        $sessionData['role'] = encryptor('encrypt', $user->role->name);
-        $sessionData['roleIdentitiy'] = encryptor('encrypt', $user->role->identity);
+        return redirect()->route('dashboard');
     }
 
-    if ($user->instructor) {
-        $sessionData['instructorImage'] = $user->instructor->image ?? 'No instructorImage Found';
-    }
-
-    session($sessionData);
-}
-
-    public function signOut()
+    public function signOut(Request $request)
     {
-        request()->session()->flush();
-        return redirect('login')->with('danger', 'Succesfully Logged Out');
-    }
+        Auth::logout();
 
-    public function show(User $data)
-    {
-        return view('backend.user.userProfile', compact('data'));
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

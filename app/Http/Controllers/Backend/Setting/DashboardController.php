@@ -22,6 +22,8 @@ class DashboardController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
+
+
         $user = Auth::user();
 
         // Données communes à tous les tableaux de bord
@@ -62,7 +64,7 @@ class DashboardController extends Controller
             'monthlyRevenue'
         );
 
-        if (fullAccess()) {
+        if ($user->role->identity === 'admin' && $user->full_access == 1) {
             return Inertia::render('Backend/Dashboard/AdminDashboard', $data);
         } elseif ($user->role->identity === 'instructor') {
             // Ajouter des données spécifiques pour les instructeurs si nécessaire

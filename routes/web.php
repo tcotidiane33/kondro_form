@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\Quizzes\AnswerController;
 use App\Http\Controllers\Backend\Courses\MaterialController;
 use App\Http\Controllers\Backend\Quizzes\QuestionController;
 use App\Http\Controllers\Backend\Students\StudentController;
+use App\Http\Controllers\Backend\Setting\DashboardController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
 
@@ -173,7 +174,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
     Route::get('/admin/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
     Route::get('/admin/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
