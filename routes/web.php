@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Students\AuthController;
-use App\Http\Controllers\Students\DashboardController;
+// use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Backend\Quizzes\QuizController;
 use App\Http\Controllers\Backend\Setting\RoleController;
 use App\Http\Controllers\Backend\Setting\UserController;
@@ -55,8 +55,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
-    Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
-      Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+// Pour les étudiants
+    Route::get('/student/dashboard', function () {
+        return Inertia::render('Backend/Dashboard/Dashboard', [
+            'totalStudents' => \App\Models\Student::count(),
+            'totalInstructors' => \App\Models\Instructor::count(),
+            'totalCourses' => \App\Models\Course::count(),
+            'totalLessons' => \App\Models\Lesson::count(),
+            'totalEnrollments' => \App\Models\Enrollment::count(),
+            'totalRevenue' => \App\Models\Payment::sum('amount'),
+            'lastMonthStudents' => \App\Models\Student::where('created_at', '>=', now()->subDays(30))->count(),
+            'lastMonthCourses' => \App\Models\Course::where('created_at', '>=', now()->subDays(30))->count(),
+            'lastMonthRevenue' => \App\Models\Payment::where('created_at', '>=', now()->subDays(30))->sum('amount'),
+            'recentStudents' => \App\Models\Student::orderBy('created_at', 'desc')->take(5)->get(),
+            'monthlyRevenue' => \App\Models\Payment::selectRaw('MONTH(created_at) as month, SUM(amount) as total')
+                ->whereYear('created_at', date('Y'))
+                ->groupBy('month')
+                ->orderBy('month')
+                ->pluck('total', 'month')
+                ->toArray(),
+        ]);
+    })->name('student.dashboard');
+    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
     Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('/students', [StudentController::class, 'store'])->name('students.store');
     Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
@@ -84,6 +105,32 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/support', [SupportController::class, 'index'])->name('support');
 
     // Pour les instructeurs
+    Route::get('/instructor/dashboard', function () {
+        $user = Auth::user();
+        $data = [
+            'totalStudents' => \App\Models\Student::count(),
+            'totalInstructors' => \App\Models\Instructor::count(),
+            'totalCourses' => \App\Models\Course::count(),
+            'totalLessons' => \App\Models\Lesson::count(),
+            'totalEnrollments' => \App\Models\Enrollment::count(),
+            'totalRevenue' => \App\Models\Payment::sum('amount'),
+            'lastMonthStudents' => \App\Models\Student::where('created_at', '>=', now()->subDays(30))->count(),
+            'lastMonthCourses' => \App\Models\Course::where('created_at', '>=', now()->subDays(30))->count(),
+            'lastMonthRevenue' => \App\Models\Payment::where('created_at', '>=', now()->subDays(30))->sum('amount'),
+            'recentStudents' => \App\Models\Student::orderBy('created_at', 'desc')->take(5)->get(),
+            'monthlyRevenue' => \App\Models\Payment::selectRaw('MONTH(created_at) as month, SUM(amount) as total')
+                ->whereYear('created_at', date('Y'))
+                ->groupBy('month')
+                ->orderBy('month')
+                ->pluck('total', 'month')
+                ->toArray(),
+            'instructorCourses' => \App\Models\Course::where('instructor_id', $user->id)->count(),
+            'instructorStudents' => \App\Models\Enrollment::whereHas('course', function ($query) use ($user) {
+                $query->where('instructor_id', $user->id);
+            })->count(),
+        ];
+        return Inertia::render('Backend/Dashboard/InstructorDashboard', $data);
+    })->name('instructor.dashboard');
     Route::get('/instructor/profile/edit', [App\Http\Controllers\Backend\Instructors\ProfileController::class, 'edit'])->name('instructor.profile.edit');
     Route::get('/instructor/profile', [App\Http\Controllers\Backend\Instructors\ProfileController::class, 'index'])->name('instructor.profile');
     Route::post('/instructor/profile/update', [App\Http\Controllers\Backend\Instructors\ProfileController::class, 'save_profile'])->name('instructor.profile.update');
@@ -136,7 +183,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/profile/edit', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::post('/admin/profile/update', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
 
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // Routes pour la gestion des utilisateurs
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');

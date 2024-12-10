@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Backend\Setting;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Instructor;
 use App\Models\Lesson;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -21,7 +22,6 @@ class DashboardController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-
         $user = Auth::user();
 
         // Données communes à tous les tableaux de bord
@@ -48,24 +48,34 @@ class DashboardController extends Controller
             ->pluck('total', 'month')
             ->toArray();
 
-        $data = compact('totalStudents', 'totalCourses', 'totalLessons', 'totalInstructors', 'totalEnrollments', 'totalRevenue', 
-                        'lastMonthStudents', 'lastMonthCourses', 'lastMonthRevenue', 
-                        'recentStudents', 'monthlyRevenue');
+        $data = compact(
+            'totalStudents',
+            'totalCourses',
+            'totalLessons',
+            'totalInstructors',
+            'totalEnrollments',
+            'totalRevenue',
+            'lastMonthStudents',
+            'lastMonthCourses',
+            'lastMonthRevenue',
+            'recentStudents',
+            'monthlyRevenue'
+        );
 
         if (fullAccess()) {
-            return view('backend.adminDashboard', $data);
+            return Inertia::render('Backend/Dashboard/AdminDashboard', $data);
         } elseif ($user->role->identity === 'instructor') {
             // Ajouter des données spécifiques pour les instructeurs si nécessaire
             $instructorCourses = Course::where('instructor_id', $user->id)->count();
-            $instructorStudents = Enrollment::whereHas('course', function($query) use ($user) {
+            $instructorStudents = Enrollment::whereHas('course', function ($query) use ($user) {
                 $query->where('instructor_id', $user->id);
             })->count();
             $data['instructorCourses'] = $instructorCourses;
             $data['instructorStudents'] = $instructorStudents;
-            
-            return view('backend.instructorDashboard', $data);
+
+            return Inertia::render('Backend/Dashboard/InstructorDashboard', $data);
         } else {
-            return view('backend.dashboard', $data);
+            return Inertia::render('Backend/Dashboard/Dashboard', $data);
         }
     }
 }
