@@ -12,4 +12,6 @@ export type PageProps<
     auth: {
         user: User;
     };
+    role: string;
+    identity: string;
 };

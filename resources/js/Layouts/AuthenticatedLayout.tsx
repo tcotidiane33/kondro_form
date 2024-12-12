@@ -1,24 +1,40 @@
+import { Link, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
-import { PropsWithChildren, ReactNode, useState } from 'react';
-import { Book, Award } from 'react-feather'; // Assurez-vous d'importer les icônes nécessaires
+import Dropdown from '@/Components/Dropdown';
+import { Book, Award } from 'lucide-react';
 
-export default function Authenticated({
-    header,
-    children,
-}: PropsWithChildren<{ header?: ReactNode }>) {
+import { ReactNode } from 'react';
+
+const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
     const { auth } = usePage().props;
-    const user = auth.user as { role: 'Student'; name: string; email: string };
-
+    const user = auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const getProfileEditRoute = () => route('student.profile.edit');
+    const getDashboardRoute = () => {
+        if (user.role === 'Admin') {
+            return route('admin.dashboard');
+        } else if (user.role === 'Instructor') {
+            return route('instructor.dashboard');
+        } else {
+            return route('student.dashboard');
+        }
+    };
+
+    const getProfileEditRoute = () => {
+        if (user.role === 'Admin') {
+            return route('admin.profile.edit');
+        } else if (user.role === 'Instructor') {
+            return route('instructor.profile.edit');
+        } else {
+            return route('student.profile.edit');
+        }
+    };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
+        <div>
             <nav className="border-b border-gray-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
@@ -30,7 +46,7 @@ export default function Authenticated({
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('student.dashboard')} active={route().current('student.dashboard')}>
+                                <NavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
                                     Dashboard
                                 </NavLink>
                                 <NavLink href={route('student.courses')} active={route().current('student.courses')}>
@@ -41,10 +57,10 @@ export default function Authenticated({
                                     <Book className="inline-block text-2xl text-[#FF2D20]" />
                                     Category Courses
                                 </NavLink>
-                                <NavLink href={route('student.certificates')} active={route().current('student.certificates')}>
+                                {/* <NavLink href={route('student.certificates')} active={route().current('student.certificates')}>
                                     <Award className="inline-block text-2xl text-[#FF2D20]" />
                                     Request Certificate
-                                </NavLink>
+                                </NavLink> */}
                             </div>
                         </div>
 
@@ -118,7 +134,7 @@ export default function Authenticated({
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('student.dashboard')} active={route().current('student.dashboard')}>
+                        <ResponsiveNavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
@@ -139,13 +155,9 @@ export default function Authenticated({
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )}
-
             <main>{children}</main>
         </div>
     );
-}
+};
+
+export default AuthenticatedLayout;

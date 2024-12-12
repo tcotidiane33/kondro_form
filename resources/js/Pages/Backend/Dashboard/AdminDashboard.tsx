@@ -17,6 +17,7 @@ interface AdminDashboardProps {
     lastMonthRevenue: number;
     recentStudents: any[];
     monthlyRevenue: Record<string, number>;
+    superAdminOptions?: boolean;
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = (props) => {
@@ -36,6 +37,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = (props) => {
         lastMonthRevenue,
         recentStudents,
         monthlyRevenue,
+        superAdminOptions,
     } = props;
 
     const monthlyRevenueData = {
@@ -127,6 +129,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = (props) => {
                         </CardContent>
                     </Card>
                 </Grid>
+                {superAdminOptions && (
+                    <Grid item xs={12}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6">Super Admin Options</Typography>
+                                {/* Ajoutez ici les options spécifiques pour les super administrateurs */}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )}
             </Grid>
         </AdminLayout>
     );

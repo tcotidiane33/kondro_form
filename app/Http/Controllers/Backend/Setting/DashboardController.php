@@ -63,8 +63,12 @@ class DashboardController extends Controller
             'recentStudents',
             'monthlyRevenue'
         );
-
-        if ($user->role->identity === 'admin' && $user->full_access == 1) {
+        // && $user->full_access == 1    pour gere le full access
+        if ($user->role->identity === 'admin') {
+            if ($user->full_access == 1) {
+                // Ajouter des données ou des options spécifiques pour les super administrateurs
+                $data['superAdminOptions'] = true;
+            }
             return Inertia::render('Backend/Dashboard/AdminDashboard', $data);
         } elseif ($user->role->identity === 'instructor') {
             // Ajouter des données spécifiques pour les instructeurs si nécessaire

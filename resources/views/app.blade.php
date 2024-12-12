@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Débogage React (optionnel, à supprimer en production) -->
     @if (env('APP_ENV') === 'local')
-        <script src="http://localhost:5173/react-devtools"></script>
+        {{-- <script src="http://localhost:5173/react-devtools"></script> --}}
         {{-- <script src="http://192.168.1.11:8097"></script> --}}
         <script src="http://localhost:8097"></script>
         <script>

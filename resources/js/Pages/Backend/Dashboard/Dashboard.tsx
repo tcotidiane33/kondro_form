@@ -54,7 +54,7 @@ const Dashboard: React.FC<DashboardProps> = (props) => {
     return (
         <Authenticated>
             <Typography variant="h4" gutterBottom>
-                Dashboard Etudiant
+                Student Dashboard
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6} md={4}>
