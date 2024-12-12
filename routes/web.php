@@ -69,7 +69,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{id}', [StudentController::class, 'update'])->name('students.update');
         Route::delete('/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
 
-
         Route::get('/profile', [App\Http\Controllers\Students\ProfileController::class, 'index'])->name('student.profile');
         Route::get('/profile/edit', [App\Http\Controllers\Students\ProfileController::class, 'edit'])->name('student.profile.edit');
         Route::post('/profile/update', [App\Http\Controllers\Students\ProfileController::class, 'update'])->name('student.profile.update');
@@ -116,7 +115,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::post('/forums/create', [ForumController::class, 'store'])->name('instructor.forums.create');
         // Route::get('/recommendations', [RecommendationController::class, 'index'])->name('instructor.recommendations');
         // Route::get('/support', [SupportController::class, 'index'])->name('support');
-    });
 
     Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
     Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
@@ -134,6 +132,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('questions', QuestionController::class);
     Route::resource('answers', AnswerController::class);
     Route::resource('users', UserController::class);
+});
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

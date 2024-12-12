@@ -1,9 +1,11 @@
 import React from 'react';
 import { usePage } from '@inertiajs/react';
 import InstructorLayout from '@/Layouts/InstructorLayout';
-import { Card, CardContent, Typography, Grid, List, ListItem, ListItemText } from '@mui/material';
+import { Card, CardContent, Typography, Grid, List, ListItem, ListItemText, Button } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import AddIcon from '@mui/icons-material/Add';
+import { route } from 'ziggy-js';
 
 interface DashboardProps {
     totalStudents: number;
@@ -58,6 +60,30 @@ const InstructorDashboard: React.FC = () => {
                 Instructor Dashboard
             </Typography>
             <Grid container spacing={3}>
+            <Grid item xs={12}>
+                    {/* <Button href={route?.('instructor.courses.create') || '/fallback-route'} variant="contained" color="primary" startIcon={<AddIcon />}> */}
+                    <Button href={'instructor.courses.create'} variant="contained" color="primary" startIcon={<AddIcon />}>
+                        Ajouter un Cours
+                    </Button>
+                    <Button variant="contained" color="secondary" startIcon={<AddIcon />}>
+                        Ajouter un Lesson
+                    </Button>
+                    <Button variant="contained" color="success" startIcon={<AddIcon />}>
+                        Ajouter un Fichier
+                    </Button>
+                    <Button variant="contained" color="error" startIcon={<AddIcon />}>
+                        Ajouter un Quizz
+                    </Button>
+                    <Button variant="contained" color="" startIcon={<AddIcon />}>
+                        Ajouter un Answer
+                    </Button>
+                    <Button variant="contained" color="info" startIcon={<AddIcon />}>
+                        Ajouter un Event
+                    </Button>
+                    <Button variant="contained" color="warning" startIcon={<AddIcon />}>
+                        Ajouter un Coupon
+                    </Button>
+                </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <Card>
                         <CardContent>
@@ -102,7 +128,7 @@ const InstructorDashboard: React.FC = () => {
                     <Card>
                         <CardContent>
                             <Typography variant="h6">Total Revenue</Typography>
-                            <Typography variant="h4">${totalRevenue.toFixed(2)}</Typography>
+                            <Typography variant="h4">{totalRevenue.toFixed(2)} XOF</Typography>
                         </CardContent>
                     </Card>
                 </Grid>
