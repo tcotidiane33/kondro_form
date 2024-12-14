@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, usePage, Link } from '@inertiajs/react';
+import MultiStepForm from './MultiStep/MultiStepForm';
 
 interface CourseCategory {
     id: number;
@@ -88,7 +89,15 @@ const CreateCourse = () => {
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Créer un nouveau cours</h1>
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
+            <MultiStepForm
+                courseCategories={courseCategories}
+                instructors={instructors}
+                languages={languages}
+                formData={data}
+                setFormData={setData}
+                handleSubmit={handleSubmit}
+            />
+            {/* <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-6">
                 <div className="mb-4">
                     <label htmlFor="title" className="block text-gray-700 font-bold mb-2">Titre</label>
                     <input
@@ -346,7 +355,7 @@ const CreateCourse = () => {
                         Annuler
                     </Link>
                 </div>
-            </form>
+            </form> */}
         </div>
     );
 };
