@@ -52,7 +52,7 @@ const MultiStepForm = ({ courseCategories, instructors, languages, formData, set
                 Créer un Cours
             </Typography>
             {renderStep()}
-            <Grid container spacing={2} justifyContent="space-between" varient="contained">
+            <Grid container spacing={2} justifyContent="space-between">
                 <Grid item>
                     {currentStep > 1 && (
                         <Button variant="contained" color="secondary" onClick={handleBack}>

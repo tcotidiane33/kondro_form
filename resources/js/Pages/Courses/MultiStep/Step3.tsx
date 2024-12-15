@@ -15,7 +15,7 @@ interface Step3Props {
 const Step3: React.FC<Step3Props> = ({ formData, handleChange }) => {
     return (
         <Grid container spacing={2} margin={2}>
-            <Grid item xs={12}>
+            <Grid item xs={3}>
                 <TextField
                     label="Commence à partir de"
                     name="start_from"
@@ -25,7 +25,7 @@ const Step3: React.FC<Step3Props> = ({ formData, handleChange }) => {
                     fullWidth
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
                 <TextField
                     label="Durée"
                     name="duration"
@@ -34,7 +34,7 @@ const Step3: React.FC<Step3Props> = ({ formData, handleChange }) => {
                     fullWidth
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
                 <TextField
                     label="Leçon"
                     name="lesson"
@@ -43,7 +43,7 @@ const Step3: React.FC<Step3Props> = ({ formData, handleChange }) => {
                     fullWidth
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
                 <FormControl fullWidth>
                     <InputLabel id="difficulty-label">Difficulté</InputLabel>
                     <Select

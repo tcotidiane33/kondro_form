@@ -17,7 +17,7 @@ interface Step4Props {
 
 const Step4: React.FC<Step4Props> = ({ formData, handleChange, languages }) => {
     return (
-        <Grid container spacing={2} margin={2}>
+        <Grid container spacing={2}>
             <Grid item xs={4}>
                 <TextField
                     label="Code du Cours"
