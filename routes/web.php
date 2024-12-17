@@ -11,7 +11,9 @@ use App\Http\Controllers\Backend\Quizzes\QuizController;
 use App\Http\Controllers\Backend\Setting\RoleController;
 use App\Http\Controllers\Backend\Setting\UserController;
 use App\Http\Controllers\Backend\Courses\CourseController;
+use App\Http\Controllers\Backend\Courses\LessonController;
 use App\Http\Controllers\Backend\Quizzes\AnswerController;
+use App\Http\Controllers\Backend\Courses\ChapterController;
 use App\Http\Controllers\Backend\Courses\MaterialController;
 use App\Http\Controllers\Backend\Quizzes\QuestionController;
 use App\Http\Controllers\Backend\Students\StudentController;
@@ -54,7 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/backend/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/backend/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
-
+    Route::resource('lessons', LessonController::class);
+    Route::resource('lessons.chapters', ChapterController::class);
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
     // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
@@ -90,7 +93,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Pour les instructeurs
-    Route::prefix('instructor')->group(function () {
+    // Route::prefix('instructor')->middleware(['auth', 'verified', 'checkRole:instructor'])->group(function () {
+    Route::prefix('instructor')->middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('instructor.dashboard');
 
@@ -116,23 +120,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/recommendations', [RecommendationController::class, 'index'])->name('instructor.recommendations');
         // Route::get('/support', [SupportController::class, 'index'])->name('support');
 
-    Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
-    Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
-    Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
-    Route::get('/materials/{id}', [MaterialController::class, 'show'])->name('material.show');
-    Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('material.edit');
-    Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
-    Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
+        Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
+        Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
+        Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
+        Route::get('/materials/{id}', [MaterialController::class, 'show'])->name('material.show');
+        Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('material.edit');
+        Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
+        Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::resource('courses', CourseController::class);
-    Route::resource('course-categories', CourseCategoryController::class);
-    Route::resource('quizzes', QuizController::class);
-    Route::resource('questions', QuestionController::class);
-    Route::resource('answers', AnswerController::class);
-    Route::resource('users', UserController::class);
-});
+        Route::resource('lessons', LessonController::class);
+        Route::resource('lessons.chapters', ChapterController::class);
+        Route::resource('courses', CourseController::class);
+        Route::resource('course-categories', CourseCategoryController::class);
+        Route::resource('quizzes', QuizController::class);
+        Route::resource('questions', QuestionController::class);
+        Route::resource('answers', AnswerController::class);
+    });
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
@@ -154,28 +157,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-    // Routes pour la gestion des cours
-    // Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
-    // Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
-    // Route::post('/courses', [CourseController::class, 'store'])->name('admin.courses.store');
-    // Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
-    // Route::put('/courses/{id}', [CourseController::class, 'update'])->name('admin.courses.update');
-    // Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
-
-    // Routes pour la gestion des leçons
-    // Route::get('/lessons', [LessonController::class, 'index'])->name('admin.lessons.index');
-    // Route::get('/lessons/create', [LessonController::class, 'create'])->name('admin.lessons.create');
-    // Route::post('/lessons', [LessonController::class, 'store'])->name('admin.lessons.store');
-    // Route::get('/lessons/{id}/edit', [LessonController::class, 'edit'])->name('admin.lessons.edit');
-    // Route::put('/lessons/{id}', [LessonController::class, 'update'])->name('admin.lessons.update');
-    // Route::delete('/lessons/{id}', [LessonController::class, 'destroy'])->name('admin.lessons.destroy');
-
-    // Routes pour la gestion des matériaux
-    Route::get('/materials', [MaterialController::class, 'index'])->name('admin.materials.index');
-    Route::get('/materials/create', [MaterialController::class, 'create'])->name('admin.materials.create');
-    Route::post('/materials', [MaterialController::class, 'store'])->name('admin.materials.store');
-    Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('admin.materials.edit');
-    Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('admin.materials.update');
-    Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('admin.materials.destroy');
 });
 require __DIR__ . '/auth.php';

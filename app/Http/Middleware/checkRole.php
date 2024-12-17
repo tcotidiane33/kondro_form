@@ -3,27 +3,23 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User; //custom
 use Illuminate\Http\Request;
-use Session; //custom
-use App\Models\Permission; //custom
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\User;
+use App\Models\Permission;
 
-class checkRole
+class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        if (!Session::has('userId') || Session::has('userId') == null) {
-            return redirect()->route('logOut');
+        if (!Session::has('userId') || Session::get('userId') == null) {
+            return redirect()->route('logout')->with('method', 'POST');
         } else {
-            $user = User::where('status', 1)->where('id', currentUserId())->first();
+            $user = User::where('status', 1)->where('id', Session::get('userId'))->first();
             if (!$user) {
-                return redirect()->route('logOut');
-            } else if ($user->full_access == "1") {
+                return redirect()->route('logout')->with('method', 'POST');
+            } else if ($user->full_access == "1" || $user->role == $role || $user->role == 'admin') {
                 return $next($request);
             } else {
                 $auto_accept = array("POST", "PUT");
@@ -39,6 +35,6 @@ class checkRole
                 }
             }
         }
-        return redirect()->route('logOut');
+        return redirect()->route('logout')->with('method', 'POST');
     }
 }

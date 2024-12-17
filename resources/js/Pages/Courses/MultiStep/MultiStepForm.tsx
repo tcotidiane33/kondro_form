@@ -18,6 +18,8 @@ interface MultiStepFormProps {
     addChapter: () => void;
     addLesson: () => void;
     addQuiz: () => void;
+    user: any;
+    isInstructor: boolean;
 }
 
 const MultiStepForm: React.FC<MultiStepFormProps> = ({
@@ -30,6 +32,8 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({
     addChapter,
     addLesson,
     addQuiz,
+    user,
+    isInstructor,
 }) => {
     const [currentStep, setCurrentStep] = useState(1);
 
@@ -68,7 +72,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({
     const renderStep = () => {
         switch (currentStep) {
             case 1:
-                return <Step1 formData={{ ...formData, description: formData.description || '' }} handleChange={handleChange} handleSelectChange={handleSelectChange} courseCategories={courseCategories} instructors={instructors} />;
+                return <Step1 formData={{ ...formData, description: formData.description || '' }} handleChange={handleChange} handleSelectChange={handleSelectChange} courseCategories={courseCategories} instructors={instructors} user={user} isInstructor={isInstructor} />;
             case 2:
                 return <Step2 formData={{
                     ...formData,

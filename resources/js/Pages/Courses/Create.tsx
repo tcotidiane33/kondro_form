@@ -5,7 +5,7 @@ import { CourseCategory, Instructor, Course } from '../../types/course';
 import { PageProps } from '../../types/index';
 
 const CreateCourse = () => {
-    const { courseCategories, instructors, languages } = usePage<PageProps<{ courseCategories: CourseCategory[], instructors: Instructor[], languages: { code: string; name: string }[] }>>().props;
+    const { courseCategories, instructors, languages, user, isInstructor } = usePage<PageProps<{ courseCategories: CourseCategory[], instructors: Instructor[], languages: { code: string; name: string }[], user: any, isInstructor: boolean }>>().props;
     const { data, setData, post, errors } = useForm<Course>({
         title: '',
         description: '',
@@ -64,6 +64,8 @@ const CreateCourse = () => {
                 addChapter={addChapter}
                 addLesson={addLesson}
                 addQuiz={addQuiz}
+                user={user}
+                isInstructor={isInstructor}
             />
         </div>
     );

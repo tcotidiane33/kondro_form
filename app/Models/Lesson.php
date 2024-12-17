@@ -9,6 +9,13 @@ class Lesson extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'course_id',
+        'description',
+        'notes',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -17,5 +24,9 @@ class Lesson extends Model
     public function material()
     {
         return $this->hasMany(Material::class);
+    }
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class);
     }
 }

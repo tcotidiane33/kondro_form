@@ -42,10 +42,15 @@ class CourseController extends Controller
             ['code' => 'en', 'name' => 'Anglais'],
             ['code' => 'fr', 'name' => 'Français']
         ];
+        $user = auth()->user();
+        $isInstructor = $user->role === 'instructor';
+
         return Inertia::render('Courses/Create', [
             'courseCategories' => $courseCategories,
             'instructors' => $instructors,
-            'languages' => $languages
+            'languages' => $languages,
+            'user' => $user,
+            'isInstructor' => $isInstructor,
         ]);
     }
     /**
