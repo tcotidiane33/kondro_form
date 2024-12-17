@@ -1,71 +1,64 @@
 import React from 'react';
-import { TextField, Grid, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { TextField, Grid, Button } from '@mui/material';
 
 interface Step3Props {
     formData: {
-        start_from: string;
-        duration: string;
-        lesson: string;
-        prerequisites: string;
-        difficulty: string;
+        lessons: { title: string; content: string }[];
+        chapters: { title: string; description: string }[];
     };
-    handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number, type: string) => void;
+    addLesson: () => void;
+    addChapter: () => void;
 }
 
-const Step3: React.FC<Step3Props> = ({ formData, handleChange }) => {
+const Step3: React.FC<Step3Props> = ({ formData, handleChange, addLesson, addChapter }) => {
     return (
-        <Grid container spacing={2} margin={2}>
-            <Grid item xs={3}>
-                <TextField
-                    label="Commence à partir de"
-                    name="start_from"
-                    type="date"
-                    value={formData.start_from}
-                    onChange={handleChange}
-                    fullWidth
-                />
-            </Grid>
-            <Grid item xs={3}>
-                <TextField
-                    label="Durée"
-                    name="duration"
-                    value={formData.duration}
-                    onChange={handleChange}
-                    fullWidth
-                />
-            </Grid>
-            <Grid item xs={3}>
-                <TextField
-                    label="Leçon"
-                    name="lesson"
-                    value={formData.lesson}
-                    onChange={handleChange}
-                    fullWidth
-                />
-            </Grid>
-            <Grid item xs={3}>
-                <FormControl fullWidth>
-                    <InputLabel id="difficulty-label">Difficulté</InputLabel>
-                    <Select
-                        labelId="difficulty-label"
-                        name="difficulty"
-                        value={formData.difficulty}
-                        onChange={handleChange}
-                    >
-                        <MenuItem value="beginner">Débutant</MenuItem>
-                        <MenuItem value="intermediate">Intermédiaire</MenuItem>
-                        <MenuItem value="advanced">Avancé</MenuItem>
-                    </Select>
-                </FormControl>
-            </Grid>
+        <Grid container spacing={2}>
+            {formData.chapters.map((chapter, index) => (
+                <Grid item xs={12} key={index}>
+                    <TextField
+                        label="Titre du Chapitre"
+                        name="title"
+                        value={chapter.title}
+                        onChange={(e) => handleChange(e, index, 'chapters')}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Description du Chapitre"
+                        name="description"
+                        value={chapter.description}
+                        onChange={(e) => handleChange(e, index, 'chapters')}
+                        fullWidth
+                    />
+                </Grid>
+            ))}
             <Grid item xs={12}>
-                <TextField
-                    label="Prérequis"
-                    name="prerequisites"
-                    value={formData.prerequisites}
-                    onChange={handleChange}
-                    fullWidth
-                />
+                <Button variant="contained" color="primary" onClick={addChapter}>
+                    Ajouter un Chapitre
+                </Button>
+            </Grid>
+            {formData.lessons.map((lesson, index) => (
+                <Grid item xs={12} key={index}>
+                    <TextField
+                        label="Titre de la Leçon"
+                        name="title"
+                        value={lesson.title}
+                        onChange={(e) => handleChange(e, index, 'lessons')}
+                        fullWidth
+                    />
+                    <TextField
+                        label="Contenu de la Leçon"
+                        name="content"
+                        value={lesson.content}
+                        onChange={(e) => handleChange(e, index, 'lessons')}
+                        fullWidth
+                    />
+                </Grid>
+            ))}
+            <Grid item xs={12}>
+                <Button variant="contained" color="primary" onClick={addLesson}>
+                    Ajouter une Leçon
+                </Button>
             </Grid>
         </Grid>
     );

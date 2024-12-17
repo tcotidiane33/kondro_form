@@ -34,13 +34,20 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+       public function create()
     {
         $courseCategories = CourseCategory::all();
         $instructors = Instructor::all();
-        return Inertia::render('Courses/Create', ['courseCategories' => $courseCategories, 'instructors' => $instructors]);
+        $languages = [
+            ['code' => 'en', 'name' => 'Anglais'],
+            ['code' => 'fr', 'name' => 'Français']
+        ];
+        return Inertia::render('Courses/Create', [
+            'courseCategories' => $courseCategories,
+            'instructors' => $instructors,
+            'languages' => $languages
+        ]);
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -67,6 +74,7 @@ class CourseController extends Controller
             $course->language = $request->language;
             $course->status = $request->status;
 
+
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('images', 'public');
                 $course->image = $imagePath;
@@ -84,6 +92,8 @@ class CourseController extends Controller
             } else {
                 return redirect()->back()->withInput()->with('error', 'Please try again');
             }
+
+
         } catch (Exception $e) {
             \Log::error('Error creating course: ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Please try again');

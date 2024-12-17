@@ -9,14 +9,14 @@ interface Step1Props {
         instructor_id: string;
     };
     handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    handleSelectChange: (name: string, value: any) => void;
+    handleSelectChange: (event: React.ChangeEvent<{ name?: string; value: unknown }>) => void;
     courseCategories: { id: number; category_name: string }[];
     instructors: { id: number; name: string }[];
 }
 
 const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleSelectChange, courseCategories, instructors }) => {
     return (
-        <Grid container margin={2} spacing={2}>
+        <Grid container spacing={2}>
             <Grid item xs={4}>
                 <TextField
                     label="Titre"
@@ -42,9 +42,8 @@ const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleSelectChang
                         labelId="course-category-label"
                         name="course_category_id"
                         value={formData.course_category_id}
-                        onChange={(e) => handleSelectChange('course_category_id', e.target.value)}
+                        onChange={handleSelectChange}
                     >
-                        <MenuItem value=""><em>None</em></MenuItem>
                         {courseCategories.map((category) => (
                             <MenuItem key={category.id} value={category.id}>
                                 {category.category_name}
@@ -60,9 +59,8 @@ const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleSelectChang
                         labelId="instructor-label"
                         name="instructor_id"
                         value={formData.instructor_id}
-                        onChange={(e) => handleSelectChange('instructor_id', e.target.value)}
+                        onChange={handleSelectChange}
                     >
-                        <MenuItem value=""><em>None</em></MenuItem>
                         {instructors.map((instructor) => (
                             <MenuItem key={instructor.id} value={instructor.id}>
                                 {instructor.name}

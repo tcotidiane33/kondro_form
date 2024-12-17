@@ -7,13 +7,15 @@ interface Step2Props {
         price: string;
         old_price: string;
         subscription_price: string;
+        start_from: string;
+        duration: string;
     };
     handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 const Step2: React.FC<Step2Props> = ({ formData, handleChange }) => {
     return (
-        <Grid container spacing={2} margin={2}>
+        <Grid container spacing={2}>
             <Grid item xs={3}>
                 <FormControl fullWidth>
                     <InputLabel id="type-label">Type</InputLabel>
@@ -52,6 +54,25 @@ const Step2: React.FC<Step2Props> = ({ formData, handleChange }) => {
                     label="Prix d'Abonnement"
                     name="subscription_price"
                     value={formData.subscription_price}
+                    onChange={handleChange}
+                    fullWidth
+                />
+            </Grid>
+            <Grid item xs={6}>
+                <TextField
+                    label="Commence à partir de"
+                    name="start_from"
+                    type="date"
+                    value={formData.start_from}
+                    onChange={handleChange}
+                    fullWidth
+                />
+            </Grid>
+            <Grid item xs={6}>
+                <TextField
+                    label="Durée"
+                    name="duration"
+                    value={formData.duration}
                     onChange={handleChange}
                     fullWidth
                 />

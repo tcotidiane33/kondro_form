@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 03 déc. 2024 à 14:29
+-- Généré le : mar. 17 déc. 2024 à 14:38
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -143,14 +143,6 @@ CREATE TABLE `courses` (
   `tag` enum('popular','featured','upcoming') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `courses`
---
-
-INSERT INTO `courses` (`id`, `title`, `description`, `course_category_id`, `instructor_id`, `type`, `price`, `old_price`, `subscription_price`, `start_from`, `duration`, `lesson`, `prerequisites`, `difficulty`, `course_code`, `image`, `thumbnail_image`, `thumbnail_video`, `status`, `language`, `created_at`, `updated_at`, `deleted_at`, `tag`) VALUES
-(1, 'COMMENT APPRENDRE À APPRENDRE', 'DESCRIPTIONS, COMMENT APPRENDRE 🟢✅♻', 1, 5, 'subscription', 190000.00, 200000.00, 150000.00, '2024-11-26 23:00:00', 200, 32, 'ENGLISH-SPEAKING ,', 'beginner', 'C223', NULL, NULL, 'https://youtu.be/5zr1Q8UqG2k', 0, 'fr', '2024-11-27 18:11:21', '2024-11-27 18:11:21', NULL, 'popular'),
-(2, 'APPRENDRE LE RÉSEAU ', 'DESCRIPTIONS, COMMENT APPRENDRE LE RÉSEAU 🟢♻', 4, 5, 'paid', 1190000.00, 2000000.00, 1150000.00, '2024-11-26 23:00:00', 300, 321, 'CIBERSÉCURITÉ, RÉSEAU ET PROTOCOLE ', 'intermediate', 'C223', NULL, NULL, 'https://youtu.be/5zr1Q8UqG2k', 0, 'fr', '2024-11-27 18:11:21', '2024-11-27 18:11:21', NULL, 'popular');
-
 -- --------------------------------------------------------
 
 --
@@ -172,10 +164,25 @@ CREATE TABLE `course_categories` (
 --
 
 INSERT INTO `course_categories` (`id`, `category_name`, `category_status`, `category_image`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'RÉSEAU ET SÉCURITÉ', 1, NULL, '2024-11-25 18:50:51', '2024-11-27 09:02:06', NULL),
-(3, 'COMPTABILITÉ', 0, NULL, '2024-11-27 10:34:30', '2024-11-27 10:51:40', NULL),
-(4, 'ISE', 1, NULL, '2024-11-27 10:52:45', '2024-11-27 10:52:45', NULL),
-(5, 'CCNP', 1, NULL, '2024-11-27 10:52:56', '2024-11-27 10:52:56', NULL);
+(1, 'RÉSEAU ET SÉCURITÉ', 1, NULL, '2024-11-25 17:50:51', '2024-11-27 08:02:06', NULL),
+(3, 'COMPTABILITÉ', 0, NULL, '2024-11-27 09:34:30', '2024-11-27 09:51:40', NULL),
+(4, 'ISE', 1, NULL, '2024-11-27 09:52:45', '2024-11-27 09:52:45', NULL),
+(5, 'CCNP', 1, NULL, '2024-11-27 09:52:56', '2024-11-27 09:52:56', NULL),
+(6, 'INTELLIGENCE ARTIFICIELLE', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(7, 'MACHINE LEARNING', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(8, 'BIG DATA ET ANALYSE', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(9, 'CLOUD COMPUTING', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(10, 'INTERNET DES OBJETS (IOT)', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(11, 'CYBERSÉCURITÉ AVANCÉE', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(12, 'DÉVELOPPEMENT FULL-STACK', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(13, 'AUTOMATISATION DES PROCESSUS (RPA)', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(14, 'BLOCKCHAIN', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(15, 'RÉALITÉ VIRTUELLE ET AUGMENTÉE', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(16, 'SCIENCE DES DONNÉES', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(17, 'DEVOPS', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(18, '5G ET TÉLÉCOMMUNICATIONS', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(19, 'ÉTHIQUE DE L’IA', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL),
+(20, 'CHATBOTS ET NLP', 1, NULL, '2024-12-17 13:04:10', '2024-12-17 13:04:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -204,7 +211,7 @@ CREATE TABLE `enrollments` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `student_id` bigint(20) UNSIGNED NOT NULL,
   `course_id` bigint(20) UNSIGNED NOT NULL,
-  `enrollment_date` timestamp NOT NULL DEFAULT '2024-11-21 11:43:37',
+  `enrollment_date` timestamp NOT NULL DEFAULT '2024-12-17 11:32:54',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -262,7 +269,16 @@ CREATE TABLE `instructors` (
 --
 
 INSERT INTO `instructors` (`id`, `name`, `contact`, `email`, `role_id`, `bio`, `title`, `designation`, `image`, `status`, `password`, `language`, `access_block`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(5, 'Bill Cosby', '0147582596', 'cosby@gmail.com', 3, 'Instructor Ultime', 'Ingénieur Logiciels', 'REACT NEXT LARAVEL ', NULL, 1, '', 'fr', NULL, NULL, '2024-11-27 12:23:44', NULL, NULL);
+(6, 'Alice Dupont', '0123456789', 'alice.dupont@example.com', 2, 'Spécialiste IA et Machine Learning', 'Chercheur en IA', 'Machine Learning, Python, TensorFlow', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(7, 'Jean-Michel Blanchard', '0156789012', 'jm.blanchard@example.com', 2, 'Consultant Cloud', 'Architecte Cloud', 'AWS, Azure, GCP', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(8, 'Fatoumata Sow', '0167890123', 'fatou.sow@example.com', 3, 'Expert en Big Data et Analyse', 'Data Scientist', 'Hadoop, Spark, SQL', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(9, 'Koffi N\'Guessan', '0178901234', 'koffi.nguessan@example.com', 3, 'Développeur Blockchain', 'Ingénieur Blockchain', 'Solidity, Ethereum, Hyperledger', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(10, 'Mariam Touré', '0189012345', 'mariam.toure@example.com', 2, 'Spécialiste IoT', 'Ingénieur Systèmes Connectés', 'IoT, Arduino, Raspberry Pi', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(11, 'David Chen', '0190123456', 'david.chen@example.com', 3, 'Expert DevOps', 'Ingénieur DevOps', 'CI/CD, Kubernetes, Docker', NULL, 1, '', 'en', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(12, 'Sara Lopez', '0201234567', 'sara.lopez@example.com', 2, 'Développeur Full-Stack', 'Lead Développeur', 'React, Laravel, Vue.js', NULL, 1, '', 'en', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(13, 'Ahmed El Maktoub', '0212345678', 'ahmed.maktoub@example.com', 3, 'Consultant Cybersécurité', 'Expert Sécurité Réseaux', 'Firewall, Ethical Hacking, Pentest', NULL, 1, '', 'fr', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(14, 'Isabella Rossi', '0223456789', 'isabella.rossi@example.com', 2, 'Spécialiste Data Science', 'Scientifique des Données', 'Python, Pandas, Machine Learning', NULL, 1, '', 'en', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL),
+(15, 'Omar Khan', '0234567890', 'omar.khan@example.com', 3, 'Consultant en Automatisation RPA', 'Architecte RPA', 'UiPath, Blue Prism, Automation Anywhere', NULL, 1, '', 'en', NULL, NULL, '2024-12-17 13:05:33', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -314,60 +330,6 @@ CREATE TABLE `messages` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `migrations`
---
-
-CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(1, '2023_10_12_031415_create_roles_table', 1),
-(2, '2023_11_12_031401_create_instructors_table', 1),
-(3, '2023_11_12_031402_create_users_table', 1),
-(4, '2023_11_19_053448_create_course_categories_table', 1),
-(5, '2023_11_22_143059_create_permissions_table', 1),
-(6, '2023_11_25_034933_create_students_table', 1),
-(7, '2023_11_26_034558_create_courses_table', 1),
-(8, '2023_11_26_153556_create_enrollments_table', 1),
-(9, '2023_11_26_153557_create_lessons_table', 1),
-(10, '2023_11_26_153620_create_materials_table', 1),
-(11, '2023_11_26_153639_create_quizzes_table', 1),
-(12, '2023_11_26_153659_create_questions_table', 1),
-(13, '2023_11_26_153660_create_options_table', 1),
-(14, '2023_11_26_153719_create_answers_table', 1),
-(15, '2023_11_26_153735_create_reviews_table', 1),
-(16, '2023_11_26_153754_create_payments_table', 1),
-(17, '2023_11_26_153818_create_subscriptions_table', 1),
-(18, '2023_11_26_153844_create_progress_table', 1),
-(19, '2023_11_26_153902_create_discussions_table', 1),
-(20, '2023_11_26_153916_create_messages_table', 1),
-(21, '2023_12_09_135359_create_coupons_table', 1),
-(22, '2023_12_09_170943_create_checkouts_table', 1),
-(23, '2023_12_20_031354_create_watchlists_table', 1),
-(24, '2023_12_23_070253_add_tag_to_courses_table', 1),
-(25, '2024_01_01_121113_add_column_to_user_table', 1),
-(26, '2024_01_03_073449_create_events_table', 1),
-(27, '2024_08_15_212846_add_colum_role_intable_students', 1),
-(28, '2024_08_15_224631_add_access_block_to_students_table', 1),
-(29, '2024_08_16_152152_create_certifications_table', 2),
-(30, '2024_08_17_141341_create_training_offers_table', 2),
-(31, '2024_11_21_124642_create_cache_table', 2),
-(32, '2024_11_21_124844_create_sessions_table', 2),
-(33, '2024_11_21_135619_add_default_value_to_role_id_in_users_table', 3),
-(34, '2024_11_21_140342_add_default_value_to_instructor_id_in_users_table', 4),
-(35, '2024_11_22_192851_create_permission_role_table', 5),
-(36, '2024_11_25_101516_create_telescope_entries_table', 6);
 
 -- --------------------------------------------------------
 
@@ -425,167 +387,167 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`id`, `role_id`, `name`, `created_at`, `updated_at`) VALUES
-(185, 1, 'user.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(186, 1, 'user.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(187, 1, 'user.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(188, 1, 'user.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(189, 1, 'user.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(190, 1, 'role.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(191, 1, 'role.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(192, 1, 'role.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(193, 1, 'role.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(194, 1, 'role.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(195, 1, 'student.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(196, 1, 'student.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(197, 1, 'student.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(198, 1, 'student.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(199, 1, 'student.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(200, 1, 'instructor.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(201, 1, 'instructor.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(202, 1, 'instructor.show', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(203, 1, 'instructor.edit', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(204, 1, 'instructor.destroy', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(205, 1, 'courseCategory.index', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(206, 1, 'courseCategory.create', '2023-11-28 23:37:43', '2023-11-28 23:37:43'),
-(207, 1, 'courseCategory.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(208, 1, 'courseCategory.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(209, 1, 'courseCategory.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(210, 1, 'course.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(211, 1, 'course.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(212, 1, 'course.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(213, 1, 'course.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(214, 1, 'course.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(215, 1, 'material.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(216, 1, 'material.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(217, 1, 'material.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(218, 1, 'material.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(219, 1, 'material.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(220, 1, 'quiz.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(221, 1, 'quiz.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(222, 1, 'quiz.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(223, 1, 'quiz.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(224, 1, 'quiz.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(225, 1, 'question.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(226, 1, 'question.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(227, 1, 'question.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(228, 1, 'question.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(229, 1, 'question.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(230, 1, 'option.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(231, 1, 'option.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(232, 1, 'option.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(233, 1, 'option.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(234, 1, 'option.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(235, 1, 'answer.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(236, 1, 'answer.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(237, 1, 'answer.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(238, 1, 'answer.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(239, 1, 'answer.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(240, 1, 'review.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(241, 1, 'review.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(242, 1, 'review.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(243, 1, 'review.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(244, 1, 'review.destroy', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(245, 1, 'discussion.index', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(246, 1, 'discussion.create', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(247, 1, 'discussion.show', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(248, 1, 'discussion.edit', '2023-11-28 23:37:44', '2023-11-28 23:37:44'),
-(249, 1, 'discussion.destroy', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(250, 1, 'message.index', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(251, 1, 'message.create', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(252, 1, 'message.show', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(253, 1, 'message.edit', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(254, 1, 'message.destroy', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(255, 1, 'permission.list', '2023-11-28 23:37:45', '2023-11-28 23:37:45'),
-(256, 2, 'student.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(257, 2, 'student.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(258, 2, 'student.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(259, 2, 'student.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(260, 2, 'student.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(261, 2, 'instructor.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(262, 2, 'instructor.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(263, 2, 'instructor.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(264, 2, 'instructor.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(265, 2, 'instructor.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(266, 2, 'courseCategory.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(267, 2, 'courseCategory.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(268, 2, 'courseCategory.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(269, 2, 'courseCategory.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(270, 2, 'courseCategory.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(271, 2, 'course.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(272, 2, 'course.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(273, 2, 'course.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(274, 2, 'course.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(275, 2, 'course.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(276, 2, 'material.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(277, 2, 'material.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(278, 2, 'material.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(279, 2, 'material.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(280, 2, 'material.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(281, 2, 'quiz.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(282, 2, 'quiz.create', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(283, 2, 'quiz.show', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(284, 2, 'quiz.edit', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(285, 2, 'quiz.destroy', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(286, 2, 'question.index', '2023-11-28 23:38:42', '2023-11-28 23:38:42'),
-(287, 2, 'question.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(288, 2, 'question.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(289, 2, 'question.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(290, 2, 'question.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(291, 2, 'option.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(292, 2, 'option.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(293, 2, 'option.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(294, 2, 'option.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(295, 2, 'option.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(296, 2, 'answer.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(297, 2, 'answer.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(298, 2, 'answer.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(299, 2, 'answer.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(300, 2, 'answer.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(301, 2, 'review.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(302, 2, 'review.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(303, 2, 'review.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(304, 2, 'review.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(305, 2, 'review.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(306, 2, 'discussion.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(307, 2, 'discussion.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(308, 2, 'discussion.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(309, 2, 'discussion.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(310, 2, 'discussion.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(311, 2, 'message.index', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(312, 2, 'message.create', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(313, 2, 'message.show', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(314, 2, 'message.edit', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(315, 2, 'message.destroy', '2023-11-28 23:38:43', '2023-11-28 23:38:43'),
-(345, 3, 'user.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(346, 3, 'role.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(347, 3, 'student.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(348, 3, 'instructor.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(349, 3, 'courseCategory.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(350, 3, 'courseCategory.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(351, 3, 'courseCategory.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(352, 3, 'courseCategory.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(353, 3, 'courseCategory.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(354, 3, 'course.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(355, 3, 'course.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(356, 3, 'course.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(357, 3, 'course.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(358, 3, 'course.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(359, 3, 'material.index', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(360, 3, 'material.create', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(361, 3, 'material.show', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(362, 3, 'material.edit', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(363, 3, 'material.destroy', '2024-01-01 23:45:52', '2024-01-01 23:45:52'),
-(364, 3, 'lesson.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(365, 3, 'lesson.create', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(366, 3, 'lesson.show', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(367, 3, 'lesson.edit', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(368, 3, 'lesson.destroy', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(369, 3, 'coupon.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(370, 3, 'coupon.create', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(371, 3, 'coupon.show', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(372, 3, 'coupon.edit', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(373, 3, 'coupon.destroy', '2024-01-01 23:45:53', '2024-01-01 23:45:53'),
-(374, 3, 'enrollment.index', '2024-01-01 23:45:53', '2024-01-01 23:45:53');
+(185, 1, 'user.index', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(186, 1, 'user.create', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(187, 1, 'user.show', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(188, 1, 'user.edit', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(189, 1, 'user.destroy', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(190, 1, 'role.index', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(191, 1, 'role.create', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(192, 1, 'role.show', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(193, 1, 'role.edit', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(194, 1, 'role.destroy', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(195, 1, 'student.index', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(196, 1, 'student.create', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(197, 1, 'student.show', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(198, 1, 'student.edit', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(199, 1, 'student.destroy', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(200, 1, 'instructor.index', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(201, 1, 'instructor.create', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(202, 1, 'instructor.show', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(203, 1, 'instructor.edit', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(204, 1, 'instructor.destroy', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(205, 1, 'courseCategory.index', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(206, 1, 'courseCategory.create', '2023-11-28 22:37:43', '2023-11-28 22:37:43'),
+(207, 1, 'courseCategory.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(208, 1, 'courseCategory.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(209, 1, 'courseCategory.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(210, 1, 'course.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(211, 1, 'course.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(212, 1, 'course.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(213, 1, 'course.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(214, 1, 'course.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(215, 1, 'material.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(216, 1, 'material.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(217, 1, 'material.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(218, 1, 'material.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(219, 1, 'material.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(220, 1, 'quiz.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(221, 1, 'quiz.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(222, 1, 'quiz.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(223, 1, 'quiz.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(224, 1, 'quiz.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(225, 1, 'question.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(226, 1, 'question.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(227, 1, 'question.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(228, 1, 'question.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(229, 1, 'question.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(230, 1, 'option.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(231, 1, 'option.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(232, 1, 'option.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(233, 1, 'option.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(234, 1, 'option.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(235, 1, 'answer.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(236, 1, 'answer.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(237, 1, 'answer.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(238, 1, 'answer.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(239, 1, 'answer.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(240, 1, 'review.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(241, 1, 'review.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(242, 1, 'review.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(243, 1, 'review.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(244, 1, 'review.destroy', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(245, 1, 'discussion.index', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(246, 1, 'discussion.create', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(247, 1, 'discussion.show', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(248, 1, 'discussion.edit', '2023-11-28 22:37:44', '2023-11-28 22:37:44'),
+(249, 1, 'discussion.destroy', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(250, 1, 'message.index', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(251, 1, 'message.create', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(252, 1, 'message.show', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(253, 1, 'message.edit', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(254, 1, 'message.destroy', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(255, 1, 'permission.list', '2023-11-28 22:37:45', '2023-11-28 22:37:45'),
+(256, 2, 'student.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(257, 2, 'student.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(258, 2, 'student.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(259, 2, 'student.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(260, 2, 'student.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(261, 2, 'instructor.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(262, 2, 'instructor.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(263, 2, 'instructor.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(264, 2, 'instructor.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(265, 2, 'instructor.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(266, 2, 'courseCategory.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(267, 2, 'courseCategory.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(268, 2, 'courseCategory.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(269, 2, 'courseCategory.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(270, 2, 'courseCategory.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(271, 2, 'course.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(272, 2, 'course.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(273, 2, 'course.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(274, 2, 'course.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(275, 2, 'course.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(276, 2, 'material.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(277, 2, 'material.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(278, 2, 'material.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(279, 2, 'material.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(280, 2, 'material.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(281, 2, 'quiz.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(282, 2, 'quiz.create', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(283, 2, 'quiz.show', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(284, 2, 'quiz.edit', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(285, 2, 'quiz.destroy', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(286, 2, 'question.index', '2023-11-28 22:38:42', '2023-11-28 22:38:42'),
+(287, 2, 'question.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(288, 2, 'question.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(289, 2, 'question.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(290, 2, 'question.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(291, 2, 'option.index', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(292, 2, 'option.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(293, 2, 'option.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(294, 2, 'option.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(295, 2, 'option.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(296, 2, 'answer.index', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(297, 2, 'answer.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(298, 2, 'answer.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(299, 2, 'answer.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(300, 2, 'answer.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(301, 2, 'review.index', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(302, 2, 'review.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(303, 2, 'review.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(304, 2, 'review.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(305, 2, 'review.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(306, 2, 'discussion.index', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(307, 2, 'discussion.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(308, 2, 'discussion.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(309, 2, 'discussion.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(310, 2, 'discussion.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(311, 2, 'message.index', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(312, 2, 'message.create', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(313, 2, 'message.show', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(314, 2, 'message.edit', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(315, 2, 'message.destroy', '2023-11-28 22:38:43', '2023-11-28 22:38:43'),
+(345, 3, 'user.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(346, 3, 'role.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(347, 3, 'student.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(348, 3, 'instructor.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(349, 3, 'courseCategory.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(350, 3, 'courseCategory.create', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(351, 3, 'courseCategory.show', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(352, 3, 'courseCategory.edit', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(353, 3, 'courseCategory.destroy', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(354, 3, 'course.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(355, 3, 'course.create', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(356, 3, 'course.show', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(357, 3, 'course.edit', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(358, 3, 'course.destroy', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(359, 3, 'material.index', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(360, 3, 'material.create', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(361, 3, 'material.show', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(362, 3, 'material.edit', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(363, 3, 'material.destroy', '2024-01-01 22:45:52', '2024-01-01 22:45:52'),
+(364, 3, 'lesson.index', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(365, 3, 'lesson.create', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(366, 3, 'lesson.show', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(367, 3, 'lesson.edit', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(368, 3, 'lesson.destroy', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(369, 3, 'coupon.index', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(370, 3, 'coupon.create', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(371, 3, 'coupon.show', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(372, 3, 'coupon.edit', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(373, 3, 'coupon.destroy', '2024-01-01 22:45:53', '2024-01-01 22:45:53'),
+(374, 3, 'enrollment.index', '2024-01-01 22:45:53', '2024-01-01 22:45:53');
 
 -- --------------------------------------------------------
 
@@ -600,48 +562,6 @@ CREATE TABLE `permission_role` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `permission_role`
---
-
-INSERT INTO `permission_role` (`id`, `role_id`, `permission_id`, `created_at`, `updated_at`) VALUES
-(1, 8, 185, NULL, NULL),
-(2, 8, 190, NULL, NULL),
-(3, 1, 185, NULL, NULL),
-(4, 1, 186, NULL, NULL),
-(5, 1, 187, NULL, NULL),
-(6, 1, 188, NULL, NULL),
-(7, 1, 189, NULL, NULL),
-(8, 1, 190, NULL, NULL),
-(9, 1, 191, NULL, NULL),
-(10, 1, 192, NULL, NULL),
-(11, 1, 193, NULL, NULL),
-(12, 1, 194, NULL, NULL),
-(13, 7, 374, NULL, NULL),
-(14, 7, 371, NULL, NULL),
-(15, 7, 369, NULL, NULL),
-(16, 3, 192, NULL, NULL),
-(17, 3, 200, NULL, NULL),
-(18, 3, 206, NULL, NULL),
-(19, 3, 208, NULL, NULL),
-(20, 3, 210, NULL, NULL),
-(21, 3, 212, NULL, NULL),
-(22, 3, 214, NULL, NULL),
-(23, 3, 216, NULL, NULL),
-(24, 3, 220, NULL, NULL),
-(25, 3, 218, NULL, NULL),
-(26, 3, 222, NULL, NULL),
-(27, 3, 224, NULL, NULL),
-(28, 3, 226, NULL, NULL),
-(29, 3, 221, NULL, NULL),
-(30, 3, 217, NULL, NULL),
-(31, 3, 213, NULL, NULL),
-(32, 3, 211, NULL, NULL),
-(33, 3, 209, NULL, NULL),
-(34, 3, 207, NULL, NULL),
-(35, 3, 203, NULL, NULL),
-(36, 3, 205, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -719,7 +639,7 @@ CREATE TABLE `reviews` (
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(20) NOT NULL,
-  `identity` varchar(30) NOT NULL DEFAULT 'guest',
+  `identity` varchar(30) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -729,12 +649,10 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `identity`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', 'superadmin', '2024-11-21 11:43:37', NULL),
-(2, 'Admin', 'admin', '2024-11-21 11:43:37', NULL),
-(3, 'Instructor', 'instructor', '2024-11-21 11:43:37', NULL),
-(4, 'Student', 'student', '2024-11-21 11:43:37', NULL),
-(7, 'Pro', 'guest', '2024-11-22 18:31:55', '2024-11-22 18:31:55'),
-(8, 'test', 'REST1', '2024-11-22 18:40:35', '2024-11-22 18:40:35');
+(1, 'Super Admin', 'superadmin', '2024-12-17 11:32:53', NULL),
+(2, 'Admin', 'admin', '2024-12-17 11:32:53', NULL),
+(3, 'Instructor', 'instructor', '2024-12-17 11:32:53', NULL),
+(4, 'Student', 'student', '2024-12-17 11:32:53', NULL);
 
 -- --------------------------------------------------------
 
@@ -756,7 +674,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('gh9s9dP0ZefyHLiAoP4GeaWmIFeu4meQWyUGtZcb', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoid2xMMXVCeklYRzBDUzRVbGJva0g4dm9QbFYxamc2Zko1TTZNRjlRUiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9wcm9maWxlIjt9fQ==', 1733231851);
+('CCiFWaJoBqWujwidslT4sN4WwOL4eTOPxo9ZVIR1', 21, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQXJJbzBWV2gxNkxPYU1Cb1ZXZWpPSnl6UWNWb05uY2Y2YWM2YllpMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9pbnN0cnVjdG9yL2NvdXJzZXMvY3JlYXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjE7fQ==', 1734439848),
+('pZfxnCFSRhgnK8qM0WwwhbWz1f2iEBS7uOanfgov', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiV1VhRFpaM3JhS0U5RGdETExzRE43UG1zOTd3UkNkb2V1dW1wR2Q3dSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1734439553);
 
 -- --------------------------------------------------------
 
@@ -813,6 +732,16 @@ CREATE TABLE `subscriptions` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `telescope_monitoring`
+--
+
+CREATE TABLE `telescope_monitoring` (
+  `tag` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `training_offers`
 --
 
@@ -860,15 +789,19 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `instructor_id` bigint(20) UNSIGNED DEFAULT NULL
+  `instructor_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `contact`, `role_id`, `password`, `language`, `image`, `full_access`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `instructor_id`) VALUES
-(1, 'Admin', 'admin@gmail.com', '+2250769469844', 2, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 13:04:18', '2024-11-21 13:04:18', NULL, NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `contact`, `role_id`, `password`, `language`, `image`, `full_access`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `instructor_id`, `email_verified_at`) VALUES
+(1, 'Admin', 'admin@gmail.com', '+2250769469844', 2, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
+(21, 'Instructor', 'instructor@gmail.com', '+2250769469845', 3, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
+(22, 'Student', 'student@gmail.com', '+2250769469846', 4, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
+(24, 'Sudo', 'sudo@gmail.com', '+22500000000', 1, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -971,7 +904,7 @@ ALTER TABLE `events`
 --
 ALTER TABLE `instructors`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `instructors_contact_en_unique` (`contact`),
+  ADD UNIQUE KEY `instructors_contact_unique` (`contact`),
   ADD UNIQUE KEY `instructors_email_unique` (`email`),
   ADD KEY `instructors_role_id_index` (`role_id`);
 
@@ -996,12 +929,6 @@ ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `messages_sender_id_index` (`sender_id`),
   ADD KEY `messages_receiver_id_index` (`receiver_id`);
-
---
--- Index pour la table `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `options`
@@ -1095,6 +1022,12 @@ ALTER TABLE `subscriptions`
   ADD KEY `subscriptions_course_id_index` (`course_id`);
 
 --
+-- Index pour la table `telescope_monitoring`
+--
+ALTER TABLE `telescope_monitoring`
+  ADD PRIMARY KEY (`tag`);
+
+--
 -- Index pour la table `training_offers`
 --
 ALTER TABLE `training_offers`
@@ -1108,7 +1041,7 @@ ALTER TABLE `training_offers`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `users_contact_en_unique` (`contact`),
+  ADD UNIQUE KEY `users_contact_unique` (`contact`),
   ADD KEY `users_role_id_index` (`role_id`),
   ADD KEY `users_instructor_id_index` (`instructor_id`);
 
@@ -1160,7 +1093,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT pour la table `course_categories`
 --
 ALTER TABLE `course_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `discussions`
@@ -1184,7 +1117,7 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT pour la table `instructors`
 --
 ALTER TABLE `instructors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `lessons`
@@ -1203,12 +1136,6 @@ ALTER TABLE `materials`
 --
 ALTER TABLE `messages`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT pour la table `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `options`
@@ -1232,7 +1159,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT pour la table `permission_role`
 --
 ALTER TABLE `permission_role`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT pour la table `progress`
@@ -1286,7 +1213,7 @@ ALTER TABLE `training_offers`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `watchlists`
@@ -1437,18 +1364,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
-
-
-
-
-INSERT INTO `courses` (`id`, `title`, `description`, `course_category_id`, `instructor_id`, `type`, `price`, `old_price`, `subscription_price`, `start_from`, `duration`, `lesson`, `prerequisites`, `difficulty`, `course_code`, `image`, `thumbnail_image`, `thumbnail_video`, `status`, `language`, `created_at`, `updated_at`, `deleted_at`, `tag`) VALUES
-(3, 'DÉVELOPPEMENT WEB AVEC LARAVEL', 'Apprenez à créer des applications web avec le framework Laravel.', 5, 5, 'paid', 250000.00, 300000.00, 220000.00, '2024-11-28 09:00:00', 150, 20, 'PHP, SQL, HTML', 'beginner', 'C101', NULL, NULL, 'https://youtu.be/8H85zQ26qDA', 1, 'fr', NOW(), NOW(), NULL, 'nouveau'),
-(4, 'INTRODUCTION À L\'IA', 'Un aperçu des concepts fondamentaux de l’intelligence artificielle.', 4, 6, 'free', 0.00, NULL, NULL, '2024-12-01 10:00:00', 50, 10, 'Aucune', 'beginner', 'C102', NULL, NULL, 'https://youtu.be/Z0QkN2dPCLg', 1, 'fr', NOW(), NOW(), NULL, 'IA'),
-(5, 'MASTERING CLOUD COMPUTING', 'Les bases du cloud computing avec AWS et Azure.', 1, 7, 'subscription', 500000.00, 600000.00, 450000.00, '2024-12-05 15:00:00', 180, 35, 'Networking, Virtualisation', 'intermediate', 'C103', NULL, NULL, 'https://youtu.be/0J7KACjv6Vw', 1, 'en', NOW(), NOW(), NULL, 'cloud'),
-(6, 'CYBERSÉCURITÉ POUR LES DÉBUTANTS', 'Apprenez les bases de la cybersécurité pour sécuriser vos systèmes.', 1, 8, 'paid', 300000.00, 350000.00, 280000.00, '2024-12-10 09:00:00', 120, 18, 'Réseaux, Protocoles', 'beginner', 'C104', NULL, NULL, 'https://youtu.be/5zr1Q8UqG2k', 1, 'fr', NOW(), NOW(), NULL, 'cybersécurité'),
-(7, 'BIG DATA ET ANALYSE DE DONNÉES', 'Explorez les outils d’analyse et la gestion de Big Data.', 3, 9, 'paid', 700000.00, 800000.00, 650000.00, '2024-12-15 10:00:00', 240, 40, 'SQL, Python', 'advanced', 'C105', NULL, NULL, 'https://youtu.be/vgN4kDTb1jY', 1, 'fr', NOW(), NOW(), NULL, 'data'),
-(8, 'CONCEPTION D\'APPLICATION MOBILE', 'Développement d’applications mobiles avec Flutter.', 5, 10, 'subscription', 400000.00, 500000.00, 350000.00, '2024-12-20 14:00:00', 180, 25, 'Dart, UI/UX', 'intermediate', 'C106', NULL, NULL, 'https://youtu.be/MjQ3a82IN5Q', 1, 'fr', NOW(), NOW(), NULL, 'mobile'),
-(9, 'MARKETING DIGITAL ET SEO', 'Techniques avancées pour optimiser votre présence en ligne.', 2, 11, 'free', 0.00, NULL, NULL, '2024-12-25 11:00:00', 100, 15, 'Aucune', 'beginner', 'C107', NULL, NULL, 'https://youtu.be/X2Y3gPbDKhc', 1, 'fr', NOW(), NOW(), NULL, 'marketing'),
-(10, 'PROGRAMMATION PYTHON AVANCÉE', 'Programmation orientée objet et manipulation des données avec Python.', 3, 12, 'paid', 600000.00, 700000.00, 580000.00, '2024-12-30 09:00:00', 150, 30, 'Python, POO', 'advanced', 'C108', NULL, NULL, 'https://youtu.be/yWlQeF6wmjI', 1, 'en', NOW(), NOW(), NULL, 'python');

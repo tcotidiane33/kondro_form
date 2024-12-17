@@ -5,7 +5,6 @@ export interface CourseCategory {
   category_name: string;
   category_status: 1 | 2;
   category_image?: string;
-
 }
 
 export interface Instructor {
@@ -21,7 +20,6 @@ export interface Instructor {
   status: 1 | 0;
   password: string;
   language: 'fr' | 'en';
-
 }
 
 export interface Course {
@@ -45,15 +43,5 @@ export interface Course {
   thumbnail_video?: string;
   status: 0 | 1 | 2;
   language: 'fr' | 'en';
-
   tag?: 'popular' | 'featured' | 'upcoming';
-
-  description: string;
-//   image: string;
-//   category: string;
-//   instructor: string;
-  instructor_avatar: string;
-  instructor_bio: string;
-//   duration: string;
-  level: string;
 }
