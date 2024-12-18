@@ -20,6 +20,11 @@ export default defineConfig({
     port: 5173,    // Définit le port du serveur de développement
     hmr: true,     // Hot Module Replacement (HMR) activé
     open: true,    // Ouvre automatiquement l'application dans le navigateur
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+      },
     proxy: {
         '/react-devtools': {
           target: 'http://localhost:8097',
@@ -32,6 +37,7 @@ export default defineConfig({
             secure: false,
           },
       },
+      
   },
   build: {
     rollupOptions: {

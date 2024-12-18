@@ -13,6 +13,17 @@
       "skipLibCheck": true,                         // Ignore la vérification des types des fichiers .d.ts
       "baseUrl": ".",                               // Définit la racine pour les chemins relatifs
       "noEmit": true,                               // Empêche l'émission de fichiers JS lors de la compilation
+
+      "lib": ["dom", "es2015"],
+      "outDir": "./lib/cjs/",
+    //   "sourceMap": true,
+      "declaration": true,
+      "noImplicitAny": true,
+    //   "module": "commonjs",
+    //   "target": "es5",
+    //   "allowJs": true,
+    //   "moduleResolution": "node",
+
       "paths": {
         "@/*": ["resources/js/*"],                 // Alias pour tous les fichiers JS
         "@components/*": ["resources/js/components/*"], // Alias pour les composants
@@ -26,5 +37,6 @@
       "resources/js/**/*.tsx",                    // Inclut tous les fichiers TypeScript React
       "resources/js/**/*.d.ts",                   // Inclut les fichiers de déclaration TypeScript
       "react-slick.d.ts"                          // Inclut une déclaration personnalisée pour react-slick
-    ]
+    ],
+    "exclude": ["node_modules", "dist", "lib"]
   }

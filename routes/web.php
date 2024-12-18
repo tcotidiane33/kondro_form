@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::resource('lessons', LessonController::class);
     Route::resource('lessons.chapters', ChapterController::class);
+
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
     // Route::get('/student/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
@@ -128,8 +129,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
         Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
 
-        Route::resource('lessons', LessonController::class);
-        Route::resource('lessons.chapters', ChapterController::class);
+        // Route::resource('lessons', LessonController::class);
+        // Route::resource('lessons.chapters', ChapterController::class);
         Route::resource('courses', CourseController::class);
         Route::resource('course-categories', CourseCategoryController::class);
         Route::resource('quizzes', QuizController::class);
