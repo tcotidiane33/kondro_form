@@ -15,3 +15,9 @@ export type PageProps<
     role: string;
     identity: string;
 };
+
+
+declare module 'path' { // Module name.
+    export function normalize( p: string ): string; // API exposed by the module.
+    export function join( ...paths: any[] ): string;
+  }

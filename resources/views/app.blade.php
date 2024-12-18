@@ -44,7 +44,7 @@
                 });
         </script>
     @endif
-
+    <script src="https://cdn.ckbox.io/ckbox/2.6.1/ckbox.js" crossorigin></script>
     <!-- Scripts Laravel + Ziggy -->
     @routes
     @viteReactRefresh
@@ -54,6 +54,7 @@
 
 <body class="font-sans antialiased bg-gray-100 text-gray-900">
     @inertia
+    <script src="https://cdn.ckbox.io/ckbox/2.6.1/ckbox.js" crossorigin></script>
 </body>
 
 </html>

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useForm, usePage } from '@inertiajs/react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { Editor } from '@tinymce/tinymce-react';
 import { Course } from '../../../types/course';
 
 interface PageProps {
@@ -21,10 +20,9 @@ const CreateLesson: React.FC = () => {
         setData(e.target.name, e.target.value);
     };
 
-    const handleEditorChange = (event: any, editor: any) => {
-        const name = editor.sourceElement.name;
-        const value = editor.getData();
-        setData(name, value);
+    const handleEditorChange = (content: string, editor: any) => {
+        const name = editor.targetElm.name;
+        setData(name, content);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -66,20 +64,56 @@ const CreateLesson: React.FC = () => {
                 </div>
                 <div className="mb-4">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={data.description}
-                        onChange={handleEditorChange}
+                    <Editor
+                        initialValue={data.description}
+                        apiKey='58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi'
+                        init={{
+                            plugins: [
+                            // Core editing features
+                            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                            // Your account includes a free trial of TinyMCE premium features
+                            // Try the most popular premium features until Jan 1, 2025:
+                            'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+                            ],
+                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                            tinycomments_mode: 'embedded',
+                            tinycomments_author: 'Author name',
+                            mergetags_list: [
+                            { value: 'First.Name', title: 'First Name' },
+                            { value: 'Email', title: 'Email' },
+                            ],
+                            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+                        }}
+                        initialValue="Description ...!"
+                        onEditorChange={handleEditorChange}
                         name="description"
                     />
                     {errors.description && <div className="text-red-600">{errors.description}</div>}
                 </div>
                 <div className="mb-4">
-                     <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Notes</label>
-                    <CKEditor
-                        editor={ClassicEditor}
-                        data={data.notes}
-                        onChange={handleEditorChange}
+                    <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Notes</label>
+                    <Editor
+                        initialValue={data.notes}
+                        apiKey='58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi'
+                        init={{
+                            plugins: [
+                            // Core editing features
+                            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                            // Your account includes a free trial of TinyMCE premium features
+                            // Try the most popular premium features until Jan 1, 2025:
+                            'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+                            ],
+                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                            tinycomments_mode: 'embedded',
+                            tinycomments_author: 'Author name',
+                            mergetags_list: [
+                            { value: 'First.Name', title: 'First Name' },
+                            { value: 'Email', title: 'Email' },
+                            ],
+                            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+                        }}
+                        initialValue="Ecris une Note!"
+                        onEditorChange={handleEditorChange}
                         name="notes"
                     />
                     {errors.notes && <div className="text-red-600">{errors.notes}</div>}
@@ -90,6 +124,7 @@ const CreateLesson: React.FC = () => {
                     </span>
                 </button>
             </form>
+
         </div>
     );
 };

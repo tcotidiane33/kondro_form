@@ -63,7 +63,7 @@ const Navbar = () => {
                             <Link href="/contact" className="text-sm font-medium text-gray-500 hover:text-gray-900">
                                 Contact
                             </Link>
-                            <div className="relative">
+                            {/* <div className="relative">
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
                                 className="text-sm font-medium text-gray-500 hover:text-gray-900 pt-0 mt-0"
@@ -83,7 +83,7 @@ const Navbar = () => {
                                     </Link>
                                 </div>
                             )}
-                        </div>
+                        </div> */}
 
                         </div>
 
