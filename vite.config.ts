@@ -25,6 +25,9 @@ export default defineConfig({
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
       },
+      headers: {
+        'Content-Type': 'application/javascript',
+      },
     proxy: {
         '/react-devtools': {
           target: 'http://localhost:8097',
@@ -35,9 +38,10 @@ export default defineConfig({
             target: 'http://localhost:8000',
             changeOrigin: true,
             secure: false,
-          },
+            rewrite: (path) => path.replace(/^\/api/, '/api'),
+        },
       },
-      
+
   },
   build: {
     rollupOptions: {
