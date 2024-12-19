@@ -6,12 +6,18 @@ import { Course } from '../../../types/course';
 interface PageProps {
     courses: Course[];
 }
+interface Chapter {
+    id: number;
+    title: string;
+}
+
 
 const CreateLesson: React.FC = () => {
-    const { courses } = usePage<PageProps>().props;
+    const { courses, chapters } = usePage<PageProps>().props;
     const { data, setData, post, errors } = useForm({
         title: '',
         course_id: '',
+        chapter_id: '',
         description: '',
         notes: '',
     });
@@ -45,6 +51,7 @@ const CreateLesson: React.FC = () => {
                     />
                     {errors.title && <div className="text-red-600">{errors.title}</div>}
                 </div>
+
                 <div className="mb-4">
                     <label htmlFor="course_id" className="block text-sm font-medium text-gray-700">Cours</label>
                     <select
@@ -63,49 +70,39 @@ const CreateLesson: React.FC = () => {
                     {errors.course_id && <div className="text-red-600">{errors.course_id}</div>}
                 </div>
                 <div className="mb-4">
+                    <label htmlFor="chapter_id" className="block text-sm font-medium text-gray-700">Chapitre</label>
+                    <select
+                        name="chapter_id"
+                        value={data.chapter_id}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-lg"
+                    >
+                        <option value="">Sélectionnez un chapitre</option>
+                        {chapters.map((chapter) => (
+                            <option key={chapter.id} value={chapter.id}>
+                                {chapter.title}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.chapter_id && <div className="text-red-600">{errors.chapter_id}</div>}
+                </div>
+                <div className="mb-4">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                    <Editor
-                        initialValue={data.description}
-                        apiKey='58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi'
-                        init={{
-                            plugins: [
-                                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
-                            ],
-                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                            tinycomments_mode: 'embedded',
-                            tinycomments_author: 'Author name',
-                            mergetags_list: [
-                                { value: 'First.Name', title: 'First Name' },
-                                { value: 'Email', title: 'Email' },
-                            ],
-                            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                        }}
-                        onEditorChange={(content) => handleEditorChange(content, { targetElm: { name: 'description' } })}
+                    <textarea
+                        name="description"
+                        value={data.description}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-lg"
                     />
                     {errors.description && <div className="text-red-600">{errors.description}</div>}
                 </div>
                 <div className="mb-4">
                     <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Notes</label>
-                    <input type="hidden" name="notes" value={data.notes} />
-                    <Editor
-                        initialValue={data.notes}
-                        apiKey='58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi'
-                        init={{
-                            plugins: [
-                                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                                'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
-                            ],
-                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                            tinycomments_mode: 'embedded',
-                            tinycomments_author: 'Author name',
-                            mergetags_list: [
-                                { value: 'First.Name', title: 'First Name' },
-                                { value: 'Email', title: 'Email' },
-                            ],
-                            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                        }}
-                        onEditorChange={(content) => handleEditorChange(content, { targetElm: { name: 'notes' } })}
+                    <textarea
+                        name="notes"
+                        value={data.notes}
+                        onChange={handleChange}
+                        className="mt-1 block w-full rounded-lg"
                     />
                     {errors.notes && <div className="text-red-600">{errors.notes}</div>}
                 </div>

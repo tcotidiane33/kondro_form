@@ -12,11 +12,20 @@ class Chapter extends Model
     protected $fillable = [
         'title',
         'lesson_id',
+        'course_id',
         'content',
     ];
 
-    public function lesson()
+    // public function lesson()
+    // {
+    //     return $this->belongsTo(Lesson::class);
+    // }
+    public function lessons()
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->hasMany(Lesson::class);
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

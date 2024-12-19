@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Courses;
 use Inertia\Inertia;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -14,20 +15,25 @@ class LessonController extends Controller
 {
     public function index()
     {
-        $lessons = Lesson::all();
-        return Inertia::render('Courses/Lessons/Index', ['lessons' => $lessons]);
+        $lessons = Lesson::with('chapter', 'course')->get();
+        $chapters = Chapter::all();
+        $courses = Course::with('chapters.lessons')->get();
+
+        return Inertia::render('Courses/Lessons/Index', ['lessons' => $lessons,'chapters' => $chapters, 'courses' => $courses]);
     }
 
     public function create()
     {
+        $chapters = Chapter::all();
         $courses = Course::all();
-        return Inertia::render('Courses/Lessons/Create', ['courses' => $courses]);
+        return Inertia::render('Courses/Lessons/Create', ['chapters' => $chapters, 'courses' => $courses]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'chapter_id' => 'required|exists:chapters,id',
             'course_id' => 'required|exists:courses,id',
             'description' => 'nullable|string',
             'notes' => 'nullable|string',
@@ -35,6 +41,7 @@ class LessonController extends Controller
 
         Lesson::create([
             'title' => $request->input('title'),
+            'chapter_id' => $request->input('chapter_id'),
             'course_id' => $request->input('course_id'),
             'description' => $request->input('description'),
             'notes' => $request->input('notes'),
@@ -45,20 +52,22 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
-        $lesson->load('course');
+        $lesson->load('chapter', 'course');
         return Inertia::render('Courses/Lessons/Show', ['lesson' => $lesson]);
     }
 
     public function edit(Lesson $lesson)
     {
+        $chapters = Chapter::all();
         $courses = Course::all();
-        return Inertia::render('Courses/Lessons/Edit', ['lesson' => $lesson, 'courses' => $courses]);
+        return Inertia::render('Courses/Lessons/Edit', ['lesson' => $lesson, 'chapters' => $chapters, 'courses' => $courses]);
     }
 
     public function update(Request $request, Lesson $lesson)
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'chapter_id' => 'required|exists:chapters,id',
             'course_id' => 'required|exists:courses,id',
             'description' => 'nullable|string',
             'notes' => 'nullable|string',
@@ -66,6 +75,7 @@ class LessonController extends Controller
 
         $lesson->update([
             'title' => $request->input('title'),
+            'chapter_id' => $request->input('chapter_id'),
             'course_id' => $request->input('course_id'),
             'description' => $request->input('description'),
             'notes' => $request->input('notes'),

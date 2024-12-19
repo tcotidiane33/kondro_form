@@ -10,6 +10,10 @@ interface Lesson {
         id: number;
         title: string;
     };
+    chapter: {
+        id: number;
+        title: string;
+    };
 }
 
 interface Props {
@@ -23,6 +27,10 @@ const ShowLesson: React.FC<Props> = ({ lesson }) => {
             <div className="mb-4">
                 <h2 className="text-xl font-semibold">Cours</h2>
                 <p>{lesson.course.title}</p>
+            </div>
+            <div className="mb-4">
+                <h2 className="text-xl font-semibold">Chapitre</h2>
+                <p>{lesson.chapter.title}</p>
             </div>
             <div className="mb-4">
                 <h2 className="text-xl font-semibold">Description</h2>

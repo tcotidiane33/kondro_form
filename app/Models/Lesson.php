@@ -12,6 +12,7 @@ class Lesson extends Model
     protected $fillable = [
         'title',
         'course_id',
+        'chapter_id',
         'description',
         'notes',
     ];
@@ -21,12 +22,17 @@ class Lesson extends Model
         return $this->belongsTo(Course::class);
     }
 
+    public function chapter()
+    {
+        return $this->belongsTo(Chapter::class);
+    }
+
     public function material()
     {
         return $this->hasMany(Material::class);
     }
-    public function chapters()
-    {
-        return $this->hasMany(Chapter::class);
-    }
+    // public function chapters()
+    // {
+    //     return $this->hasMany(Chapter::class);
+    // }
 }
