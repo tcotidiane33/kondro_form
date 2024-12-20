@@ -9,6 +9,14 @@ class Material extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'type',
+        'content',
+        'content_url',
+        'lesson_id',
+    ];
+
     public function lesson()
     {
         return $this->belongsTo(Lesson::class);

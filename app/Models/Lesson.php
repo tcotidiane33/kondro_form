@@ -27,7 +27,7 @@ class Lesson extends Model
         return $this->belongsTo(Chapter::class);
     }
 
-    public function material()
+    public function materials()
     {
         return $this->hasMany(Material::class);
     }

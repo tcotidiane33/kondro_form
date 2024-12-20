@@ -58,6 +58,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::resource('lessons', LessonController::class);
     Route::resource('lessons.chapters', ChapterController::class);
+    // Route::resource('lessons.materials', MaterialController::class);
+    Route::post('lessons/{lesson}/materials', [LessonController::class, 'addMaterial'])->name('lessons.materials.store');
+    Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
+    Route::put('lessons/{lesson}/materials/{material}', [LessonController::class, 'updateMaterial'])->name('lessons.materials.update');
+    Route::delete('lessons/{lesson}/materials/{material}', [LessonController::class, 'deleteMaterial'])->name('lessons.materials.destroy');
+
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
@@ -121,13 +127,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/recommendations', [RecommendationController::class, 'index'])->name('instructor.recommendations');
         // Route::get('/support', [SupportController::class, 'index'])->name('support');
 
-        Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
-        Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
-        Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
-        Route::get('/materials/{id}', [MaterialController::class, 'show'])->name('material.show');
-        Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('material.edit');
-        Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
-        Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
+        // Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
+        // Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
+        // Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
+        // Route::get('/materials/{id}', [MaterialController::class, 'show'])->name('material.show');
+        // Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('material.edit');
+        // Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
+        // Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
 
         // Route::resource('lessons', LessonController::class);
         // Route::resource('lessons.chapters', ChapterController::class);

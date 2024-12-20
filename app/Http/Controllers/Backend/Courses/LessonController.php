@@ -10,12 +10,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Material;
 
 class LessonController extends Controller
 {
     public function index()
     {
-        $lessons = Lesson::with('chapter', 'course')->get();
+        $lessons = Lesson::with('chapter', 'course', 'materials')->get();
         $chapters = Chapter::all();
         $courses = Course::with('chapters.lessons')->get();
 
@@ -52,7 +53,7 @@ class LessonController extends Controller
 
     public function show(Lesson $lesson)
     {
-        $lesson->load('chapter', 'course');
+        $lesson->load('chapter', 'course', 'materials');
         return Inertia::render('Courses/Lessons/Show', ['lesson' => $lesson]);
     }
 
@@ -99,5 +100,59 @@ class LessonController extends Controller
         $lesson->delete();
 
         return redirect()->route('lessons.index')->with('success', 'Leçon supprimée avec succès.');
+    }
+
+
+
+    //Fro Materials
+
+    // Méthodes pour gérer les matériaux
+    public function addMaterial(Request $request, Lesson $lesson)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'type' => 'required|string',
+            'content' => 'nullable|string',
+            'content_url' => 'nullable|string',
+        ]);
+
+        $lesson->materials()->create([
+            'title' => $request->input('title'),
+            'type' => $request->input('type'),
+            'content' => $request->input('content'),
+            'content_url' => $request->input('content_url'),
+        ]);
+
+        return redirect()->route('lessons.show', $lesson)->with('success', 'Matériel ajouté avec succès.');
+    }
+
+    public function editMaterial(Lesson $lesson, Material $material)
+    {
+        return Inertia::render('Backend/Courses/Materials/Edit', ['lesson' => $lesson, 'material' => $material]);
+    }
+
+    public function updateMaterial(Request $request, Lesson $lesson, Material $material)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'type' => 'required|string',
+            'content' => 'nullable|string',
+            'content_url' => 'nullable|string',
+        ]);
+
+        $material->update([
+            'title' => $request->input('title'),
+            'type' => $request->input('type'),
+            'content' => $request->input('content'),
+            'content_url' => $request->input('content_url'),
+        ]);
+
+        return redirect()->route('lessons.show', $lesson)->with('success', 'Matériel mis à jour avec succès.');
+    }
+
+    public function deleteMaterial(Lesson $lesson, Material $material)
+    {
+        $material->delete();
+        return redirect()->route('lessons.show', $lesson)->with('success', 'Matériel supprimé avec succès.');
     }
 }
