@@ -18,10 +18,11 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::all();
+        // $materials = Material::all();
+        $materials = Material::with('lesson')->get();
         return Inertia::render('Backend/Courses/Materials/Index', ['materials' => $materials]);
     }
-
+  
     /**
      * Show the form for creating a new resource.
      */
@@ -66,7 +67,8 @@ class MaterialController extends Controller
      */
     public function show($id)
     {
-        $material = Material::findOrFail($id);
+        // $material = Material::findOrFail($id);
+        $material = Material::with('lesson')->findOrFail($id);
         return Inertia::render('Backend/Courses/Materials/Show', ['material' => $material]);
     }
 

@@ -73,7 +73,7 @@ const InstructorDashboard: React.FC = () => {
                                 Ajouter un Lesson
                             </Button>
                         </NavLink>
-                        <NavLink to="/materials/create">
+                        <NavLink to="instructor/materials">
                             <Button variant="contained" color="success" startIcon={<AddIcon />}>
                                 Ajouter un Fichier
                             </Button>
