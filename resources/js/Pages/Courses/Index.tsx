@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import CourseFilter from '../../Components/Courses/CourseFilter';
 import CourseCard from '../../Components/Courses/CourseCard';
+import { InertiaLink } from '@inertiajs/inertia-react';
+import ViewMaterials from '@/Pages/Courses/ViewMaterials';
+
 
 interface Course {
   id: number;
@@ -10,6 +13,9 @@ interface Course {
   price: number;
   description: string;
   image: string;
+  type: 'free' | 'paid' | 'subscription';
+  status: string;
+  language: string;
   category: {
     id: number;
     category_name: string;
@@ -67,6 +73,11 @@ const Index: React.FC<IndexProps> = ({ courses, categories }) => {
           </div>
         </main>
       </div>
+      <div className='mt-4'>
+            <InertiaLink href="/materials/view" className="btn btn-primary">Voir les Matériaux</InertiaLink>
+            <ViewMaterials instructors={[]} />
+        </div>
+
     </div>
   );
 };

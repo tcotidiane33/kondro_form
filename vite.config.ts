@@ -10,6 +10,8 @@ export default defineConfig({
         'resources/js/app.tsx',
         'resources/js/Pages/Welcome.tsx',
         'resources/js/Pages/Backend/Admin/Dashboard.tsx',
+        'resources/js/Pages/Courses/ViewMaterials.tsx', // Ajoutez ce fichier ici
+
       ],
       refresh: true, // Active le rafraîchissement automatique des pages Laravel
     }),
@@ -18,7 +20,10 @@ export default defineConfig({
   ],
   server: {
     port: 5173,    // Définit le port du serveur de développement
-    hmr: true,     // Hot Module Replacement (HMR) activé
+    hmr: {
+        port: 5174, // Changez le port HMR ici
+      },
+    // hmr: true,     // Hot Module Replacement (HMR) activé
     open: true,    // Ouvre automatiquement l'application dans le navigateur
     cors: {
         origin: '*',

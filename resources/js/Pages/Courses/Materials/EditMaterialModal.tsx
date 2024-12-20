@@ -28,34 +28,73 @@ const EditMaterialModal: React.FC<Props> = ({ lessonId, material, onClose }) => 
             type,
             content,
             content_url: contentUrl,
+            lesson_id: lessonId, // Ajout du lesson_id
         });
         onClose();
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <h2>Éditer le Matériel</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-4">Éditer le Matériel</h2>
                 <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Titre</label>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} title="Title" placeholder="Enter title" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Titre</label>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez le titre ici"
+                        />
                     </div>
-                    <div>
-                        <label>Type</label>
-                        <input type="text" value={type} onChange={(e) => setType(e.target.value)} title="Type" placeholder="Enter type" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Type</label>
+                        <select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        >
+                            <option value="video">Vidéo</option>
+                            <option value="document">Document</option>
+                            <option value="quiz">Quiz</option>
+                        </select>
                     </div>
-                    <div>
-                        <label>Contenu</label>
-                        <textarea value={content} onChange={(e) => setContent(e.target.value)} title="Content" placeholder="Enter content" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Contenu</label>
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez le contenu ici"
+                        />
                     </div>
-                    <div>
-                        <label>URL du Contenu</label>
-                        <input type="text" value={contentUrl} onChange={(e) => setContentUrl(e.target.value)} title="Content URL" placeholder="Enter content URL" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">URL du Contenu</label>
+                        <input
+                            type="text"
+                            value={contentUrl}
+                            onChange={(e) => setContentUrl(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez l'URL du contenu ici"
+                        />
                     </div>
-                    <button type="submit">Enregistrer</button>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="mr-2 px-4 py-2 bg-gray-500 text-white rounded-lg"
+                        >
+                            Fermer
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                        >
+                            Enregistrer
+                        </button>
+                    </div>
                 </form>
-                <button onClick={onClose}>Fermer</button>
             </div>
         </div>
     );

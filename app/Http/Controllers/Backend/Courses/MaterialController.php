@@ -6,6 +6,7 @@ use Exception;
 use Inertia\Inertia;
 use App\Models\Lesson;
 use App\Models\Material;
+use App\Models\Instructor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\Course\Materials\AddNewRequest;
@@ -20,9 +21,9 @@ class MaterialController extends Controller
     {
         // $materials = Material::all();
         $materials = Material::with('lesson')->get();
-        return Inertia::render('Backend/Courses/Materials/Index', ['materials' => $materials]);
+        return Inertia::render('Backend/Materials/Index', ['materials' => $materials]);
     }
-  
+
     /**
      * Show the form for creating a new resource.
      */
@@ -30,7 +31,7 @@ class MaterialController extends Controller
     {
         // $lesson= Lesson::get();
         $lessons = Lesson::all();
-        return Inertia::render('Backend/Courses/Materials/Create', ['lessons' => $lessons]);
+        return Inertia::render('Backend/Materials/Create', ['lessons' => $lessons]);
     }
 
     /**
@@ -69,7 +70,7 @@ class MaterialController extends Controller
     {
         // $material = Material::findOrFail($id);
         $material = Material::with('lesson')->findOrFail($id);
-        return Inertia::render('Backend/Courses/Materials/Show', ['material' => $material]);
+        return Inertia::render('Backend/Materials/Show', ['material' => $material]);
     }
 
     /**
@@ -129,5 +130,12 @@ class MaterialController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Please try again');
         }
+    }
+
+
+    public function viewMaterials()
+    {
+        $instructors = Instructor::with('courses.chapters.lessons.materials')->get();
+        return Inertia::render('Backend/Materials/ViewMaterials', ['instructors' => $instructors]);
     }
 }

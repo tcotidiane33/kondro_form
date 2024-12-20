@@ -57,8 +57,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/backend/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::resource('lessons', LessonController::class);
-    Route::resource('lessons.chapters', ChapterController::class);
+    Route::resource('chapters', ChapterController::class);
     // Route::resource('lessons.materials', MaterialController::class);
+    Route::get('materials/view', [LessonController::class, 'viewMaterials'])->name('materials.view');
     Route::post('lessons/{lesson}/materials', [LessonController::class, 'addMaterial'])->name('lessons.materials.store');
     Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
     Route::put('lessons/{lesson}/materials/{material}', [LessonController::class, 'updateMaterial'])->name('lessons.materials.update');

@@ -12,6 +12,9 @@ interface Chapter {
     title: string;
     content: string;
     lessons: Lesson[];
+    course: {
+        title: string;
+    };
 }
 
 interface Props {
@@ -22,6 +25,7 @@ const ShowChapter: React.FC<Props> = ({ chapter }) => {
     return (
         <div className="container mx-auto p-4 mt-4 rounded-lg">
             <h1 className="text-2xl font-bold mb-4">{chapter.title}</h1>
+            <h2 className="text-xl font-semibold mb-4">Cours: {chapter.course.title}</h2>
             <div className="mb-4">
                 <h2 className="text-xl font-semibold">Contenu</h2>
                 <div dangerouslySetInnerHTML={{ __html: chapter.content }} />

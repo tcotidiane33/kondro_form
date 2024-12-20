@@ -1,44 +1,82 @@
-import React from 'react';
-import { useForm, usePage } from '@inertiajs/react';
-import { Editor } from '@tinymce/tinymce-react';
-import { Course } from '../../../types/course';
+import React, { useState, useEffect } from 'react';
+import { useForm } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
-interface PageProps {
-    courses: Course[];
-}
 interface Chapter {
+    id: number;
+    course_id: number;
+    title: string;
+    content: string;
+}
+
+interface Course {
     id: number;
     title: string;
 }
 
+interface CreateLessonProps {
+    chapters: Chapter[];
+    courses: Course[];
+}
 
-const CreateLesson: React.FC = () => {
-    const { courses, chapters } = usePage<PageProps>().props;
-    const { data, setData, post, errors } = useForm({
+const CreateLesson: React.FC<CreateLessonProps> = ({ chapters, courses }) => {
+    const { data, setData, post, errors, clearErrors, setError } = useForm({
         title: '',
-        course_id: '',
         chapter_id: '',
+        course_id: '',
         description: '',
         notes: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const [isNewChapter, setIsNewChapter] = useState(false);
+    const [newChapter, setNewChapter] = useState({ title: '', content: '' });
+    const [filteredChapters, setFilteredChapters] = useState<Chapter[]>([]);
+
+    useEffect(() => {
+        if (data.course_id) {
+            const courseChapters = chapters.filter(chapter => chapter.course_id === parseInt(data.course_id));
+            setFilteredChapters(courseChapters);
+        } else {
+            setFilteredChapters([]);
+        }
+    }, [data.course_id]);
+
+    const handleChange = (e) => {
         setData(e.target.name, e.target.value);
     };
 
-    const handleEditorChange = (content: string, editor: any) => {
-        const name = editor.targetElm.name;
-        setData(name, content);
+    const handleChapterChange = (e) => {
+        const selectedChapter = filteredChapters.find(chapter => chapter.id === parseInt(e.target.value));
+        if (selectedChapter) {
+            setData('description', selectedChapter.content);
+        }
+        setData('chapter_id', e.target.value);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleNewChapterChange = (e) => {
+        setNewChapter({ ...newChapter, [e.target.name]: e.target.value });
+    };
+
+       const handleSubmit = (e) => {
         e.preventDefault();
-        post('/lessons');
+        if (isNewChapter) {
+            // Logic to create a new chapter and then create the lesson
+            Inertia.post('/chapters', newChapter, {
+                onSuccess: (page) => {
+                    const createdChapter = page.props.chapter as Chapter;
+                    setData('chapter_id', createdChapter.id);
+                    setData('course_id', createdChapter.course_id);
+                    post('/lessons', data);
+                }
+            });
+        } else {
+            post('/lessons', data);
+        }
     };
 
     return (
-        <div className="container mx-auto p-4 mt-4 rounded-lg" style={{ backgroundImage: 'linear-gradient(-45deg, #35C3F3 0%, #8b9fe8 20%,rgb(169, 196, 230) 39%,rgb(222, 208, 208) 76%,rgba(166, 164, 164, 0.8) 100%)' }}>
-            <h1 className="text-2xl font-bold mb-4">Ajouter une Leçon</h1>
+        <div className="container mx-auto p-4">
+            <h1 className="text-2xl font-bold mb-4">Créer une nouvelle leçon</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="title" className="block text-sm font-medium text-gray-700">Titre</label>
@@ -51,7 +89,6 @@ const CreateLesson: React.FC = () => {
                     />
                     {errors.title && <div className="text-red-600">{errors.title}</div>}
                 </div>
-
                 <div className="mb-4">
                     <label htmlFor="course_id" className="block text-sm font-medium text-gray-700">Cours</label>
                     <select
@@ -74,11 +111,13 @@ const CreateLesson: React.FC = () => {
                     <select
                         name="chapter_id"
                         value={data.chapter_id}
-                        onChange={handleChange}
+                        onChange={handleChapterChange}
                         className="mt-1 block w-full rounded-lg"
+                        disabled={isNewChapter}
+                        title="Sélectionnez un chapitre"
                     >
                         <option value="">Sélectionnez un chapitre</option>
-                        {chapters.map((chapter) => (
+                        {filteredChapters.map((chapter) => (
                             <option key={chapter.id} value={chapter.id}>
                                 {chapter.title}
                             </option>
@@ -87,12 +126,50 @@ const CreateLesson: React.FC = () => {
                     {errors.chapter_id && <div className="text-red-600">{errors.chapter_id}</div>}
                 </div>
                 <div className="mb-4">
+                    <label htmlFor="isNewChapter" className="block text-sm font-medium text-gray-700">
+                        <input
+                            type="checkbox"
+                            name="isNewChapter"
+                            checked={isNewChapter}
+                            onChange={() => setIsNewChapter(!isNewChapter)}
+                            title="Ajouter un nouveau chapitre"
+                            placeholder="Ajouter un nouveau chapitre"
+                        />
+                        Ajouter un nouveau chapitre
+                    </label>
+                </div>
+                {isNewChapter && (
+                    <div className="mb-4">
+                        <label htmlFor="newChapterTitle" className="block text-sm font-medium text-gray-700">Titre du nouveau chapitre</label>
+                        <input
+                            type="text"
+                            name="title"
+                            value={newChapter.title}
+                            onChange={handleNewChapterChange}
+                            className="mt-1 block w-full rounded-lg"
+                        />
+                        {errors.title && <div className="text-red-600">{errors.title}</div>}
+                        <label htmlFor="newChapterContent" className="block text-sm font-medium text-gray-700">Contenu du nouveau chapitre</label>
+                        <textarea
+                            name="content"
+                            value={newChapter.content}
+                            onChange={handleNewChapterChange}
+                            className="mt-1 block w-full rounded-lg"
+                            title="Contenu du nouveau chapitre"
+                            placeholder="Entrez le contenu du nouveau chapitre"
+                        />
+                        {errors.newChapterContent && <div className="text-red-600">{errors.newChapterContent}</div>}
+                    </div>
+                )}
+                <div className="mb-4">
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
                     <textarea
                         name="description"
                         value={data.description}
                         onChange={handleChange}
                         className="mt-1 block w-full rounded-lg"
+                        title="Description"
+                        placeholder="Entrez la description"
                     />
                     {errors.description && <div className="text-red-600">{errors.description}</div>}
                 </div>
@@ -103,14 +180,12 @@ const CreateLesson: React.FC = () => {
                         value={data.notes}
                         onChange={handleChange}
                         className="mt-1 block w-full rounded-lg"
+                        title="Notes"
+                        placeholder="Entrez les notes"
                     />
                     {errors.notes && <div className="text-red-600">{errors.notes}</div>}
                 </div>
-                <button type="submit" className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                    <span className="relative px-5 py-1 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                        Soumettre
-                    </span>
-                </button>
+                <button type="submit" className="btn btn-primary">Soumettre</button>
             </form>
         </div>
     );

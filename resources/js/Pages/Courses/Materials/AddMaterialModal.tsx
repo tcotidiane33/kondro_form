@@ -8,7 +8,7 @@ interface Props {
 
 const AddMaterialModal: React.FC<Props> = ({ lessonId, onClose }) => {
     const [title, setTitle] = useState('');
-    const [type, setType] = useState('');
+    const [type, setType] = useState('video'); // Default type set to 'video'
     const [content, setContent] = useState('');
     const [contentUrl, setContentUrl] = useState('');
 
@@ -19,34 +19,73 @@ const AddMaterialModal: React.FC<Props> = ({ lessonId, onClose }) => {
             type,
             content,
             content_url: contentUrl,
+            lesson_id: lessonId, // Ajout du lesson_id
         });
         onClose();
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <h2>Ajouter un Matériel</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-4">Ajouter un Matériel</h2>
                 <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Titre</label>
-                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} title="Titre" placeholder="Entrez le titre ici" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Titre</label>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez le titre ici"
+                        />
                     </div>
-                    <div>
-                        <label>Type</label>
-                        <input type="text" value={type} onChange={(e) => setType(e.target.value)} title="Type" placeholder="Entrez le type ici" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Type</label>
+                        <select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                        >
+                            <option value="video">Vidéo</option>
+                            <option value="document">Document</option>
+                            <option value="quiz">Quiz</option>
+                        </select>
                     </div>
-                    <div>
-                        <label>Contenu</label>
-                        <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Entrez le contenu ici" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Contenu</label>
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez le contenu ici"
+                        />
                     </div>
-                    <div>
-                        <label>URL du Contenu</label>
-                        <input type="text" value={contentUrl} onChange={(e) => setContentUrl(e.target.value)} title="URL du Contenu" placeholder="Entrez l'URL du contenu ici" />
+                    <div className="mb-4">
+                        <label className="block text-gray-700">URL du Contenu</label>
+                        <input
+                            type="text"
+                            value={contentUrl}
+                            onChange={(e) => setContentUrl(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg"
+                            placeholder="Entrez l'URL du contenu ici"
+                        />
                     </div>
-                    <button type="submit">Ajouter</button>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="mr-2 px-4 py-2 bg-gray-500 text-white rounded-lg"
+                        >
+                            Fermer
+                        </button>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                        >
+                            Ajouter
+                        </button>
+                    </div>
                 </form>
-                <button onClick={onClose}>Fermer</button>
             </div>
         </div>
     );
