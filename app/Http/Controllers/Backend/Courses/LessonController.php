@@ -172,6 +172,6 @@ class LessonController extends Controller
     public function viewMaterials()
     {
         $instructors = Instructor::with('courses.chapters.lessons.materials')->get();
-        return Inertia::render('/Courses/ViewMaterials', ['instructors' => $instructors]);
+        return Inertia::render('Courses/ViewMaterials', ['instructors' => $instructors]);
     }
 }

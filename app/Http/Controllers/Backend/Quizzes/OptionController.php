@@ -6,6 +6,7 @@ use App\Models\Option;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Inertia\Inertia;
 use Exception;
 
 class OptionController extends Controller
@@ -15,8 +16,10 @@ class OptionController extends Controller
      */
     public function index()
     {
-        $option = Option::paginate(20);
-        return view('backend.quiz.option.index', compact('option'));
+        $options = Option::paginate(20);
+        return Inertia::render('Backend/Quiz/Options/Index', [
+            'options' => $options,
+        ]);
     }
 
     /**
@@ -24,8 +27,10 @@ class OptionController extends Controller
      */
     public function create()
     {
-        $question = Question::get();
-        return view('backend.quiz.option.create', compact('question'));
+        $questions = Question::all();
+        return Inertia::render('Backend/Quiz/Options/Create', [
+            'questions' => $questions,
+        ]);
     }
 
     /**
@@ -33,23 +38,26 @@ class OptionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'option_text' => 'required|string|max:255',
+            'question_id' => 'required|exists:questions,id',
+            'is_correct' => 'required|boolean',
+
+        ]);
+
         try {
             $option = new Option;
-            $option->question_id = $request->questionId;
-            $option->option_text = $request->optionText;
+            $option->option_text = $request->option_text;
+            $option->question_id = $request->question_id;
             $option->is_correct = $request->is_correct;
 
             if ($option->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('option.index');
+                return redirect()->route('options.index')->with('success', 'Option created successfully.');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
@@ -58,7 +66,9 @@ class OptionController extends Controller
      */
     public function show(Option $option)
     {
-        //
+        return Inertia::render('Backend/Quiz/Options/Show', [
+            'option' => $option,
+        ]);
     }
 
     /**
@@ -66,9 +76,12 @@ class OptionController extends Controller
      */
     public function edit($id)
     {
-        $question = Question::get();
-        $option = Option::findOrFail(encryptor('decrypt', $id));
-        return view('backend.quiz.option.edit', compact('question', 'option'));
+        $questions = Question::all();
+        $option = Option::findOrFail($id);
+        return Inertia::render('Backend/Quiz/Options/Edit', [
+            'questions' => $questions,
+            'option' => $option,
+        ]);
     }
 
     /**
@@ -76,23 +89,26 @@ class OptionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'option_text' => 'required|string|max:255',
+            'question_id' => 'required|exists:questions,id',
+            'is_correct' => 'required|boolean',
+
+        ]);
+
         try {
-            $option = Option::findOrFail(encryptor('decrypt', $id));
-            $option->question_id = $request->questionId;
-            $option->option_text = $request->optionText;
+            $option = Option::findOrFail($id);
+            $option->option_text = $request->option_text;
+            $option->question_id = $request->question_id;
             $option->is_correct = $request->is_correct;
 
             if ($option->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('option.index');
+                return redirect()->route('options.index')->with('success', 'Option updated successfully.');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
@@ -101,10 +117,9 @@ class OptionController extends Controller
      */
     public function destroy($id)
     {
-        $data = Option::findOrFail(encryptor('decrypt', $id));
-        if ($data->delete()) {
-            $this->notice::error('Data Deleted!');
-            return redirect()->back();
-        }
+        $option = Option::findOrFail($id);
+        $option->delete();
+
+        return redirect()->route('options.index')->with('success', 'Option deleted successfully.');
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Quizzes; 
+namespace App\Http\Controllers\Backend\Quizzes;
 
 use App\Models\Question;
+use App\Models\Option;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
+use Inertia\Inertia;
 use Exception;
 
 class QuestionController extends Controller
@@ -15,8 +17,10 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $question = Question::paginate(10);
-        return view('backend.quiz.question.index', compact('question'));
+        $questions = Question::with('options')->paginate(10);
+        return Inertia::render('Backend/Quiz/Questions/Index', [
+            'questions' => $questions,
+        ]);
     }
 
     /**
@@ -24,8 +28,10 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        $quiz = Quiz::get();
-        return view('backend.quiz.question.create', compact('quiz'));
+        $quizzes = Quiz::all();
+        return Inertia::render('Backend/Quiz/Questions/Create', [
+            'quizzes' => $quizzes,
+        ]);
     }
 
     /**
@@ -33,28 +39,33 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'quiz_id' => 'required|exists:quizzes,id',
+            'questionType' => 'required|in:multiple_choice,true_false,short_answer',
+            'questionContent' => 'required|string|max:255',
+            'options' => 'array',
+            'options.*.option_text' => 'required_if:questionType,multiple_choice|string|max:255',
+            'options.*.is_correct' => 'required_if:questionType,multiple_choice|boolean',
+        ]);
+
         try {
             $question = new Question;
-            $question->quiz_id = $request->quizId;
+            $question->quiz_id = $request->quiz_id;
             $question->type = $request->questionType;
             $question->content = $request->questionContent;
-            $question->option_a = $request->optionA;
-            $question->option_b = $request->optionB;
-            $question->option_c = $request->optionC;
-            $question->option_d = $request->optionD;
-            $question->correct_answer = $request->correctAnswer;
 
             if ($question->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('question.index');
+                if ($request->questionType === 'multiple_choice') {
+                    foreach ($request->options as $option) {
+                        $question->options()->create($option);
+                    }
+                }
+                return redirect()->route('questions.index')->with('success', 'Question created successfully.');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
@@ -63,7 +74,10 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        $question->load('options');
+        return Inertia::render('Backend/Quiz/Questions/Show', [
+            'question' => $question,
+        ]);
     }
 
     /**
@@ -71,9 +85,12 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        $quiz = Quiz::get();
-        $question = Question::findOrFail(encryptor('decrypt',$id));
-        return view('backend.quiz.question.edit', compact('quiz', 'question'));
+        $quizzes = Quiz::all();
+        $question = Question::with('options')->findOrFail($id);
+        return Inertia::render('Backend/Quiz/Questions/Edit', [
+            'quizzes' => $quizzes,
+            'question' => $question,
+        ]);
     }
 
     /**
@@ -81,28 +98,34 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'quiz_id' => 'required|exists:quizzes,id',
+            'questionType' => 'required|in:multiple_choice,true_false,short_answer',
+            'questionContent' => 'required|string|max:255',
+            'options' => 'array',
+            'options.*.option_text' => 'required_if:questionType,multiple_choice|string|max:255',
+            'options.*.is_correct' => 'required_if:questionType,multiple_choice|boolean',
+        ]);
+
         try {
-            $question = Question::findOrFail(encryptor('decrypt', $id));
-            $question->quiz_id = $request->quizId;
+            $question = Question::findOrFail($id);
+            $question->quiz_id = $request->quiz_id;
             $question->type = $request->questionType;
             $question->content = $request->questionContent;
-            $question->option_a = $request->optionA;
-            $question->option_b = $request->optionB;
-            $question->option_c = $request->optionC;
-            $question->option_d = $request->optionD;
-            $question->correct_answer = $request->correctAnswer;
 
             if ($question->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('question.index');
+                if ($request->questionType === 'multiple_choice') {
+                    $question->options()->delete();
+                    foreach ($request->options as $option) {
+                        $question->options()->create($option);
+                    }
+                }
+                return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 
@@ -111,10 +134,9 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        $data = Question::findOrFail(encryptor('decrypt', $id));
-        if ($data->delete()) {
-            $this->notice::error('Data Deleted!');
-            return redirect()->back();
-        }
+        $question = Question::findOrFail($id);
+        $question->delete();
+
+        return redirect()->route('questions.index')->with('success', 'Question deleted successfully.');
     }
 }

@@ -4,7 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
-import { Book, Clock, Award } from 'react-feather';
+import { Book, Clock, Award, Layers, FileText, Archive, CheckSquare, Calendar, Tag } from 'react-feather';
 
 export default function InstructorLayout({
     header,
@@ -37,10 +37,34 @@ export default function InstructorLayout({
                                     <Book className="inline-block text-2xl text-[#FF2D20]" />
                                     Courses
                                 </NavLink>
-                                <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
-                                    <Book className="inline-block text-2xl text-[#FF2D20]" />
-                                    Category Courses
+                                <NavLink href={route('lessons.index')} active={route().current('lessons.index')}>
+                                    <Layers className="inline-block text-2xl text-[#FF2D20]" />
+                                    Lessons
                                 </NavLink>
+                                <NavLink href={route('chapters.index')} active={route().current('chapters.index')}>
+                                    <FileText className="inline-block text-2xl text-[#FF2D20]" />
+                                    Chapters
+                                </NavLink>
+                                <NavLink href={route('materials.view')} active={route().current('materials.view')}>
+                                    <Archive className="inline-block text-2xl text-[#FF2D20]" />
+                                    Materials
+                                </NavLink>
+                                <NavLink href={route('quizzes.index')} active={route().current('materials.view')}>
+                                    <Archive className="inline-block text-2xl text-[#FF2D20]" />
+                                    Quizzes
+                                </NavLink>
+                                {/* <NavLink href={route('answers.index')} active={route().current('materials.view')}>
+                                    <Archive className="inline-block text-2xl text-[#FF2D20]" />
+                                    Answers
+                                </NavLink>
+                                <NavLink href={route('events.index')} active={route().current('materials.view')}>
+                                    <Archive className="inline-block text-2xl text-[#FF2D20]" />
+                                    Events
+                                </NavLink>
+                                <NavLink href={route('coupons.index')} active={route().current('materials.view')}>
+                                    <Tag className="inline-block text-2xl text-[#FF2D20]" />
+                                    Coupons
+                                </NavLink> */}
                                 <NavLink href="#send-quiz-result" active={route().current('send-quiz-result')}>
                                     <Clock className="inline-block text-2xl text-[#FF2D20]" />
                                     Send Quiz Result
@@ -129,10 +153,35 @@ export default function InstructorLayout({
                             <Book className="inline-block text-2xl text-[#FF2D20]" />
                             Courses
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
-                            <Book className="inline-block text-2xl text-[#FF2D20]" />
-                            Category Courses
+                        <ResponsiveNavLink href={route('lessons.index')} active={route().current('course-categories.index')}>
+                            <Layers className="inline-block text-2xl text-[#FF2D20]" />
+                            Lessons
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('chapters.index')} active={route().current('course-categories.index')}>
+                            <FileText className="inline-block text-2xl text-[#FF2D20]" />
+                            Chapters
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('materials.view')} active={route().current('course-categories.index')}>
+                            <Archive className="inline-block text-2xl text-[#FF2D20]" />
+                            Materials
+                        </ResponsiveNavLink>
+                        {/* <ResponsiveNavLink href={route('quizzes.index')} active={route().current('quizzes.index')}>
+                            <FileText className="inline-block text-2xl text-[#FF2D20]" />
+                            Quizzes
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('answers.index')} active={route().current('answers.index')}>
+                            <CheckSquare className="inline-block text-2xl text-[#FF2D20]" />
+                            Answers
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('events.index')} active={route().current('events.index')}>
+                            <Calendar className="inline-block text-2xl text-[#FF2D20]" />
+                            Events
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('coupons.index')} active={route().current('coupons.index')}>
+                            <Tag className="inline-block text-2xl text-[#FF2D20]" />
+                            Coupons
+                        </ResponsiveNavLink> */}
+
                         <ResponsiveNavLink href="#send-quiz-result" active={route().current('send-quiz-result')}>
                             <Clock className="inline-block text-2xl text-[#FF2D20]" />
                             Send Quiz Result

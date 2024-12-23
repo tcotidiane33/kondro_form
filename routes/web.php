@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\Setting\UserController;
 use App\Http\Controllers\Backend\Courses\CourseController;
 use App\Http\Controllers\Backend\Courses\LessonController;
 use App\Http\Controllers\Backend\Quizzes\AnswerController;
+use App\Http\Controllers\Backend\Quizzes\OptionController;
 use App\Http\Controllers\Backend\Courses\ChapterController;
 use App\Http\Controllers\Backend\Courses\MaterialController;
 use App\Http\Controllers\Backend\Quizzes\QuestionController;
@@ -58,7 +59,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::resource('lessons', LessonController::class);
     Route::resource('chapters', ChapterController::class);
-    // Route::resource('lessons.materials', MaterialController::class);
     Route::get('materials/view', [LessonController::class, 'viewMaterials'])->name('materials.view');
     Route::post('lessons/{lesson}/materials', [LessonController::class, 'addMaterial'])->name('lessons.materials.store');
     Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
@@ -117,6 +117,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('instructor.courses.edit');
         Route::put('/courses/{id}', [CourseController::class, 'update'])->name('instructor.courses.update');
         Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('instructor.courses.destroy');
+
         // Route::get('/progress', [ProgressController::class, 'index'])->name('instructor.progress');
         // Route::get('/certificates', [CertificateController::class, 'index'])->name('instructor.certificates');
         // Route::post('/certificates/request', [CertificateController::class, 'request'])->name('instructor.certificates.request');
@@ -128,20 +129,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/recommendations', [RecommendationController::class, 'index'])->name('instructor.recommendations');
         // Route::get('/support', [SupportController::class, 'index'])->name('support');
 
-        // Route::get('/materials', [MaterialController::class, 'index'])->name('material.index');
-        // Route::get('/materials/create', [MaterialController::class, 'create'])->name('material.create');
-        // Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
-        // Route::get('/materials/{id}', [MaterialController::class, 'show'])->name('material.show');
-        // Route::get('/materials/{id}/edit', [MaterialController::class, 'edit'])->name('material.edit');
-        // Route::put('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
-        // Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy');
 
-        // Route::resource('lessons', LessonController::class);
-        // Route::resource('lessons.chapters', ChapterController::class);
         Route::resource('courses', CourseController::class);
         Route::resource('course-categories', CourseCategoryController::class);
         Route::resource('quizzes', QuizController::class);
         Route::resource('questions', QuestionController::class);
+        Route::resource('options', OptionController::class);
         Route::resource('answers', AnswerController::class);
     });
 });

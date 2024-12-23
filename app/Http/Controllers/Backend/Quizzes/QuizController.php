@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Backend\Quizzes;
 
-use App\Models\Quiz;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Course;
 use Exception;
+use App\Models\Quiz;
+use Inertia\Inertia;
+use App\Models\Course;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class QuizController extends Controller
 {
-    /**  
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $quiz = Quiz::paginate(10);
-        return view('backend.quiz.quizzes.index', compact('quiz'));
+        $quizzes = Quiz::paginate(10);
+        return Inertia::render('Backend/Quiz/Quizzes/Index', [
+            'quizzes' => $quizzes,
+        ]);
     }
 
     /**
@@ -25,7 +28,9 @@ class QuizController extends Controller
     public function create()
     {
         $course = Course::get();
-        return view('backend.quiz.quizzes.create', compact('course'));
+        return Inertia::render('Backend/Quiz/Quizzes/Create', [
+            'courses' => $course,
+        ]);
     }
 
     /**
@@ -33,31 +38,35 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
         try {
             $quiz = new Quiz;
-            $quiz->title = $request->quizTitle;
-            $quiz->course_id = $request->courseId;
+            $quiz->title = $request->title;
+            $quiz->course_id = $request->course_id;
 
             if ($quiz->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('quiz.index');
+                return redirect()->route('quizzes.index')->with('success', 'Quiz created successfully.');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Quiz $quiz)
     {
-        //
+        return Inertia::render('Backend/Quiz/Quizzes/Show', [
+            'quiz' => $quiz,
+        ]);
     }
 
     /**
@@ -67,7 +76,10 @@ class QuizController extends Controller
     {
         $course = Course::get();
         $quiz = Quiz::findOrFail(encryptor('decrypt', $id));
-        return view('backend.quiz.quizzes.edit', compact('course', 'quiz'));
+        return Inertia::render('Backend/Quiz/Quizzes/Edit', [
+            'courses' => $course,
+            'quiz' => $quiz,
+        ]);
     }
 
     /**
@@ -81,17 +93,14 @@ class QuizController extends Controller
             $quiz->course_id = $request->courseId;
 
             if ($quiz->save()) {
-                $this->notice::success('Data Saved');
-                return redirect()->route('quiz.index');
+                return redirect()->route('quizzes.index')->with('success', 'Data Saved');
             } else {
-                $this->notice::error('Please try again');
-                return redirect()->back()->withInput();
+                return redirect()->back()->with('error', 'Please try again')->withInput();
             }
         } catch (Exception $e) {
-            dd($e);
-            $this->notice::error('Please try again');
-            return redirect()->back()->withInput();
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
+
     }
 
     /**
@@ -101,8 +110,7 @@ class QuizController extends Controller
     {
         $data = Quiz::findOrFail(encryptor('decrypt', $id));
         if ($data->delete()) {
-            $this->notice::error('Data Deleted!');
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Data Deleted!');
         }
     }
 }

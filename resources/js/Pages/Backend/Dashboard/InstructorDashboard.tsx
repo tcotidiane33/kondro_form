@@ -78,12 +78,22 @@ const InstructorDashboard: React.FC = () => {
                                 Ajouter un Fichier
                             </Button>
                         </NavLink>
-                        <NavLink to="/quizzes/create">
+                        <NavLink to="instructor/quizzes/create">
                             <Button variant="contained" color="error" startIcon={<AddIcon />}>
                                 Ajouter un Quizz
                             </Button>
                         </NavLink>
-                        <NavLink to="/answers/create">
+                        <NavLink to="instructor/questions/create">
+                            <Button variant="contained" color="warning" startIcon={<AddIcon />}>
+                                Ajouter une Question
+                            </Button>
+                        </NavLink>
+                        <NavLink to="instructor/options/create">
+                            <Button variant="contained" color="primary" startIcon={<AddIcon />}>
+                                Ajouter une Option
+                            </Button>
+                        </NavLink>
+                        <NavLink to="instructor/answers/create">
                             <Button variant="contained" color="default" startIcon={<AddIcon />}>
                                 Ajouter un Answer
                             </Button>
