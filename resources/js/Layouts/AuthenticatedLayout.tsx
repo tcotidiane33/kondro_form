@@ -25,11 +25,11 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
 
     const getProfileEditRoute = () => {
         if (user.role === 'Admin') {
-            return route('admin.profile.edit');
+            return route('admin.profile');
         } else if (user.role === 'Instructor') {
-            return route('instructor.profile.edit');
+            return route('instructor.profile');
         } else {
-            return route('student.profile.edit');
+            return route('student.profile');
         }
     };
 

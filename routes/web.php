@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
     Route::put('lessons/{lesson}/materials/{material}', [LessonController::class, 'updateMaterial'])->name('lessons.materials.update');
     Route::delete('lessons/{lesson}/materials/{material}', [LessonController::class, 'deleteMaterial'])->name('lessons.materials.destroy');
+    Route::get('/courses/all', [CourseController::class, 'index'])->name('courses.index');
 
 
     // Pour les étudiants

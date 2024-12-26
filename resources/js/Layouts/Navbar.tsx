@@ -36,7 +36,7 @@ const Navbar = () => {
                     </div>
                     <nav className="flex items-center space-x-4">
                         <div className="hidden lg:flex space-x-4">
-                            <Link href="/courses" className="text-sm font-medium text-gray-900 hover:text-gray-900">
+                            <Link href="/courses/all" className="text-sm font-medium text-gray-900 hover:text-gray-900">
                                 Courses
                             </Link>
                             <Link href="/certifications" className="text-sm font-medium text-gray-500 hover:text-gray-900">

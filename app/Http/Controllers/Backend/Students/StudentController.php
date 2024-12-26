@@ -73,7 +73,7 @@ class StudentController extends Controller
                 \Log::error('Failed to save student');
                 return redirect()->back()->withInput()->with('error', 'Failed to create student');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error('Exception: ' . $e->getMessage());
             \Log::error($e->getTraceAsString());
             return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());

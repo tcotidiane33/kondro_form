@@ -44,11 +44,14 @@ class StudentDashboardController extends Controller
         // Récupérer les données nécessaires pour le tableau de bord
         $courses = $student->courses()->with('lessons')->get();
         $answers = $student->answers()->with('question')->get();
+        $role = $user->role->name; // Récupérer le nom du rôle
 
         $data = [
             'student' => $student,
             'courses' => $courses,
             'answers' => $answers,
+            'role' => $role, // Inclure le rôle dans les données
+
         ];
 
         return Inertia::render('Backend/Dashboard/Dashboard', $data);

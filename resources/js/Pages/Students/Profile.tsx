@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import { Card, CardContent, Typography, Grid } from '@mui/material';
 
 interface ProfileProps {
     student: {
@@ -30,19 +31,17 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ student, enrollments }) => {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Profil de l'étudiant
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
+            <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                Profil de l'étudiant
+            </h2>
             <Head title="Profil de l'étudiant" />
-            <div className="container mx-auto mt-4">
+
+            <div className="container mx-auto mt-4 mb-4">
                 <div className="flex flex-wrap">
                     {/* Left Sidebar */}
                     <div className="w-full md:w-1/3 px-4">
-                        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                        <div className="bg-white shadow-md rounded-lg overflow-hidden p-4">
                             <div className="p-6 text-center">
                                 <img src={student.image ? `/storage/${student.image}` : "https://via.placeholder.com/100"} alt="Profile" className="rounded-full mb-3 mx-auto" />
                                 <h4 className="text-lg font-semibold">{student.name}</h4>
@@ -122,6 +121,49 @@ const Profile: React.FC<ProfileProps> = ({ student, enrollments }) => {
                     </div>
                 </div>
             </div>
+
+            <div className="bg-white dark:bg-gray-900">
+            <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+                    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 md:p-12 shadow-xl">
+                        <Typography
+                            variant="h1"
+                            className="text-center text-gray-900 dark:text-white text-3xl md:text-5xl font-extrabold mb-8"
+                        >
+                            Student Profile
+                        </Typography>
+
+                        <Grid container spacing={4}>
+                            {[
+                                { label: 'Name', value: student.name },
+                                { label: 'Email', value: student.email },
+                                { label: 'Contact', value: student.contact },
+                                { label: 'Date of Birth', value: student.date_of_birth },
+                                { label: 'Gender', value: student.gender },
+                                { label: 'Nationality', value: student.nationality },
+                                { label: 'Address', value: student.address },
+                                { label: 'City', value: student.city },
+                                { label: 'State', value: student.state },
+                                { label: 'Postcode', value: student.postcode },
+                                { label: 'Country', value: student.country },
+                            ].map((field, index) => (
+                                <Grid item xs={12} sm={6} md={4} key={index}>
+                                    <Card className="rounded-lg shadow-lg bg-gray-100 dark:bg-gray-700 hover:shadow-2xl transition-all duration-300">
+                                        <CardContent>
+                                            <Typography variant="h6" className="text-gray-900 dark:text-gray-500">
+                                                {field.label}
+                                            </Typography>
+                                            <Typography variant="h5" className="text-gray-900 dark:text-gray-500">
+                                                {field.value}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </div>
+                </div>
+            </div>
+
         </AuthenticatedLayout>
     );
 };
