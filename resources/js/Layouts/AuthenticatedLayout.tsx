@@ -155,7 +155,7 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
                 </div>
             </nav>
 
-            <main>{children}</main>
+            <main className='p-4'>{children}</main>
         </div>
     );
 };

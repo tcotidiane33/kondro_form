@@ -1,135 +1,101 @@
 import React from 'react';
-import { PageProps } from '@inertiajs/inertia';
 import { Card, CardContent, Typography, Grid, List, ListItem, ListItemText } from '@mui/material';
-import { Bar } from 'react-chartjs-2';
-import 'chart.js/auto';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
+import { Link } from '@inertiajs/react';
 
-interface DashboardProps {
-    totalStudents: number;
-    totalInstructors: number;
-    totalCourses: number;
-    totalLessons: number;
-    totalEnrollments: number;
-    totalRevenue: number;
-    lastMonthStudents: number;
-    lastMonthCourses: number;
-    lastMonthRevenue: number;
-    recentStudents: any[];
-    monthlyRevenue: Record<string, number>;
+interface StudentDashboardProps {
+    student: any;
+    courses: any[];
+    answers: any[];
+    role: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = (props) => {
-    if (!props) {
-        return <div>Loading...</div>;
-    }
-
-    const {
-        totalStudents,
-        totalInstructors,
-        totalCourses,
-        totalLessons,
-        totalEnrollments,
-        totalRevenue,
-        lastMonthStudents,
-        lastMonthCourses,
-        lastMonthRevenue,
-        recentStudents,
-        monthlyRevenue,
-    } = props;
-
-    const monthlyRevenueData = {
-        labels: Object.keys(monthlyRevenue),
-        datasets: [
-            {
-                label: 'Monthly Revenue',
-                data: Object.values(monthlyRevenue),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            },
-        ],
-    };
-
+const StudentDashboard: React.FC<StudentDashboardProps> = ({ student, courses, answers, role }) => {
     return (
         <Authenticated>
-            <Typography variant="h4" gutterBottom>
-                Student Dashboard
-            </Typography>
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Students</Typography>
-                            <Typography variant="h4">{totalStudents}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Instructors</Typography>
-                            <Typography variant="h4">{totalInstructors}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Courses</Typography>
-                            <Typography variant="h4">{totalCourses}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Lessons</Typography>
-                            <Typography variant="h4">{totalLessons}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Enrollments</Typography>
-                            <Typography variant="h4">{totalEnrollments}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Total Revenue</Typography>
-                            <Typography variant="h4">${totalRevenue.toFixed(2)}</Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Monthly Revenue</Typography>
-                            <Bar data={monthlyRevenueData} />
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6">Recent Students</Typography>
-                            <List>
-                                {recentStudents.map(student => (
-                                    <ListItem key={student.id}>
-                                        <ListItemText primary={student.name} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+            <div className="flex">
+                {/* Sidebar */}
+                <aside className="w-64 bg-gray-100 text-gray-900 h-screen p-4 shadow-md">
+                    <div className="mb-8">
+                        <Typography variant="h5" className="text-gray-900 font-semibold">Dashboard</Typography>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li className="mb-4">
+                                <Link href="#" className="text-gray-900 hover:text-gray-600">Profile</Link>
+                            </li>
+                            <li className="mb-4">
+                                <Link href="#" className="text-gray-900 hover:text-gray-600">Courses</Link>
+                            </li>
+                            <li className="mb-4">
+                                <Link href="#" className="text-gray-900 hover:text-gray-600">Answers</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                {/* Main Content */}
+                <main className="flex-1 bg-gray-50 p-8">
+                    <section className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+                        <div className="bg-white border border-gray-200 rounded-lg p-8 md:p-12 mb-8 shadow-lg">
+                            <Typography variant="h4" gutterBottom className="text-gray-900 text-3xl md:text-5xl font-extrabold mb-8">
+                                Student Dashboard
+                            </Typography>
+                            <Typography variant="h6" className="text-gray-900 text-xl mb-4">
+                                Role: {role}
+                            </Typography>
+                            <Grid container spacing={3}>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <Card className="bg-gradient-to-r from-blue-100 to-blue-300 rounded-lg shadow-lg">
+                                        <CardContent>
+                                            <Typography variant="h6" className="text-gray-900">Name</Typography>
+                                            <Typography variant="h4" className="text-gray-900">{student.name}</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <Card className="bg-gradient-to-r from-pink-100 to-pink-300 rounded-lg shadow-lg">
+                                        <CardContent>
+                                            <Typography variant="h6" className="text-gray-900">Email</Typography>
+                                            <Typography variant="h4" className="text-gray-900">{student.email}</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <Card className="bg-gradient-to-r from-yellow-100 to-yellow-300 rounded-lg shadow-lg">
+                                        <CardContent>
+                                            <Typography variant="h6" className="text-gray-900">Courses</Typography>
+                                            <List>
+                                                {courses.map(course => (
+                                                    <ListItem key={course.id}>
+                                                        <ListItemText primary={course.title} className="text-gray-900" />
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={4}>
+                                    <Card className="bg-gradient-to-r from-green-100 to-green-300 rounded-lg shadow-lg">
+                                        <CardContent>
+                                            <Typography variant="h6" className="text-gray-900">Answers</Typography>
+                                            <List>
+                                                {answers.map(answer => (
+                                                    <ListItem key={answer.id}>
+                                                        <ListItemText primary={answer.answer} className="text-gray-900" />
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </section>
+                </main>
+            </div>
         </Authenticated>
     );
 };
 
-export default Dashboard;
+export default StudentDashboard;

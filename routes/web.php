@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\Students\StudentController;
 use App\Http\Controllers\Backend\Setting\DashboardController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
+use App\Http\Controllers\Backend\Students\StudentDashboardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -72,7 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Pour les étudiants
     Route::prefix('students')->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('students.index');
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+        // Route::get('/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
 
         Route::get('/create', [StudentController::class, 'create'])->name('students.create');
         Route::post('/students', [StudentController::class, 'store'])->name('students.store');

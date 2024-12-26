@@ -31,6 +31,11 @@ class Lesson extends Model
     {
         return $this->hasMany(Material::class);
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'progress')->withPivot('progress_percentage', 'completed');
+    }
     // public function chapters()
     // {
     //     return $this->hasMany(Chapter::class);

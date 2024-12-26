@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 17 déc. 2024 à 14:38
+-- Généré le : jeu. 26 déc. 2024 à 17:06
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -79,6 +79,32 @@ CREATE TABLE `certifications` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `chapters`
+--
+
+CREATE TABLE `chapters` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `lesson_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `content` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `course_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `chapters`
+--
+
+INSERT INTO `chapters` (`id`, `title`, `lesson_id`, `content`, `created_at`, `updated_at`, `deleted_at`, `course_id`) VALUES
+(1, 'chapitre 1', 2, 'Prise en Main', '2024-12-19 15:50:49', '2024-12-19 15:50:49', NULL, 3),
+(2, 'Chapitre 2', 2, 'Introduction au cloud', '2024-12-19 15:51:34', '2024-12-19 15:51:34', NULL, 3),
+(3, 'Chapitre 1', NULL, 'chapitre content', '2024-12-20 19:05:36', '2024-12-20 19:05:36', NULL, 5);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `checkouts`
 --
 
@@ -142,6 +168,15 @@ CREATE TABLE `courses` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   `tag` enum('popular','featured','upcoming') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `courses`
+--
+
+INSERT INTO `courses` (`id`, `title`, `description`, `course_category_id`, `instructor_id`, `type`, `price`, `old_price`, `subscription_price`, `start_from`, `duration`, `lesson`, `prerequisites`, `difficulty`, `course_code`, `image`, `thumbnail_image`, `thumbnail_video`, `status`, `language`, `created_at`, `updated_at`, `deleted_at`, `tag`) VALUES
+(3, 'DÉVELOPPEMENT WEB AVEC LARAVEL', 'Apprenez à créer des applications web avec le framework Laravel.', 12, 6, 'paid', 250000.00, 300000.00, 220000.00, NULL, 150, 20, 'PHP, SQL, HTML', 'beginner', 'C101', NULL, NULL, 'https://youtu.be/8H85zQ26qDA', 1, 'fr', NULL, NULL, NULL, 'popular'),
+(4, 'INTRODUCTION À L\\\'IA', 'Un aperçu des concepts fondamentaux de l’intelligence artificielle.', 4, 11, 'free', 350000.00, 500000.00, 420000.00, NULL, 300, 22, 'Networking, Virtualisation', 'intermediate', 'C103', NULL, NULL, 'https://youtu.be/0J7KACjv6Vw', 1, 'en', NULL, NULL, NULL, 'featured'),
+(5, 'CLOUD AWS', 'deploy project on aws cloud', 9, 7, 'free', 0.00, 0.00, 0.00, '2024-12-17 23:00:00', 500, 0, NULL, 'beginner', 'C105', NULL, NULL, 'https://youtu.be/vgN4kDTb1jY', 2, 'fr', '2024-12-17 19:56:18', '2024-12-17 19:56:18', NULL, 'popular');
 
 -- --------------------------------------------------------
 
@@ -290,12 +325,25 @@ CREATE TABLE `lessons` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL,
   `course_id` bigint(20) UNSIGNED NOT NULL,
+  `chapter_id` bigint(20) UNSIGNED NOT NULL,
   `description` text DEFAULT NULL,
   `notes` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `lessons`
+--
+
+INSERT INTO `lessons` (`id`, `title`, `course_id`, `chapter_id`, `description`, `notes`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Lesson 1', 5, 2, 'lorem ipsum, Uncaught (in promise) TypeError: can\'t access property \"title\", data.course is undefined\n    LessonEdit Edit.tsx:52', 'note pour lesson 1', '2024-12-17 22:31:46', '2024-12-19 16:33:24', NULL),
+(2, 'Init AWS Cloud', 5, 0, '<div>&lambda;&nbsp;php artisan optimize &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;INFO &nbsp;Caching framework bootstrap, configuration, and metadata. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;config ............................................................................................... 130.19ms&nbsp;DONE&nbsp;&nbsp;<br>&nbsp;&nbsp;events ................................................................................................. 4.62ms&nbsp;DONE&nbsp;&nbsp;<br>&nbsp;&nbsp;routes ................................................................................................ 91.12ms&nbsp;DONE&nbsp;&nbsp;<br>&nbsp;&nbsp;views ................................................................................................ 232.76ms&nbsp;DONE&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>\n<p>&nbsp;Description Could :)<br><br></p>', '<p><br>XWTPP<br>FDP<br>&nbsp;DROWune lessons 1:25<br><br></p>', '2024-12-18 10:48:33', '2024-12-19 13:00:00', NULL),
+(9, 'Lesson 11', 5, 0, '<p>MouseEvent.mozInputSource est obsol&egrave;te. Veuillez utiliser plut&ocirc;t PointerEvent.pointerType. <span data-column=\"52097\" data-line=\"9\" data-url=\"https://cdn.tiny.cloud/1/58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi/tinymce/7/tinymce.min.js\"><a title=\"Afficher la source dans le d&eacute;bogueur &rarr; https://cdn.tiny.cloud/1/58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi/tinymce/7/tinymce.min.js:9:52097\" draggable=\"false\" href=\"https://cdn.tiny.cloud/1/58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi/tinymce/7/tinymce.min.js\">tinymce.min.js:9:52097</a></span></p>', '<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.process7//netEvent1467\"><a href=\"GEThttps://cdn.tiny.cloud/1/58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi/tinymce/7.6.0-121/plugins/a11ychecker/css/annotations.css\">GEThttps://cdn.tiny.cloud/1/58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi/tinymce/7.6.0-121/plugins/a11ychecker/css/annotations.css</a>[HTTP/3 <span title=\"En savoir plus\" data-code=\"200\">200</span> OK 0ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1744\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1744\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029148&amp;stm=1734613029148&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_checklist_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029148&amp;stm=1734613029148&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_checklist_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1745\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1745\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_mediaembed_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_mediaembed_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 110ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1746\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1746\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_casechange_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_casechange_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1747\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1747\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_export_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_export_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 114ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1748\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1748\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_formatpainter_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_formatpainter_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 112ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1749\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1749\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_pageembed_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_pageembed_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 112ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1750\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1750\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_a11ychecker_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_a11ychecker_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 111ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1751\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1751\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_tinymcespellchecker_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_tinymcespellchecker_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 110ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1752\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1752\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_permanentpen_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_permanentpen_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1753\">&nbsp;</div>\n<p><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_powerpaste_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_powerpaste_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</p>', '2024-12-19 11:58:01', '2024-12-19 11:58:01', NULL),
+(10, 'Lesson 2', 3, 0, '<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1744\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1744\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029148&amp;stm=1734613029148&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_checklist_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029148&amp;stm=1734613029148&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_checklist_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1745\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1745\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_mediaembed_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_mediaembed_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 110ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1746\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1746\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_casechange_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_casechange_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1747\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1747\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_export_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_export_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 114ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1748\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1748\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_formatpainter_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_formatpainter_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 112ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1749\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1749\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_pageembed_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029149&amp;stm=1734613029149&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_pageembed_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 112ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1750\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1750\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_a11ychecker_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_a11ychecker_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 111ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1751\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1751\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_tinymcespellchecker_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_tinymcespellchecker_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 110ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1752\">&nbsp;</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1752\"><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_permanentpen_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_permanentpen_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</div>\n<div aria-live=\"polite\" data-indent=\"0\" data-message-id=\"server0.conn0.netEvent1753\">&nbsp;</div>\n<p>&nbsp;</p>', '<p><a href=\"GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_powerpaste_loaded\">GEThttps://sp.tinymce.com/i?aid=58wfc4g1sw0ocfhd2x5uom5zvcnawraf3w7xkmlbfhxusgdi&amp;tna=tinymce_cloud&amp;p=web&amp;dtm=1734613029150&amp;stm=1734613029150&amp;tz=Europe/Paris&amp;e=se&amp;se_ca=plugin_powerpaste_loaded</a>[HTTP/2 <span title=\"En savoir plus\" data-code=\"200\">200</span> 109ms]</p>', '2024-12-19 12:14:00', '2024-12-19 12:14:00', NULL),
+(11, 'Lesson 10', 4, 1, '<p>1 ertipahc 01 nossel ed noitpircsed</p>', '<p>fdp te lecxe sdrow elif sleuQ</p>', '2024-12-19 16:15:36', '2024-12-19 16:15:36', NULL),
+(12, 'Lesson 0', 3, 1, 'Propriété « -moz-osx-font-smoothing » inconnue.  Déclaration abandonnée.', '[vite] connected.', '2024-12-20 14:19:07', '2024-12-20 14:19:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -308,12 +356,20 @@ CREATE TABLE `materials` (
   `lesson_id` bigint(20) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL,
   `type` enum('video','document','quiz') NOT NULL,
-  `content` varchar(255) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
   `content_url` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `materials`
+--
+
+INSERT INTO `materials` (`id`, `lesson_id`, `title`, `type`, `content`, `content_url`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 11, 'Switch Statement & Functions', 'video', 'The switch Statement Unlike if-then and if-then-else statements, the switch statement can have a number of possible.', 'https://www.youtube.com/watch?v=8nNqk2NPbRA', '2024-12-20 14:00:34', '2024-12-20 15:32:47', NULL),
+(3, 12, 'Longest Increasing Subsequence', 'document', 'Lecture 119: Longest Increasing Subsequence + Russian Doll LeetCode || DP + Binary Search', 'https://www.osureunion.fr/wp-content/uploads/2022/03/pdf-exemple.pdf', '2024-12-20 15:30:08', '2024-12-20 15:30:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -346,6 +402,13 @@ CREATE TABLE `options` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `options`
+--
+
+INSERT INTO `options` (`id`, `question_id`, `option_text`, `is_correct`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'j\'suis un Humain !', 1, '2024-12-23 14:37:37', '2024-12-23 14:37:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -598,6 +661,13 @@ CREATE TABLE `questions` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `questions`
+--
+
+INSERT INTO `questions` (`id`, `quiz_id`, `content`, `type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'Vous avez un problème ?', 'true_false', NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -612,6 +682,15 @@ CREATE TABLE `quizzes` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `quizzes`
+--
+
+INSERT INTO `quizzes` (`id`, `course_id`, `title`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 5, 'Quiz 01', '2024-12-23 11:19:19', '2024-12-23 11:19:19', NULL),
+(2, 4, 'Quiz 02', '2024-12-23 11:22:57', '2024-12-23 11:22:57', NULL),
+(3, 4, 'Quiz 03', '2024-12-23 14:16:40', '2024-12-23 14:16:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -674,8 +753,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('CCiFWaJoBqWujwidslT4sN4WwOL4eTOPxo9ZVIR1', 21, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQXJJbzBWV2gxNkxPYU1Cb1ZXZWpPSnl6UWNWb05uY2Y2YWM2YllpMCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9pbnN0cnVjdG9yL2NvdXJzZXMvY3JlYXRlIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjE7fQ==', 1734439848),
-('pZfxnCFSRhgnK8qM0WwwhbWz1f2iEBS7uOanfgov', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiV1VhRFpaM3JhS0U5RGdETExzRE43UG1zOTd3UkNkb2V1dW1wR2Q3dSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7fQ==', 1734439553);
+('ABhLQXEgNns0CubxW74G3Czyc8rOXRSUvfaUxpVG', 22, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiRXZ1UFViTFgxblNSZzlCY2h2TWw1bkNxa1hkaHBaZTB2MkJCM0JGZiI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQwOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvc3R1ZGVudHMvZGFzaGJvYXJkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MjI7fQ==', 1735229045),
+('uZF5Xn7CFMyUJth5qqvLKlSk3Ye3Eo1wLC8JcYZX', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiMVdKMU4ycVlLRGE1Y2JVWm5NWFVVbGt6eHdxZmRwRWpVU3hMWjlsWCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo0MDoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL2luc3RydWN0b3Ivb3B0aW9ucyI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vbG9jYWxob3N0OjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1735220010);
 
 -- --------------------------------------------------------
 
@@ -685,6 +764,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 
 CREATE TABLE `students` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `contact` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -710,6 +790,13 @@ CREATE TABLE `students` (
   `access_block` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `students`
+--
+
+INSERT INTO `students` (`id`, `user_id`, `name`, `contact`, `email`, `role_id`, `date_of_birth`, `gender`, `image`, `bio`, `profession`, `nationality`, `address`, `city`, `state`, `postcode`, `country`, `status`, `password`, `language`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `access_block`) VALUES
+(1, 22, 'Test Student', '1234567890', 'teststudent@example.com', 4, '2000-01-01', 'homme', 'path/to/image.jpg', 'This is a test student.', 'Student', 'Test Nationality', '123 Test Street', 'Test City', 'Test State', '12345', 'Test Country', 1, 'hashed_password', 'fr', NULL, NULL, NULL, NULL, '0');
+
 -- --------------------------------------------------------
 
 --
@@ -727,16 +814,6 @@ CREATE TABLE `subscriptions` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `telescope_monitoring`
---
-
-CREATE TABLE `telescope_monitoring` (
-  `tag` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -799,7 +876,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `contact`, `role_id`, `password`, `language`, `image`, `full_access`, `status`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `instructor_id`, `email_verified_at`) VALUES
 (1, 'Admin', 'admin@gmail.com', '+2250769469844', 2, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
-(21, 'Instructor', 'instructor@gmail.com', '+2250769469845', 3, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
+(21, 'Instructor', 'instructor@gmail.com', '+2250769469845', 3, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, '8JaWkOdzkVwOBAxoJbn32RM346fPFwUkQ7SnQvmGLAILkTVGzsZ8j4P9YhHq', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
 (22, 'Student', 'student@gmail.com', '+2250769469846', 4, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL),
 (24, 'Sudo', 'sudo@gmail.com', '+22500000000', 1, '$2y$12$LcCyk4eSKl9AryFL0b21EOtOtS.ngBddHBtWmuOvucOEjp4DmrWfG', 'fr', NULL, 0, 1, 'gnc8LuNDrdFMLJwLABAdmNxCxogU7fJoqJoRW5az7DUXKo8LlU6UiacUq5FV', '2024-11-21 12:04:18', '2024-11-21 12:04:18', NULL, NULL, NULL);
 
@@ -849,6 +926,14 @@ ALTER TABLE `cache_locks`
 --
 ALTER TABLE `certifications`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `chapters`
+--
+ALTER TABLE `chapters`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chapters_lesson_id_foreign` (`lesson_id`),
+  ADD KEY `chapters_course_id_foreign` (`course_id`);
 
 --
 -- Index pour la table `checkouts`
@@ -1011,7 +1096,8 @@ ALTER TABLE `sessions`
 ALTER TABLE `students`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `students_email_unique` (`email`),
-  ADD KEY `students_role_id_foreign` (`role_id`);
+  ADD KEY `students_role_id_foreign` (`role_id`),
+  ADD KEY `students_user_id_foreign` (`user_id`);
 
 --
 -- Index pour la table `subscriptions`
@@ -1020,12 +1106,6 @@ ALTER TABLE `subscriptions`
   ADD PRIMARY KEY (`id`),
   ADD KEY `subscriptions_student_id_index` (`student_id`),
   ADD KEY `subscriptions_course_id_index` (`course_id`);
-
---
--- Index pour la table `telescope_monitoring`
---
-ALTER TABLE `telescope_monitoring`
-  ADD PRIMARY KEY (`tag`);
 
 --
 -- Index pour la table `training_offers`
@@ -1072,6 +1152,12 @@ ALTER TABLE `certifications`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `chapters`
+--
+ALTER TABLE `chapters`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT pour la table `checkouts`
 --
 ALTER TABLE `checkouts`
@@ -1087,7 +1173,7 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT pour la table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `course_categories`
@@ -1123,13 +1209,13 @@ ALTER TABLE `instructors`
 -- AUTO_INCREMENT pour la table `lessons`
 --
 ALTER TABLE `lessons`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `messages`
@@ -1141,7 +1227,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT pour la table `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `payments`
@@ -1159,7 +1245,7 @@ ALTER TABLE `permissions`
 -- AUTO_INCREMENT pour la table `permission_role`
 --
 ALTER TABLE `permission_role`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT pour la table `progress`
@@ -1171,13 +1257,13 @@ ALTER TABLE `progress`
 -- AUTO_INCREMENT pour la table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `reviews`
@@ -1195,7 +1281,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT pour la table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `subscriptions`
@@ -1231,6 +1317,13 @@ ALTER TABLE `watchlists`
 ALTER TABLE `answers`
   ADD CONSTRAINT `answers_question_id_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `answers_student_id_foreign` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `chapters`
+--
+ALTER TABLE `chapters`
+  ADD CONSTRAINT `chapters_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `chapters_lesson_id_foreign` FOREIGN KEY (`lesson_id`) REFERENCES `lessons` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `courses`
@@ -1328,7 +1421,8 @@ ALTER TABLE `reviews`
 -- Contraintes pour la table `students`
 --
 ALTER TABLE `students`
-  ADD CONSTRAINT `students_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `students_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `students_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `subscriptions`

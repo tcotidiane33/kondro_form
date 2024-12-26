@@ -1,0 +1,13 @@
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    AddType application/typescript .ts .tsx
+</IfModule>
+<!--
+
+Exemple pour Nginx
+Ajoutez les lignes suivantes dans la configuration de votre serveur Nginx :
+
+location ~* \.(ts|tsx)$ {
+    add_header Access-Control-Allow-Origin *;
+    default_type application/typescript;
+} -->
