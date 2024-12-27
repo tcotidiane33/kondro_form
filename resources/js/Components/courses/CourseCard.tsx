@@ -22,7 +22,7 @@ const CourseCard = ({ course, instructor }: CourseCardProps) => {
             />
             <div className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-indigo-600">{course.course_category_id}</span>
+                    {/* <span className="text-sm font-medium text-indigo-600">{course.course_category}</span> */}
                     <span className="text-sm font-medium text-gray-500">XOF{course.price}</span>
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{course.title}</h3>
@@ -35,10 +35,16 @@ const CourseCard = ({ course, instructor }: CourseCardProps) => {
                     <span className="capitalize">{course.difficulty}</span>
                 </div>
 
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center">
-                        <User className="h-4 w-4 text-gray-400 mr-1" />
-                        {/* <span className="text-sm text-gray-600">{course.instructor}</span> */}
+                    <img
+                        src={course.instructor.image}
+                        alt={course.instructor.name}
+                        className="h-10 w-10 rounded-full object-cover mr-2"
+                    />
+                    {/* <User className="h-4 w-4 text-gray-400 mr-1" /> */}
+                        <p className="text-sm font-medium text-gray-900">{course.instructor.name}</p>
+                        {/* <p className="text-sm text-gray-500">{course.instructor_id.name}</p> */}
                     </div>
                     <Button
                         variant="contained"
@@ -49,18 +55,6 @@ const CourseCard = ({ course, instructor }: CourseCardProps) => {
                     </Button>
                 </div>
 
-                <div className="flex items-center mb-3">
-                    <img
-                        src={course.instructor.image}
-                        alt={course.instructor.name}
-                        className="h-10 w-10 rounded-full object-cover mr-2"
-                    />
-                    <div>
-                        <p className="text-sm font-medium text-gray-900">{course.instructor.name}</p>
-                        {/* <p className="text-sm text-gray-500">{course.instructor_id.name}</p> */}
-                    </div>
-                </div>
-
                 <div className="flex items-center text-sm text-gray-500 mb-1">
                     <span className="bg-purple-200 text-purple-900 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-indigo-800 dark:text-purple-300 border border-purple-300">{course.tag}</span>
                     <span className="bg-green-200 text-green-900 text-sm font-medium me-2 px-2.5 py-0.5 rounded-xl dark:bg-gray-800 dark:text-green-300 border border-green-300">Code : {course.course_code}</span>
@@ -68,7 +62,7 @@ const CourseCard = ({ course, instructor }: CourseCardProps) => {
                 </div>
                 <div className="flex items-center text-sm text-gray-500 mb-1">
                     <span className="bg-yellow-200 text-yellow-900 text-sm font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-gray-800 dark:text-yellow-300 border border-yellow-300">{course.lesson} Lessons</span>
-                    <span className={`bg-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-200 text-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-900 text-sm font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-gray-800 dark:text-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-300 border border-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-300`}>
+                    <span className={`bg-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-200 text-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-900 text-sm font-medium me-2 px-2.5 py-0.5 rounded-lg dark:bg-gray-200 dark:text-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-800 border-2 border-${course.status === 0 ? 'yellow' : course.status === 1 ? 'gray' : 'green'}-300`}>
                         {course.status === 0 ? 'Pending' : course.status === 1 ? 'Inactive' : 'Active'}
                     </span>
                 </div>
