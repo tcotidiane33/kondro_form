@@ -13,6 +13,8 @@ class Certification extends Model
         'name',
         'description',
         'price',
+        'is_pro',
+        'discount',
     ];
 
     public function trainingOffers()

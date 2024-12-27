@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import MultiStepForm from './MultiStep/MultiStepForm';
 import { CourseCategory, Instructor, Course } from '../../types/course';
+import PublicLayout from '../../Layouts/PublicLayout';
 import { PageProps } from '../../types/index';
 
 const CreateCourse = () => {
@@ -52,6 +53,8 @@ const CreateCourse = () => {
     };
 
     return (
+        <PublicLayout>
+
         <div className="container mx-auto p-4">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">Créer un nouveau cours</h1>
             <MultiStepForm
@@ -68,6 +71,7 @@ const CreateCourse = () => {
                 isInstructor={isInstructor}
             />
         </div>
+        </PublicLayout>
     );
 };
 

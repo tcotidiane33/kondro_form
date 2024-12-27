@@ -14,7 +14,7 @@ const CourseCard = ({ course, instructor }: CourseCardProps) => {
         // such as making an API call to enroll the user in the course.
     }
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mb-6">
             <img
                 src={course.image}
                 alt={course.title}

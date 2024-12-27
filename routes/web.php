@@ -23,6 +23,7 @@ use App\Http\Controllers\Backend\Setting\PermissionController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
 use App\Http\Controllers\Backend\Enrollments\EnrollmentController;
 use App\Http\Controllers\Backend\Students\StudentDashboardController;
+use App\Http\Controllers\Backend\Certifications\CertificationController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -68,9 +69,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('lessons/{lesson}/materials/{material}', [LessonController::class, 'deleteMaterial'])->name('lessons.materials.destroy');
     Route::get('courses/all', [CourseController::class, 'index'])->name('courses.alls');
 
+    // Routes pour les enrollements
     Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
     Route::post('/enrollments/enroll/{courseId}', [EnrollmentController::class, 'enroll'])->name('enrollments.enroll');
     Route::post('/enrollments/unenroll/{courseId}', [EnrollmentController::class, 'unenroll'])->name('enrollments.unenroll');
+
+    // Routes pour les certifications
+    Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');
+    Route::get('/certifications/{id}', [CertificationController::class, 'show'])->name('certifications.show');
+    Route::post('/certifications/request', [CertificationController::class, 'requestCertificate'])->name('certifications.request');
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
