@@ -14,6 +14,7 @@ import TopNews from '@/Components/TopNews';
 import Courses from '@/Components/Courses';
 import Contact from '@/Components/Contact';
 import Footer from '@/Layouts/Footer';
+import PublicLayout from '@/Layouts/PublicLayout';
 
 
 export default function Welcome({
@@ -33,12 +34,12 @@ export default function Welcome({
     };
 
     return (
-        <>
-            <Head title="Welcome" />
+        <PublicLayout>
+            {/* <Head title="Welcome" />
             <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-                <Background />
-                    <Navbar auth={auth} />
+            <Navbar auth={auth} /> */}
 
+            <Background />
                 <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                     <div className="relative w-full px-1 max-w-2xl lg:max-w-7xl">
 
@@ -274,7 +275,7 @@ export default function Welcome({
                         </footer>
                     </div>
                 </div>
-            </div>
-        </>
+            {/* </div> */}
+        </PublicLayout>
     );
 }

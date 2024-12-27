@@ -23,18 +23,18 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::with('courseCategory', 'instructor')->get();
-    $categories = CourseCategory::all();
+        $categories = CourseCategory::all();
 
-    return Inertia::render('Courses/Index', [
-        'courses' => $courses,
-        'categories' => $categories,
-    ]);
+        return Inertia::render('Courses/Index', [
+            'courses' => $courses,
+            'categories' => $categories,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-       public function create()
+    public function create()
     {
         $courseCategories = CourseCategory::all();
         $instructors = Instructor::all();

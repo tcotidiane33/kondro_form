@@ -4,7 +4,7 @@ import Footer from './Footer';
 
 const PublicLayout = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50" >
       <Head title="Public Layout" />
       <Navbar />
       <main className="flex-grow">

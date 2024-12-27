@@ -21,6 +21,7 @@ use App\Http\Controllers\Backend\Students\StudentController;
 use App\Http\Controllers\Backend\Setting\DashboardController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
+use App\Http\Controllers\Backend\Enrollments\EnrollmentController;
 use App\Http\Controllers\Backend\Students\StudentDashboardController;
 
 Route::get('/', function () {
@@ -65,8 +66,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
     Route::put('lessons/{lesson}/materials/{material}', [LessonController::class, 'updateMaterial'])->name('lessons.materials.update');
     Route::delete('lessons/{lesson}/materials/{material}', [LessonController::class, 'deleteMaterial'])->name('lessons.materials.destroy');
-    Route::get('/courses/all', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('courses/all', [CourseController::class, 'index'])->name('courses.alls');
 
+    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::post('/enrollments/enroll/{courseId}', [EnrollmentController::class, 'enroll'])->name('enrollments.enroll');
+    Route::post('/enrollments/unenroll/{courseId}', [EnrollmentController::class, 'unenroll'])->name('enrollments.unenroll');
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants

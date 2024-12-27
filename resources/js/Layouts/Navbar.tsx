@@ -12,7 +12,7 @@ const Navbar = () => {
     const user = auth.user;
 
     const getDashboardRoute = () => {
-         if (!user) {
+        if (!user) {
             return route('home'); // Rediriger vers la page d'accueil si l'utilisateur est nul
         }
         if (user.role === 'Admin') {
@@ -26,17 +26,18 @@ const Navbar = () => {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     return (
-        <header className="bg-gradient-to-r from-white/50 to-gray-500/50 dark:bg-white pb-1 text-black/80">
+        <header className="navbar-header">
+            {/* <header className="bg-gradient-to-r from-white/50 to-gray-500/50  pb-1 text-black/80" style={{ zIndex: 9999 }}> */}
             <div className="relative w-full px-4 max-w-7xl mx-auto">
                 <div className="flex justify-between items-center py-2">
                     <div className="flex items-center">
-                        <Link href="/home">
+                        <Link href="/">
                             <LogoMini className="h-18 w-48" />
                         </Link>
                     </div>
                     <nav className="flex items-center space-x-4">
                         <div className="hidden lg:flex space-x-4">
-                            <Link href="/courses/all" className="text-sm font-medium text-gray-900 hover:text-gray-900">
+                            <Link href="courses/all" className="text-sm font-medium text-gray-900 hover:text-gray-900">
                                 Courses
                             </Link>
                             <Link href="/certifications" className="text-sm font-medium text-gray-500 hover:text-gray-900">

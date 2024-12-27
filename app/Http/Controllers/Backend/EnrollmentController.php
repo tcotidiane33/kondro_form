@@ -13,13 +13,16 @@ use App\Http\Requests\Backend\EnrollmentRequest;
 
 class EnrollmentController extends Controller
 {
-    public function create()
+    public function index()
     {
-        $courses = Course::all();
-        return Inertia::render('Backend/Enrollments/Create', ['courses' => $courses]);
+        $user = Auth::user();
+        $student = $user->student;
+        $enrollments = Enrollment::where('student_id', $student->id)->with('course')->get();
+
+        return Inertia::render('Backend/Enrollments/Index', ['enrollments' => $enrollments]);
     }
 
-    public function store(EnrollmentRequest $request)
+    public function enroll($courseId)
     {
         try {
             $user = Auth::user();
@@ -27,14 +30,31 @@ class EnrollmentController extends Controller
 
             $enrollment = new Enrollment();
             $enrollment->student_id = $student->id;
-            $enrollment->course_id = $request->course_id;
-            $enrollment->enrollment_date = $request->enrollment_date;
+            $enrollment->course_id = $courseId;
+            $enrollment->enrollment_date = now();
             $enrollment->save();
 
             return redirect()->route('student.dashboard')->with('success', 'Enrolled successfully.');
         } catch (Exception $e) {
             Log::error('Error enrolling student: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Please try again.');
+            return redirect()->back()->with('error', 'Please try again.');
+        }
+    }
+
+    public function unenroll($courseId)
+    {
+        try {
+            $user = Auth::user();
+            $student = $user->student;
+
+            Enrollment::where('student_id', $student->id)
+                ->where('course_id', $courseId)
+                ->delete();
+
+            return redirect()->route('student.dashboard')->with('success', 'Unenrolled successfully.');
+        } catch (Exception $e) {
+            Log::error('Error unenrolling student: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Please try again.');
         }
     }
 }
