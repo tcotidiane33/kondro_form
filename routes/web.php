@@ -7,6 +7,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Students\AuthController;
 // use App\Http\Controllers\Students\DashboardController;
+use App\Http\Controllers\Backend\Labs\LabController;
+use App\Http\Controllers\Backend\Blog\BlogController;
+use App\Http\Controllers\Backend\Forums\ForumController;
 use App\Http\Controllers\Backend\Quizzes\QuizController;
 use App\Http\Controllers\Backend\Setting\RoleController;
 use App\Http\Controllers\Backend\Setting\UserController;
@@ -78,6 +81,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');
     Route::get('/certifications/{id}', [CertificationController::class, 'show'])->name('certifications.show');
     Route::post('/certifications/request', [CertificationController::class, 'requestCertificate'])->name('certifications.request');
+
+    Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
+    Route::get('/discussion-forum', [ForumController::class, 'index'])->name('discussion-forum.index');
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants

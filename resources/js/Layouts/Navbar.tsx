@@ -46,7 +46,7 @@ const Navbar = () => {
                             {/* <Link href="/video-library" className="text-sm font-medium text-gray-500 hover:text-gray-900">
                                 Catalogues
                             </Link> */}
-                            <Link href="/hands-on-labs" className="text-sm font-medium text-gray-500 hover:text-gray-900">
+                            <Link href="/labs" className="text-sm font-medium text-gray-500 hover:text-gray-900">
                                 Labs
                             </Link>
                             <Link href="/discussion-forum" className="text-sm font-medium text-gray-500 hover:text-gray-900">
