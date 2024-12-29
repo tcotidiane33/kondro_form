@@ -61,9 +61,9 @@ const Navbar = () => {
                             <Link href="/about" className="text-sm font-medium text-gray-500 hover:text-gray-900">
                                 About
                             </Link>
-                            <Link href="/contact" className="text-sm font-medium text-gray-500 hover:text-gray-900">
+                            {/* <Link href="/contact" className="text-sm font-medium text-gray-500 hover:text-gray-900">
                                 Contact
-                            </Link>
+                            </Link> */}
                             {/* <div className="relative">
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -111,13 +111,13 @@ const Navbar = () => {
                         </button>
 
                         <Link
-                            href={route('dashboard')}
+                            href={route('business.index')}
                             className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
                             Business
                         </Link>
                         <Link
-                            href={route('dashboard')}
+                            href={route('individual.index')}
                             className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
                             Individual
@@ -161,6 +161,18 @@ const Navbar = () => {
                             <Link href={getDashboardRoute()} className={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard') ? 'active ' : 'flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700'}>
                                 <BookOpen className="h-6 w-6 text-indigo-600" />
                                 <span>Dashboard</span>
+                            </Link>
+                            <Link
+                                href={route('business.index')}
+                                className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            >
+                                Business
+                            </Link>
+                            <Link
+                                href={route('individual.index')}
+                                className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            >
+                                Individual
                             </Link>
                         </div>
                     </div>

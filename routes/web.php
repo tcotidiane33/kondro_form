@@ -9,6 +9,8 @@ use App\Http\Controllers\Students\AuthController;
 // use App\Http\Controllers\Students\DashboardController;
 use App\Http\Controllers\Backend\Labs\LabController;
 use App\Http\Controllers\Backend\Blog\BlogController;
+use App\Http\Controllers\Backend\About\AboutController;
+use App\Http\Controllers\Backend\Events\EventController;
 use App\Http\Controllers\Backend\Forums\ForumController;
 use App\Http\Controllers\Backend\Quizzes\QuizController;
 use App\Http\Controllers\Backend\Setting\RoleController;
@@ -21,8 +23,10 @@ use App\Http\Controllers\Backend\Courses\ChapterController;
 use App\Http\Controllers\Backend\Courses\MaterialController;
 use App\Http\Controllers\Backend\Quizzes\QuestionController;
 use App\Http\Controllers\Backend\Students\StudentController;
+use App\Http\Controllers\Backend\Business\BusinessController;
 use App\Http\Controllers\Backend\Setting\DashboardController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
+use App\Http\Controllers\Backend\Individual\IndividualController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
 use App\Http\Controllers\Backend\Enrollments\EnrollmentController;
 use App\Http\Controllers\Backend\Students\StudentDashboardController;
@@ -84,8 +88,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/labs', [LabController::class, 'index'])->name('labs.index');
     Route::get('/discussion-forum', [ForumController::class, 'index'])->name('discussion-forum.index');
+
     Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
     Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
+
+    Route::get('/about', [AboutController::class, 'index'])->name('about.index');
+    Route::get('/business', [BusinessController::class, 'index'])->name('business.index');
+
+    Route::get('/individual', [IndividualController::class, 'index'])->name('individual.index');
+    Route::get('/individual/apply', [IndividualController::class, 'apply'])->name('individual.apply');
+    Route::post('/individual/apply', [IndividualController::class, 'storeApplication'])->name('individual.storeApplication');
 
     // Pour les étudiants
     // Route pour le tableau de bord des étudiants
