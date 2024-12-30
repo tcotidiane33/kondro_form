@@ -84,7 +84,7 @@ class Course extends Model
         return $this->hasMany(Enrollment::class);
     }
 
-    public function lesson()
+    public function lessons()
     {
         return $this->hasMany(Lesson::class);
     }
@@ -97,6 +97,11 @@ class Course extends Model
     public function students()
     {
         return $this->belongsToMany(Student::class, 'enrollments');
+    }
+
+    public function wishlist()
+    {
+        return $this->belongsToMany(Student::class, 'wishlist');
     }
 
     // public function lessons()

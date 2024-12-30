@@ -55,4 +55,8 @@ class Student extends Model
     {
         return $this->belongsToMany(Quiz::class, 'quiz_student');
     }
+    public function wishlist()
+    {
+        return $this->belongsToMany(Course::class, 'wishlist');
+    }
 }

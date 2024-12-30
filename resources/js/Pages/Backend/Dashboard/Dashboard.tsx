@@ -63,22 +63,33 @@ const StudentDashboard: React.FC<StudentDashboardProps> = ({ student, courses = 
                                         </CardContent>
                                     </Card>
                                 </Grid>
-
-                                {/* Courses Section */}
+                                {/* Courses Carousel Section */}
                                 <Grid item xs={12}>
                                     <Card className="bg-gradient-to-r from-green-100 to-green-300 rounded-lg shadow-lg mb-8">
                                         <CardContent>
-                                            <Typography variant="h6" className="text-gray-900">Courses</Typography>
-                                            <List>
+                                            <Typography variant="h6" className="text-gray-900">Liste des Cours</Typography>
+                                            <div className="carousel flex flex-wrap -mx-2">
                                                 {courses.map(course => (
-                                                    <ListItem key={course.id}>
-                                                        <ListItemText primary={course.title} className="text-gray-900" />
-                                                    </ListItem>
+                                                    <div key={course.id} className="carousel-item w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 mb-4">
+                                                        <img src={course.image} alt={course.title} className="w-full h-48 object-cover rounded-lg mb-4" />
+                                                        <Typography variant="h5" className="text-gray-900">{course.title}</Typography>
+                                                        <Typography variant="body1" className="text-gray-700">Instructor: {course.instructor}</Typography>
+                                                        <Typography variant="body2" className="text-gray-600">{course.description}</Typography>
+                                                    </div>
                                                 ))}
-                                            </List>
+                                            </div>
                                         </CardContent>
+                                    {/* <Typography variant="h6" className="text-gray-900 mt-4">Wish List</Typography>
+                                    <List>
+                                        {student.wishlist.map(item => (
+                                            <ListItem key={item.id}>
+                                                <ListItemText primary={item.title} className="text-gray-900" />
+                                            </ListItem>
+                                        ))}
+                                    </List> */}
                                     </Card>
                                 </Grid>
+
 
                                 {/* Answers Section */}
                                 <Grid item xs={12}>

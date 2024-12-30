@@ -80,7 +80,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
     Route::post('/enrollments/enroll/{courseId}', [EnrollmentController::class, 'enroll'])->name('enrollments.enroll');
     Route::post('/enrollments/unenroll/{courseId}', [EnrollmentController::class, 'unenroll'])->name('enrollments.unenroll');
-
+    Route::post('/wishlist/add/{courseId}', [EnrollmentController::class, 'addToWishlist'])->name('wishlist.add');
     // Routes pour les certifications
     Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');
     Route::get('/certifications/{id}', [CertificationController::class, 'show'])->name('certifications.show');

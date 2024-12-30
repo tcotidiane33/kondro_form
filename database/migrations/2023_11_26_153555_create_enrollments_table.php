@@ -21,10 +21,13 @@ return new class extends Migration
 
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+
+            // Ajout de la contrainte d'unicité
+            $table->unique(['student_id', 'course_id']);
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      */
     public function down(): void
