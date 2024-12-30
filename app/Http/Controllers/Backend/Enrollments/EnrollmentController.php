@@ -24,7 +24,7 @@ class EnrollmentController extends Controller
             ->with(['course.instructor'])
             ->get();
 
-            // Ajout des statistiques pour chaque cours
+        // Ajout des statistiques pour chaque cours
         foreach ($enrollments as $enrollment) {
             $enrollment->course->enroll_count = Enrollment::where('course_id', $enrollment->course_id)->count();
             $enrollment->course->wishlist_count = Wishlist::where('course_id', $enrollment->course_id)->count();
@@ -62,7 +62,7 @@ class EnrollmentController extends Controller
             $enrollment->enrollment_date = now();
             $enrollment->save();
 
-            return redirect()->route('student.dashboard')->with('success', 'Inscription réussie.');
+            return redirect()->route('enrollments.index')->with('success', 'Inscription réussie.');
         } catch (Exception $e) {
             Log::error('Erreur lors de l\'inscription de l\'étudiant : ' . $e->getMessage());
             return redirect()->back()->with('error', 'Veuillez réessayer.');
@@ -79,7 +79,7 @@ class EnrollmentController extends Controller
                 ->where('course_id', $courseId)
                 ->delete();
 
-            return redirect()->route('student.dashboard')->with('success', 'Désinscription réussie.');
+            return redirect()->route('enrollments.index')->with('success', 'Désinscription réussie.');
         } catch (Exception $e) {
             Log::error('Erreur lors de la désinscription de l\'étudiant : ' . $e->getMessage());
             return redirect()->back()->with('error', 'Veuillez réessayer.');
@@ -106,7 +106,7 @@ class EnrollmentController extends Controller
             $wishlist->course_id = $courseId;
             $wishlist->save();
 
-            return redirect()->route('student.dashboard')->with('success', 'Ajouté à la liste de souhaits avec succès.');
+            return redirect()->route('enrollments.index')->with('success', 'Ajouté à la liste de souhaits avec succès.');
         } catch (Exception $e) {
             Log::error('Erreur lors de l\'ajout à la liste de souhaits : ' . $e->getMessage());
             return redirect()->back()->with('error', 'Veuillez réessayer.');
