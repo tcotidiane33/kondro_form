@@ -23,7 +23,6 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-
         $user = Auth::user();
 
         // Données communes à tous les tableaux de bord

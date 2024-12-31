@@ -19,7 +19,10 @@ class AdminMiddleware
     {
         // if (Auth::check() && Auth::user()->isAdmin()) {
         // if (Auth::check() && Auth::user()->role->identity === 'admin') {
-        if (Auth::check() && Auth::user()->role === 'Admin') {
+        // if (Auth::check() && Auth::user()->role === 'Admin') {
+        //     return $next($request);
+        // }
+        if (Auth::check() && Auth::user()->role && Auth::user()->role->identity === 'admin') {
             return $next($request);
         }
 

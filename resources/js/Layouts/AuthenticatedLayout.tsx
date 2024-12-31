@@ -13,15 +13,15 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
     const user = auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
-    const getDashboardRoute = () => {
-        if (user.role === 'Admin') {
-            return route('admin.dashboard');
-        } else if (user.role === 'Instructor') {
-            return route('instructor.dashboard');
-        } else {
-            return route('student.dashboard');
-        }
-    };
+    // const getDashboardRoute = () => {
+    //     if (user.role === 'Admin') {
+    //         return route('admin.dashboard');
+    //     } else if (user.role === 'Instructor') {
+    //         return route('instructor.dashboard');
+    //     } else {
+    //         return route('student.dashboard');
+    //     }
+    // };
 
     const getProfileEditRoute = () => {
         if (user.role === 'Admin') {
@@ -46,9 +46,9 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
+                                {/* <NavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
                                     Dashboard
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink href={route('student.courses')} active={route().current('student.courses')}>
                                     <Book className="inline-block text-2xl text-[#FF2D20]" />
                                     Courses
@@ -134,9 +134,9 @@ const AuthenticatedLayout = ({ children }: { children: ReactNode }) => {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
+                        {/* <ResponsiveNavLink href={getDashboardRoute()} active={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard')}>
                             Dashboard
-                        </ResponsiveNavLink>
+                        </ResponsiveNavLink> */}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">

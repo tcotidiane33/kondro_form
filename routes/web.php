@@ -177,26 +177,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    // Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Pour les administrateurs
+    Route::middleware(['admin'])->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
-    Route::get('/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
-    Route::get('/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
-    Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
+        Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
+        Route::get('/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
+        Route::get('/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
+        Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
 
-    Route::get('/profile', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'index'])->name('admin.profile');
-    Route::get('/profile/edit', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::post('/profile/update', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+        Route::get('/profile', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'index'])->name('admin.profile');
+        Route::get('/profile/edit', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
+        Route::post('/profile/update', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
 
-    // Routes pour la gestion des utilisateurs
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        // Routes pour la gestion des utilisateurs
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-});
+        // Route pour la gestion des rôles
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    }); // end of admin middleware
+}); // end of admin middleware
 require __DIR__ . '/auth.php';

@@ -20,7 +20,7 @@ class CheckRole
             $user = User::where('status', 1)->where('id', Session::get('userId'))->first();
             if (!$user) {
                 return redirect()->route('logout')->with('method', 'POST');
-            } else if ($user->full_access == "1" || $user->role == $role || $user->role == 'admin') {
+            } else if ($user->full_access == "1" || $user->role == $role || $user->role == 'Admin') {
                 return $next($request);
             } else {
                 $auto_accept = array("POST", "PUT");

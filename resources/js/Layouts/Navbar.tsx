@@ -11,18 +11,18 @@ const Navbar = () => {
 
     const user = auth.user;
 
-    const getDashboardRoute = () => {
-        if (!user) {
-            return route('home'); // Rediriger vers la page d'accueil si l'utilisateur est nul
-        }
-        if (user.role === 'Admin') {
-            return route('admin.dashboard');
-        } else if (user.role === 'Instructor') {
-            return route('instructor.dashboard');
-        } else {
-            return route('student.dashboard');
-        }
-    };
+    // const getDashboardRoute = () => {
+    //     if (!user) {
+    //         return route('home'); // Rediriger vers la page d'accueil si l'utilisateur est nul
+    //     }
+    //     if (user.role === 'Admin') {
+    //         return route('admin.dashboard');
+    //     } else if (user.role === 'Instructor') {
+    //         return route('instructor.dashboard');
+    //     } else {
+    //         return route('student.dashboard');
+    //     }
+    // };
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     return (
@@ -89,10 +89,10 @@ const Navbar = () => {
                         </div>
 
                         {/* Lien vers le Dashboard */}
-                        <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                        {/* <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                             <span>Dashboard</span>
-                        </Link>
+                        </Link> */}
                         <div className="relative hidden lg:block">
                             <div className="absolute inset-y-0 left-0 pl-2 flex items-center">
                                 <Search className="h-5 w-5 text-gray-400" />
@@ -158,10 +158,10 @@ const Navbar = () => {
                             </Link>
 
                             {/* Lien vers le Dashboard */}
-                            <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                            {/* <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                                 <span>Dashboard</span>
-                            </Link>
+                            </Link> */}
                             <Link
                                 href={route('business.index')}
                                 className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
