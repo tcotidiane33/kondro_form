@@ -26,6 +26,7 @@ use App\Http\Controllers\Backend\Students\StudentController;
 use App\Http\Controllers\Backend\Business\BusinessController;
 use App\Http\Controllers\Backend\Setting\DashboardController;
 use App\Http\Controllers\Backend\Setting\PermissionController;
+use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Individual\IndividualController;
 use App\Http\Controllers\Backend\Courses\CourseCategoryController;
 use App\Http\Controllers\Backend\Enrollments\EnrollmentController;
@@ -178,6 +179,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    // Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
     Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
     Route::get('/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
     Route::get('/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');

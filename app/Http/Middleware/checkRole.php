@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use App\Models\Permission;
+use Brian2694\Toastr\Facades\Toastr;
 
 class CheckRole
 {
@@ -29,7 +30,7 @@ class CheckRole
                     if (Permission::where('role_id', $user->role_id)->where('name', $request->route()->getName())->exists())
                         return $next($request);
                     else {
-                        \Toastr::warning("You don't have permission to access this page");
+                        Toastr::warning("You don't have permission to access this page");
                         return redirect()->back();
                     }
                 }

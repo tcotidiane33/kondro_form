@@ -89,7 +89,7 @@ const Navbar = () => {
                         </div>
 
                         {/* Lien vers le Dashboard */}
-                        <Link href={getDashboardRoute()} className={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard') ? 'active' : 'flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700'}>
+                        <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                             <span>Dashboard</span>
                         </Link>
@@ -158,8 +158,8 @@ const Navbar = () => {
                             </Link>
 
                             {/* Lien vers le Dashboard */}
-                            <Link href={getDashboardRoute()} className={route().current('student.dashboard') || route().current('admin.dashboard') || route().current('instructor.dashboard') ? 'active ' : 'flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700'}>
-                                <BookOpen className="h-6 w-6 text-indigo-600" />
+                            <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                            <BookOpen className="h-6 w-6 text-indigo-600" />
                                 <span>Dashboard</span>
                             </Link>
                             <Link
