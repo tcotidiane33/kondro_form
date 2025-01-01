@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import LogoMini from '@/Components/svg/LogoMini';
 import { BookOpen, Search, Menu, X } from 'lucide-react';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { route } from 'ziggy-js';
 
 const Navbar = () => {
@@ -12,20 +13,18 @@ const Navbar = () => {
     const user = auth.user;
     const isAuthenticated = !!user;
 
-    // const getDashboardRoute = () => {
-    //     if (!user) {
-    //         return route('home'); // Rediriger vers la page d'accueil si l'utilisateur est nul
-    //     }
-    //     if (user.role === 'Admin') {
-    //         return route('admin.dashboard');
-    //     } else if (user.role === 'Instructor') {
-    //         return route('instructor.dashboard');
-    //     } else {
-    //         return route('student.dashboard');
-    //     }
-    // };
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const getProfileEditRoute = () => {
+        if (user?.role === 'Admin') {
+            return route('admin.profile');
+        } else if (user?.role === 'Instructor') {
+            return route('instructor.profile');
+        } else {
+            return route('student.profile');
+        }
+    };
+
     return (
         <header className="navbar-header">
             {/* <header className="bg-gradient-to-r from-white/50 to-gray-500/50  pb-1 text-black/80" style={{ zIndex: 9999 }}> */}
@@ -104,13 +103,6 @@ const Navbar = () => {
                                 placeholder="Search courses..."
                             />
                         </div>
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
-                        >
-                            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                        </button>
-
                         <Link
                             href={route('business.index')}
                             className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
@@ -123,6 +115,13 @@ const Navbar = () => {
                         >
                             Individual
                         </Link>
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+                        >
+                            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                        </button>
+
                         {isAuthenticated && (
                             <div className="grig items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                                 <button
@@ -142,51 +141,64 @@ const Navbar = () => {
                                 {/* Dropdown menu */}
                                 {dropdownOpen && (
                                     // absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20 transition duration-300 ease-in-out transform origin-top-right ${dropdownOpen ? 'scale-100' : 'scale-95'}
-                                        <div
-                                            className={`absolute right-0 mt-2 z-20  text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 transition duration-300 ease-in-out transform origin-top-right ${dropdownOpen ? 'scale-100' : 'scale-95'}`}
-                                            id="user-dropdown"
-                                        >
-                                            <div className="px-4 py-3">
-                                                <span className="block text-sm text-gray-900 dark:text-white">{user.name}</span>
-                                                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{user.email}</span>
-                                            </div>
-                                            <ul className="py-2" aria-labelledby="user-menu-button">
-                                                <li>
-                                                    <Link
-                                                        href={route('dashboard')}
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                    >
-                                                        Dashboard
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link
-                                                        href={route('dashboard')}
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                    >
-                                                        Settings
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link
-                                                        href={route('dashboard')}
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                    >
-                                                        Earnings
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link
-                                                        href={route('logout')}
-                                                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                    >
-                                                        Sign out
-                                                    </Link>
-                                                </li>
-                                            </ul>
+                                    <div
+                                        className={`absolute right-0 mt-2 z-20  text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 transition duration-300 ease-in-out transform origin-top-right ${dropdownOpen ? 'scale-100' : 'scale-95'}`}
+                                        id="user-dropdown"
+                                    >
+                                        <div className="px-4 py-3">
+                                            <span className="block text-sm text-gray-900 dark:text-white">{user.name}</span>
+                                            <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{user.email}</span>
                                         </div>
+
+                                        <ul className="py-2" aria-labelledby="user-menu-button">
+                                            <li>
+                                                <Link
+                                                    href={user.role === 'Admin' ? route('admin.dashboard') : user.role === 'Instructor' ? route('instructor.dashboard') : route('student.dashboard')}
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                    onClick={(e) => {
+                                                        if (user.role !== 'Admin' && user.role !== 'Instructor' && user.role !== 'Student') {
+                                                            e.preventDefault();
+                                                            alert('Unauthorized action.');
+                                                        }
+                                                    }}
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    href={route('dashboard')}
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
+                                                    Settings
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    href={route('dashboard')}
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
+                                                    Earnings
+                                                </Link>
+                                            </li>
+                                            {/* <li>
+                                                <Link
+                                                    href={route('logout')}
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                                >
+                                                    Sign out
+                                                </Link>
+                                            </li> */}
+                                        </ul>
+                                        <div className="mt-1 space-y-1">
+                                            {/* <ResponsiveNavLink href={getProfileEditRoute()}>Profile</ResponsiveNavLink> */}
+                                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                                                Log Out
+                                            </ResponsiveNavLink>
+                                        </div>
+                                    </div>
                                 )}
-                                <button
+                                {/* <button
                                     data-collapse-toggle="navbar-user"
                                     type="button"
                                     className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -209,7 +221,7 @@ const Navbar = () => {
                                             d="M1 1h15M1 7h15M1 13h15"
                                         />
                                     </svg>
-                                </button>
+                                </button> */}
                             </div>
                         )}
                     </nav>
@@ -252,18 +264,7 @@ const Navbar = () => {
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                                 <span>Dashboard</span>
                             </Link> */}
-                            <Link
-                                href={route('business.index')}
-                                className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Business
-                            </Link>
-                            <Link
-                                href={route('individual.index')}
-                                className="rounded-md px-1 py-2 text-lg font-bold text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Individual
-                            </Link>
+
                         </div>
                     </div>
                 )}
