@@ -20,8 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::paginate(10);
-        return Inertia::render('Backend/User/Index', ['data' => $data]);
+        $users = User::with('role')->paginate(10);
+        return Inertia::render('Backend/Admin/Users/Index', ['users' => $users]);
     }
 
     /**
@@ -29,8 +29,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $role = Role::get();
-        return Inertia::render('Backend/User/Create', ['roles' => $roles]);
+        $roles = Role::all();
+        return Inertia::render('Backend/Admin/Users/Create', ['roles' => $roles]);
     }
 
     /**
@@ -56,7 +56,7 @@ class UserController extends Controller
             }
 
             if ($data->save()) {
-                return redirect()->route('user.index')->with('success', 'User created successfully');
+                return redirect()->route('admin.users.index')->with('success', 'User created successfully');
             } else {
                 return redirect()->back()->withInput()->with('error', 'Failed to create user');
             }
@@ -65,6 +65,7 @@ class UserController extends Controller
             return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
     /**
      * Display the specified resource.
      */
@@ -89,9 +90,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::get();
-        $user = User::findOrFail(encryptor('decrypt', $id));
-        return Inertia::render('Backend/User/Edit', ['user' => $user, 'roles' => $roles]);
+        $roles = Role::all();
+        $user = User::findOrFail($id);
+        return Inertia::render('Backend/Admin/Users/Edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -100,7 +101,7 @@ class UserController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         try {
-            $data = User::findOrFail(encryptor('decrypt', $id));
+            $data = User::findOrFail($id);
             $data->name = $request->userName;
             $data->email = $request->emailAddress;
             $data->contact = $request->contactNumber;
@@ -109,21 +110,25 @@ class UserController extends Controller
             $data->full_access = $request->fullAccess;
             $data->status = $request->status;
 
-            if ($request->password)
+            if ($request->password) {
                 $data->password = Hash::make($request->password);
+            }
 
             if ($request->hasFile('image')) {
                 $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/users'), $imageName);
                 $data->image = $imageName;
             }
-            if ($data->save())
-                return redirect()->route('user.index')->with('success', 'Data SAVED');
-            else
-                return redirect()->back()->withInput()->with('error', 'Please Try again');
+
+            if ($data->save()) {
+                \Log::info('User updated successfully', ['user' => $data]);
+                return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+            } else {
+                return redirect()->back()->withInput()->with('error', 'Failed to update user');
+            }
         } catch (Exception $e) {
-            dd($e);
-            return redirect()->back()->withInput()->with('error', 'Please try again');
+            \Log::error($e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
 
@@ -132,16 +137,27 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $data = User::findOrFail(encryptor('decrypt', $id));
-        $image_path = public_path('uploads/users/') . $data->image;
+        try {
+            $data = User::findOrFail($id);
+            $image_path = public_path('uploads/users/') . $data->image;
 
-        if ($data->delete()) {
-            if (File::exists($image_path))
-                File::delete($image_path);
-
-            return redirect()->back();
+            if ($data->delete()) {
+                if (File::exists($image_path)) {
+                    File::delete($image_path);
+                }
+                return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+            } else {
+                return redirect()->back()->with('error', 'Failed to delete user');
+            }
+        } catch (Exception $e) {
+            \Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Update the profile of the specified user.
+     */
     public function updateProfile(Request $request, $id)
     {
         $request->validate([

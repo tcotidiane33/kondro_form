@@ -1,12 +1,22 @@
+import { useEffect, useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
 import LogoMini from '@/Components/svg/LogoMini';
 import { BookOpen, Search, Menu, X } from 'lucide-react';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { route } from 'ziggy-js';
+// import useAuthRedirect from '../hooks/useAuthRedirect';
+
+interface User {
+    role?: string;
+    name: string;
+    email: string;
+    image: string;
+}
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    // useAuthRedirect();
 
     const auth = usePage().props.auth;
 
@@ -15,7 +25,13 @@ const Navbar = () => {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const getProfileEditRoute = () => {
+    useEffect(() => {
+        if (user) {
+            console.log(`User role: ${user.role}`);
+        }
+    }, [user]);
+
+    const getProfileRoute = () => {
         if (user?.role === 'Admin') {
             return route('admin.profile');
         } else if (user?.role === 'Instructor') {
@@ -24,6 +40,17 @@ const Navbar = () => {
             return route('student.profile');
         }
     };
+    const getDashboardRoute = () => {
+        if (user?.role === 'Admin') {
+            return route('admin.dashboard');
+        } else if (user?.role === 'Instructor') {
+            return route('instructor.dashboard');
+        } else {
+            return route('student.dashboard');
+        }
+    };
+
+
 
     return (
         <header className="navbar-header">
@@ -153,14 +180,8 @@ const Navbar = () => {
                                         <ul className="py-2" aria-labelledby="user-menu-button">
                                             <li>
                                                 <Link
-                                                    href={user.role === 'Admin' ? route('admin.dashboard') : user.role === 'Instructor' ? route('instructor.dashboard') : route('student.dashboard')}
+                                                    href={getDashboardRoute()}
                                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                                    onClick={(e) => {
-                                                        if (user.role !== 'Admin' && user.role !== 'Instructor' && user.role !== 'Student') {
-                                                            e.preventDefault();
-                                                            alert('Unauthorized action.');
-                                                        }
-                                                    }}
                                                 >
                                                     Dashboard
                                                 </Link>
@@ -191,7 +212,7 @@ const Navbar = () => {
                                             </li> */}
                                         </ul>
                                         <div className="mt-1 space-y-1">
-                                            {/* <ResponsiveNavLink href={getProfileEditRoute()}>Profile</ResponsiveNavLink> */}
+                                            <ResponsiveNavLink href={getProfileRoute()}>Profile</ResponsiveNavLink>
                                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                                 Log Out
                                             </ResponsiveNavLink>

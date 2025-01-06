@@ -68,6 +68,10 @@ class AdminDashboardController extends Controller
             $data['superAdminOptions'] = true;
         }
 
-        return Inertia::render('Backend/Dashboard/AdminDashboard', $data);
+        return Inertia::render('Backend/Dashboard/AdminDashboard', array_merge($data, [
+            'auth' => [
+                'user' => auth()->user()->load('role'),
+            ],
+        ]));
     }
 }

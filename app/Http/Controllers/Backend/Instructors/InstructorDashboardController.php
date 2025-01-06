@@ -75,6 +75,10 @@ class InstructorDashboardController extends Controller
             'monthlyRevenue'
         );
 
-        return Inertia::render('Backend/Dashboard/InstructorDashboard', $data);
+        return Inertia::render('Backend/Dashboard/InstructorDashboard', array_merge($data, [
+            'auth' => [
+                'user' => auth()->user()->load('role'),
+            ],
+        ]));
     }
 }

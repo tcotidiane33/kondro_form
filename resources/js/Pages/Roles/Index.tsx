@@ -35,7 +35,7 @@ const Index = () => {
             <thead className="bg-gray-200">
             <tr>
                 <th className="px-4 py-2 text-left text-gray-600">Name</th>
-                <th className="px-4 py-2 text-left text-gray-600">Permissions</th>
+                <th className="px-4 py-2 text-left text-gray-600 bg-blue-100">Permissions</th>
                 <th className="px-4 py-2 text-left text-gray-600">Actions</th>
             </tr>
             </thead>
@@ -43,13 +43,13 @@ const Index = () => {
             {roles.map((role) => (
                 <tr key={role.id} className="border-b hover:bg-gray-100">
                 <td className="px-4 py-2">{role.name}</td>
-                <td className="px-4 py-2">
+                <td className="px-4 py-2 bg-indigo-100">
                     <div className="flex flex-wrap gap-2">
-                    {role.permissions && role.permissions.map((permission) => (
-                        <span key={permission.id} className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
-                        {permission.name}
-                        </span>
-                    ))}
+                        {role.permissions && role.permissions.map((permission) => (
+                            <span key={permission.id} className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                            {permission.name}
+                            </span>
+                        ))}
                     </div>
                 </td>
                 <td className="px-4 py-2 flex space-x-2">

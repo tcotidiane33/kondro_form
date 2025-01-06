@@ -4,7 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
-import { FaUserShield } from 'react-icons/fa';
+import { FaUserShield, FaUser } from 'react-icons/fa';
 import { Book, Monitor, Clock, Award } from 'react-feather';
 
 export default function AdminLayout({
@@ -19,7 +19,8 @@ export default function AdminLayout({
     const getProfileEditRoute = () => route('admin.profile.edit');
 
     return (
-        <div className="min-h-screen bg-indigo-800 p-6">
+        <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6">
+
             <nav className="border-b border-green-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
@@ -34,19 +35,23 @@ export default function AdminLayout({
                                 <NavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
                                     Dashboard
                                 </NavLink>
+                                <NavLink href={route('admin.users.index')} active={route().current('admin.users.index')}>
+                                    <FaUser className="inline-block text-2xl text-[#FF2D20]" />
+                                    Users
+                                </NavLink>
                                 <NavLink href={route('roles.index')} active={route().current('roles.index')}>
                                     <FaUserShield className="inline-block text-2xl text-[#FF2D20]" />
                                     Roles and Permissions
                                 </NavLink>
-                                <NavLink href={route('courses.index')} active={route().current('courses.index')}>
+                                <NavLink href={route('admin.courses.index')} active={route().current('admin.courses.index')}>
                                     <Book className="inline-block text-2xl text-[#FF2D20]" />
                                     Courses
                                 </NavLink>
-                                <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
+                                {/* <NavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
                                     <Book className="inline-block text-2xl text-[#FF2D20]" />
                                     Category Courses
-                                </NavLink>
-                                <NavLink href="#send-notification" active={route().current('send-notification')}>
+                                </NavLink> */}
+                                {/* <NavLink href="#send-notification" active={route().current('send-notification')}>
                                     <Monitor className="inline-block text-2xl text-[#FF2D20]" />
                                     Send Notification
                                 </NavLink>
@@ -61,7 +66,7 @@ export default function AdminLayout({
                                 <NavLink href="#send-data-update" active={route().current('send-data-update')}>
                                     <Monitor className="inline-block text-2xl text-[#FF2D20]" />
                                     Send Data Update
-                                </NavLink>
+                                </NavLink> */}
                             </div>
                         </div>
 
@@ -142,11 +147,11 @@ export default function AdminLayout({
                             <FaUserShield className="inline-block text-2xl text-[#FF2D20]" />
                             Roles and Permissions
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('courses.index')} active={route().current('courses.index')}>
+                        <ResponsiveNavLink href={route('admin.courses.index')} active={route().current('admin.courses.index')}>
                             <Book className="inline-block text-2xl text-[#FF2D20]" />
                             Courses
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
+                        {/* <ResponsiveNavLink href={route('course-categories.index')} active={route().current('course-categories.index')}>
                             <Book className="inline-block text-2xl text-[#FF2D20]" />
                             Category Courses
                         </ResponsiveNavLink>
@@ -165,7 +170,7 @@ export default function AdminLayout({
                         <ResponsiveNavLink href="#send-data-update" active={route().current('send-data-update')}>
                             <Monitor className="inline-block text-2xl text-[#FF2D20]" />
                             Send Data Update
-                        </ResponsiveNavLink>
+                        </ResponsiveNavLink> */}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
@@ -185,7 +190,7 @@ export default function AdminLayout({
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-transparent shadow">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}

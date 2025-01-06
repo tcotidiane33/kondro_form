@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,11 +20,19 @@ return Application::configure(basePath: dirname(__DIR__))
             // \App\Http\Middleware\CheckRole::class, // Ajout du middleware CheckRole
 
         ]);
+        $middleware->use([
+            \App\Http\Middleware\TrackUserActivity::class,
+            // \App\Http\Middleware\checkAuth::class,
+        ]);
+
+        // $middleware->append(AdminMiddleware::class);
+
 
         $middleware->group('admin', [
-            \App\Http\Middleware\AdminMiddleware::class,
+            AdminMiddleware::class,
         ]);
-        //
+
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -22,9 +22,15 @@ class AdminMiddleware
         // if (Auth::check() && Auth::user()->role === 'Admin') {
         //     return $next($request);
         // }
-        if (Auth::check() && Auth::user()->role && Auth::user()->role->identity === 'admin') {
+        
+        // if (Auth::check() && Auth::user()->role && Auth::user()->role->identity === 'admin') {
+        //     return $next($request);
+        // }
+        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'Admin') {
             return $next($request);
         }
+
+
 
         return redirect('/')->with('error', 'Vous n\'avez pas accès à l\'administration.');
     }

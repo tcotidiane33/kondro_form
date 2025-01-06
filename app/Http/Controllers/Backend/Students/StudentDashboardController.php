@@ -53,6 +53,10 @@ class StudentDashboardController extends Controller
             'role' => $role, // Inclure le rôle dans les données
         ];
 
-        return Inertia::render('Backend/Dashboard/Dashboard', $data);
+        return Inertia::render('Backend/Dashboard/Dashboard', $data)->with([
+            'auth' => [
+            'user' => auth()->user()->load('role'),
+            ],
+        ]);
     }
 }

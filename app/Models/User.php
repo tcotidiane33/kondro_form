@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -20,7 +21,7 @@ class User extends Authenticatable
         'contact', // Ajoutez cette ligne si elle n'est pas déjà présente
         'role_id',
         'status',
-        'instructor_id',
+        'instructor_id', 'last_login_at', 'last_logout_at', 'last_login_interval'
     ];
 
     // The attributes that should be hidden for serialization.
@@ -34,6 +35,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $dates = [
+        'last_login_at', 'last_logout_at'
+    ];
+    // public function getLastLoginIntervalAttribute($value)
+    // {
+    //     return Carbon::createFromTimestamp($value)->diffForHumans();
+    // }
+    public function getLastLoginIntervalAttribute($value)
+    {
+        if ($value === null) {
+            return 'N/A'; // Valeur par défaut si last_login_interval est null
+        }
+
+        return Carbon::createFromTimestamp($value)->diffForHumans();
+    }
 
     public function isAdmin()
     {
