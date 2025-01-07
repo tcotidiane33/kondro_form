@@ -24,11 +24,11 @@ class AddNewRequest extends FormRequest
         return [
             'userName' => 'required|max:255',
             'emailAddress' => 'required|email|unique:users,email',
-            'contactNumber' => 'required|unique:users,contact',
+            // 'contactNumber' => 'required|unique:users,contact',
             'roleId' => 'required|exists:roles,id',
             'password' => 'required|min:8|confirmed',
-            'fullAccess' => 'required|boolean',
-            'status' => 'required|boolean',
+            // 'fullAccess' => 'required|boolean',
+            // 'status' => 'required|boolean',
         ];
     }
 }

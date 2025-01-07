@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
-import Create from './Create';
+import CreateUser from './Create';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 
@@ -23,6 +23,7 @@ interface User {
 }
 
 interface Role {
+    id: number;
     name: string;
 }
 
@@ -64,9 +65,9 @@ const Index = () => {
 
     return (
         <AdminLayout>
-            <div className="">
+            <div className="container mx-auto p-4">
 
-                <div className="container mx-auto p-4">
+                <div className="container-fuild mx-auto p-4">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-3xl font-bold text-gray-800">Gestion des utilisateurs</h1>
                         <Link href={route('admin.users.create')} className="btn btn-primary flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
@@ -134,7 +135,7 @@ const Index = () => {
                 </div>
                 <div className="grid gap-6 mb-6 md:grid-cols-2">
                     <div className="col">
-                        <Create roles={[]} />
+                        <CreateUser roles={roles} />
                     </div>
                     <div className="col mt-1">
                         <div className="mt-4 bg-white shadow-md rounded-lg p-4">
