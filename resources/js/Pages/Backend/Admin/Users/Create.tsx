@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import { usePage } from '@inertiajs/react';
+import Notification from '@/Components/Notification/Notification'; // Importez le composant Notification
 
 interface Role {
     id: number;
@@ -17,21 +18,57 @@ export default function CreateUser({ roles }: CreateProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role_id, setRoleId] = useState('');
+    const [contact, setContact] = useState('');
+    const [language, setLanguage] = useState('fr');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [showNotification, setShowNotification] = useState(false);
+    const [notificationType, setNotificationType] = useState<'success' | 'error' | 'info' | 'warning'>('success');
+    const [notificationMessage, setNotificationMessage] = useState('');
+
+    // Gestion des notifications
+    useEffect(() => {
+        if (flash?.success) {
+            setNotificationType('success');
+            setNotificationMessage(flash.success);
+            setShowNotification(true);
+        }
+        if (flash?.error) {
+            setNotificationType('error');
+            setNotificationMessage(flash.error);
+            setShowNotification(true);
+        }
+    }, [flash]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        Inertia.post('/admin/users', { name, email, password, role_id }, {
+
+        const userData = {
+            name,
+            email,
+            password,
+            role_id,
+            contact,
+            language,
+        };
+
+        Inertia.post('/admin/users', userData, {
             onError: (error) => {
                 setErrors(error);
+            },
+            onSuccess: () => {
+                setName('');
+                setEmail('');
+                setPassword('');
+                setRoleId('');
+                setContact('');
+                setLanguage('fr');
+                setErrors({});
             }
         });
     };
 
     const user = auth?.user;
     const role = user?.role?.name;
-    // console.log(user);
-    // console.log(user?.role?.name);
 
     if (role !== 'Admin') {
         return (
@@ -49,8 +86,16 @@ export default function CreateUser({ roles }: CreateProps) {
     return (
         <div className="relative p-4 bg-gray-100 p-2 mt-5 shadow-md rounded-lg">
             <h1 className="text-xl font-bold mb-2">Ajouter un utilisateur</h1>
-            {flash?.success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">{flash.success}</div>}
-            {flash?.error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">{flash.error}</div>}
+
+            {/* Notification */}
+            {showNotification && (
+                <Notification
+                    type={notificationType}
+                    message={notificationMessage}
+                    onClose={() => setShowNotification(false)}
+                    duration={3000} // Durée personnalisée
+                />
+            )}
 
             <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
                 <div className="mb-2">
@@ -61,6 +106,7 @@ export default function CreateUser({ roles }: CreateProps) {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                        required
                     />
                     {errors.name && <div className="text-red-500 text-sm mt-1">{errors.name}</div>}
                 </div>
@@ -72,6 +118,7 @@ export default function CreateUser({ roles }: CreateProps) {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                        required
                     />
                     {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
                 </div>
@@ -83,8 +130,20 @@ export default function CreateUser({ roles }: CreateProps) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                        required
                     />
                     {errors.password && <div className="text-red-500 text-sm mt-1">{errors.password}</div>}
+                </div>
+                <div className="mb-2">
+                    <label htmlFor="contact" className="block text-sm font-medium text-gray-700">Contact</label>
+                    <input
+                        id="contact"
+                        type="text"
+                        value={contact}
+                        onChange={(e) => setContact(e.target.value)}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                    />
+                    {errors.contact && <div className="text-red-500 text-sm mt-1">{errors.contact}</div>}
                 </div>
                 <div className="mb-2">
                     <label htmlFor="role_id" className="block text-sm font-medium text-gray-700">Rôle</label>
@@ -93,6 +152,7 @@ export default function CreateUser({ roles }: CreateProps) {
                         value={role_id}
                         onChange={(e) => setRoleId(e.target.value)}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                        required
                     >
                         <option value="">Sélectionnez un rôle</option>
                         {roles.map((role) => (
@@ -103,7 +163,25 @@ export default function CreateUser({ roles }: CreateProps) {
                     </select>
                     {errors.role_id && <div className="text-red-500 text-sm mt-1">{errors.role_id}</div>}
                 </div>
-                <button type="submit" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">Ajouter un user</button>
+                <div className="mb-2">
+                    <label htmlFor="language" className="block text-sm font-medium text-gray-700">Langue</label>
+                    <select
+                        id="language"
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-1"
+                    >
+                        <option value="fr">Français</option>
+                        <option value="en">Anglais</option>
+                    </select>
+                    {errors.language && <div className="text-red-500 text-sm mt-1">{errors.language}</div>}
+                </div>
+                <button
+                    type="submit"
+                    className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                >
+                    Ajouter un utilisateur
+                </button>
             </form>
         </div>
     );

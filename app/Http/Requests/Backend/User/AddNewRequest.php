@@ -22,13 +22,16 @@ class AddNewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userName' => 'required|max:255',
-            'emailAddress' => 'required|email|unique:users,email',
-            // 'contactNumber' => 'required|unique:users,contact',
-            'roleId' => 'required|exists:roles,id',
-            'password' => 'required|min:8|confirmed',
-            // 'fullAccess' => 'required|boolean',
-            // 'status' => 'required|boolean',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'contact' => 'nullable|string|max:255|unique:users',
+            'role_id' => 'required|exists:roles,id',
+            'password' => 'required|string|min:8',
+            'language' => 'nullable|string|max:255',
+            'image' => 'nullable|string|max:255',
+            'full_access' => 'nullable|boolean',
+            'status' => 'nullable|boolean',
+            'instructor_id' => 'nullable|exists:instructors,id',
         ];
     }
 }

@@ -42,7 +42,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::middleware(['guest' ])->group(function () {
+Route::middleware(['guest'])->group(function () {
     Route::get('/students/auth/register', [AuthController::class, 'signUpForm'])->name('students.auth.register');
     Route::post('/students/auth/register', [AuthController::class, 'signUpStore'])->name('students.auth.register.store');
     Route::get('/student/auth/login', [AuthController::class, 'signInForm'])->name('students.auth.login');
@@ -54,7 +54,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'admin' ])->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -101,7 +101,7 @@ Route::middleware(['auth', 'verified', 'admin' ])->group(function () {
 });
 
 // Pour les étudiants
-Route::prefix('students')->middleware(['auth', 'verified' ])->group(function () {
+Route::prefix('students')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('students.index');
     // Route::get('/dashboard', [DashboardController::class, 'index'])->name('student.dashboard');
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
@@ -133,7 +133,7 @@ Route::prefix('students')->middleware(['auth', 'verified' ])->group(function () 
 });
 
 // Pour les instructeurs
-Route::prefix('instructor')->middleware(['auth', 'verified' ])->group(function () {
+Route::prefix('instructor')->middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('instructor.dashboard');
 
@@ -169,32 +169,33 @@ Route::prefix('instructor')->middleware(['auth', 'verified' ])->group(function (
 });
 
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-        Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
-        Route::get('/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
-        Route::get('/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
-        Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
+    Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
+    Route::get('/lessons', [AdminController::class, 'manageLessons'])->name('admin.lessons.index');
+    Route::get('/materials', [AdminController::class, 'manageMaterials'])->name('admin.materials.index');
+    Route::get('/users/{id}', [AdminController::class, 'showUser'])->name('admin.users.show');
 
-        Route::get('/profile', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'index'])->name('admin.profile');
-        Route::get('/profile/edit', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
-        Route::post('/profile/update', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::get('/profile', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'index'])->name('admin.profile');
+    Route::get('/profile/edit', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::post('/profile/update', [App\Http\Controllers\Backend\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
 
-        // Routes pour la gestion des utilisateurs
-        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-        Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-        Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
-        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-        Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    // Routes pour la gestion des utilisateurs
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    // Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
-        // Route pour la gestion des rôles
-        Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-        Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
-        Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-        Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
-        Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    // Route pour la gestion des rôles
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 }); // end of admin middleware
 
 require __DIR__ . '/auth.php';

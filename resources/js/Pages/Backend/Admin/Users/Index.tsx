@@ -1,14 +1,14 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { PageProps as InertiaPageProps } from '@inertiajs/core';
 import CreateUser from './Create';
-import { Bar, Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 
 
 interface User {
@@ -39,11 +39,26 @@ const Index = () => {
     const { users, roles } = usePage<PageProps>().props;
 
     const isUserConnected = (user: User) => {
-        // Logique pour déterminer si l'utilisateur est connecté
-        // Par exemple, si last_logout_at est null ou si last_login_at est plus récent que last_logout_at
-        return user.last_login_at && (!user.last_logout_at || new Date(user.last_login_at) > new Date(user.last_logout_at));
+        if (!user.last_login_at) {
+            return false; // Si last_login_at n'existe pas, l'utilisateur n'est pas connecté
+        }
+
+        const lastLogin = new Date(user.last_login_at);
+        const lastLogout = user.last_logout_at ? new Date(user.last_logout_at) : null;
+
+                // console.log("last_login_at:", user.last_login_at);
+                // console.log("last_logout_at:", user.last_logout_at);
+                // console.log("isUserConnected:", isUserConnected(user));
+
+        // Si last_logout_at n'existe pas, l'utilisateur est considéré comme connecté
+        if (!lastLogout) {
+            return true;
+        }
+        // Si last_login_at est plus récent que last_logout_at, l'utilisateur est connecté
+        return lastLogin.getTime() > lastLogout.getTime();
     };
-    console.log(roles); // Vérifie ce que contient roles
+
+    // console.log(roles); // Vérifie ce que contient roles
 
     const userRoleCounts = roles.map(role => ({
         role: role.name,
@@ -56,8 +71,78 @@ const Index = () => {
             {
                 label: 'Nombre d\'utilisateurs',
                 data: userRoleCounts.map(item => item.count),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)', // Rouge pour Admin
+                    'rgba(75, 192, 192, 0.2)', // Vert pour Instructor
+                    'rgba(54, 162, 235, 0.2)', // Bleu pour Student
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+    const activityData = {
+        labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+        datasets: [
+            {
+                label: 'Connexions',
+                data: [12, 19, 3, 5, 2, 3, 7], // Exemple de données
                 borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 1,
+            },
+            {
+                label: 'Déconnexions',
+                data: [10, 15, 2, 4, 1, 2, 5], // Exemple de données
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderWidth: 1,
+            },
+        ],
+    };
+    const connectedUsers = users.data.filter(user => isUserConnected(user)).length;
+    const disconnectedUsers = users.data.length - connectedUsers;
+
+    const pieChartData = {
+        labels: ['Connectés', 'Déconnectés'],
+        datasets: [
+            {
+                label: 'Statut de connexion',
+                data: [connectedUsers, disconnectedUsers],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)', // Connectés
+                    'rgba(255, 99, 132, 0.2)', // Déconnectés
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+    const averageLoginIntervals = roles.map(role => {
+        const roleUsers = users.data.filter(user => user.role.name === role.name);
+        const totalInterval = roleUsers.reduce((sum, user) => sum + (user.last_login_interval || 0), 0);
+        const averageInterval = roleUsers.length > 0 ? totalInterval / roleUsers.length : 0;
+        return {
+            role: role.name,
+            averageInterval: averageInterval,
+        };
+    });
+
+    const intervalChartData = {
+        labels: averageLoginIntervals.map(item => item.role),
+        datasets: [
+            {
+                label: 'Temps moyen de connexion (secondes)',
+                data: averageLoginIntervals.map(item => item.averageInterval),
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1,
             },
         ],
@@ -107,6 +192,7 @@ const Index = () => {
                                             </svg>
                                         )}
                                     </td>
+
                                     <td className="border px-4 py-2">{user.last_login_at ? new Date(user.last_login_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2">{user.last_logout_at ? new Date(user.last_logout_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2 flex space-x-2 justify-center items-center">
@@ -140,20 +226,42 @@ const Index = () => {
                     <div className="col mt-1">
                         <div className="mt-4 bg-white shadow-md rounded-lg p-4">
                             <h2 className="text-2xl font-bold text-gray-800">Nombre d'utilisateurs par rôle</h2>
-                        <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Nombre d\'utilisateurs par rôle' } } }} />
+                            <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Nombre d\'utilisateurs par rôle' } } }} />
                         </div>
                     </div>
 
-                    </div>
+                </div>
+                <div className="grid gap-6 mb-6 md:grid-cols-2">
                     <div className="col mt-1">
                         <div className="mt-4 bg-white shadow-md rounded-lg p-4">
                             <h2 className="text-2xl font-bold text-gray-800">Courbe interactive des connexions</h2>
                             <Line data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Connexions des utilisateurs' } } }} />
                         </div>
                     </div>
+                    <div className="col mt-1">
+                        <div className="mt-4 bg-white shadow-md rounded-lg p-4">
+                            <h2 className="text-2xl font-bold text-gray-800">Activité des utilisateurs</h2>
+                            <Line data={activityData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Activité des utilisateurs' } } }} />
+                        </div>
+                    </div>
                 </div>
+                <div className="grid gap-6 mb-6 md:grid-cols-2">
+                    <div className="col mt-1">
+                        <div className="mt-4 bg-white shadow-md rounded-lg p-4">
+                            <h2 className="text-2xl font-bold text-gray-800">Statut de connexion</h2>
+                            <Pie data={pieChartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Statut de connexion' } } }} />
+                        </div>
+                    </div>
+                    <div className="col mt-1">
+                        <div className="mt-4 bg-white shadow-md rounded-lg p-4">
+                            <h2 className="text-2xl font-bold text-gray-800">Temps moyen de connexion</h2>
+                            <Bar data={intervalChartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Temps moyen de connexion' } } }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        </AdminLayout>
+        </AdminLayout >
     );
 };
 

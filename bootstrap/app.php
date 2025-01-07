@@ -12,27 +12,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Middleware globaux pour les routes web
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
             \App\Http\Middleware\HandleCors::class,
-
-            // \App\Http\Middleware\CheckRole::class, // Ajout du middleware CheckRole
-
         ]);
+
+        // Middleware globaux pour toutes les routes
         $middleware->use([
             \App\Http\Middleware\TrackUserActivity::class,
-            // \App\Http\Middleware\checkAuth::class,
         ]);
 
-        // $middleware->append(AdminMiddleware::class);
-
-
+        // Groupe de middleware 'admin'
         $middleware->group('admin', [
             AdminMiddleware::class,
         ]);
-
-
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

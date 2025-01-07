@@ -18,10 +18,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'contact', // Ajoutez cette ligne si elle n'est pas déjà présente
+        'contact', 
         'role_id',
+        'image',
+        'language',
+        'full_access',
         'status',
-        'instructor_id', 'last_login_at', 'last_logout_at', 'last_login_interval'
+        'instructor_id',
+        'last_login_at',
+        'last_logout_at',
+        'last_login_interval'
     ];
 
     // The attributes that should be hidden for serialization.
@@ -36,12 +42,10 @@ class User extends Authenticatable
     ];
 
     protected $dates = [
-        'last_login_at', 'last_logout_at'
+        'last_login_at',
+        'last_logout_at'
     ];
-    // public function getLastLoginIntervalAttribute($value)
-    // {
-    //     return Carbon::createFromTimestamp($value)->diffForHumans();
-    // }
+    //
     public function getLastLoginIntervalAttribute($value)
     {
         if ($value === null) {

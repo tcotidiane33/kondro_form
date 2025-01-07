@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Backend\User\AddNewRequest;
 use App\Http\Requests\Backend\User\UpdateRequest;
+use App\Http\Requests\Backend\User\UpdateProfileRequest;
 
 class UserController extends Controller
 {
@@ -21,7 +22,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('role')->paginate(10);
-        return Inertia::render('Backend/Admin/Users/Index', ['users' => $users, 'roles' => Role::all(), 'search' => '']);
+        $roles = Role::all();
+        return Inertia::render('Backend/Admin/Users/Index', ['users' => $users, 'roles' => $roles]);
     }
 
     /**
@@ -39,27 +41,36 @@ class UserController extends Controller
     public function store(AddNewRequest $request)
     {
         try {
-            $data = new User();
-            $data->name = $request->userName;
-            $data->email = $request->emailAddress;
-            $data->contact = $request->contactNumber;
-            $data->role_id = $request->roleId;
-            $data->language = 'fr';
-            $data->full_access = $request->fullAccess;
-            $data->status = $request->status;
-            $data->password = Hash::make($request->password);
+            $validated = $request->validated();
+
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'contact' => $validated['contact'] ?? null,
+                'role_id' => $validated['role_id'],
+                'password' => Hash::make($validated['password']),
+                'language' => $validated['language'] ?? 'fr',
+                'image' => $validated['image'] ?? null,
+                'full_access' => $validated['full_access'] ?? 0,
+                'status' => $validated['status'] ?? 1,
+                'instructor_id' => $validated['instructor_id'] ?? null,
+            ]);
 
             if ($request->hasFile('image')) {
                 $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
                 $request->image->move(public_path('uploads/users'), $imageName);
-                $data->image = $imageName;
+                $user->image = $imageName;
+                $user->save();
             }
 
-            if ($data->save()) {
-                return redirect()->route('admin.users.index')->with('success', 'User created successfully');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Failed to create user');
-            }
+            // return response()->json($user, 201);
+            return Inertia::render('Backend/Admin/Users/Index', [
+                'users' => User::with('role')->paginate(10), // Rechargez les utilisateurs
+                'roles' => Role::all(), // Rechargez les rôles
+                'flash' => [
+                    'success' => 'Utilisateur créé avec succès.',
+                ],
+            ]);
         } catch (Exception $e) {
             \Log::error($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
@@ -98,37 +109,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UpdateRequest $request, User $user)
     {
         try {
-            $data = User::findOrFail($id);
-            $data->name = $request->userName;
-            $data->email = $request->emailAddress;
-            $data->contact = $request->contactNumber;
-            $data->role_id = $request->roleId;
-            $data->language = 'fr';
-            $data->full_access = $request->fullAccess;
-            $data->status = $request->status;
+            // Passer l'utilisateur à la requête
+            $request->merge(['user' => $user]);
 
-            if ($request->password) {
-                $data->password = Hash::make($request->password);
-            }
+            // Mettre à jour l'utilisateur
+            $user->update($request->validated());
 
-            if ($request->hasFile('image')) {
-                $imageName = rand(111, 999) . time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads/users'), $imageName);
-                $data->image = $imageName;
-            }
-
-            if ($data->save()) {
-                \Log::info('User updated successfully', ['user' => $data]);
-                return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
-            } else {
-                return redirect()->back()->withInput()->with('error', 'Failed to update user');
-            }
+            return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
         } catch (Exception $e) {
-            \Log::error($e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur.');
         }
     }
 
@@ -139,12 +131,15 @@ class UserController extends Controller
     {
         try {
             $data = User::findOrFail($id);
-            $image_path = public_path('uploads/users/') . $data->image;
 
-            if ($data->delete()) {
+            if ($data->image) {
+                $image_path = public_path('uploads/users/') . $data->image;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
+            }
+
+            if ($data->delete()) {
                 return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
             } else {
                 return redirect()->back()->with('error', 'Failed to delete user');
@@ -158,20 +153,15 @@ class UserController extends Controller
     /**
      * Update the profile of the specified user.
      */
-    public function updateProfile(Request $request, $id)
+    public function updateProfile(UpdateProfileRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'contact' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:2048',
-        ]);
-
         try {
+            $validated = $request->validated();
             $user = User::findOrFail($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->contact = $request->contact;
+
+            $user->name = $validated['name'];
+            $user->email = $validated['email'];
+            $user->contact = $validated['contact'];
 
             if ($request->hasFile('image')) {
                 $imageName = time() . '.' . $request->image->extension();

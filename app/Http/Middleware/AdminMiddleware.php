@@ -17,21 +17,23 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // if (Auth::check() && Auth::user()->isAdmin()) {
-        // if (Auth::check() && Auth::user()->role->identity === 'admin') {
-        // if (Auth::check() && Auth::user()->role === 'Admin') {
-        //     return $next($request);
-        // }
-        
-        // if (Auth::check() && Auth::user()->role && Auth::user()->role->identity === 'admin') {
-        //     return $next($request);
-        // }
-        if (Auth::check() && Auth::user()->role && Auth::user()->role->name === 'Admin') {
+        // Vérifie si l'utilisateur est authentifié
+        if (!Auth::check()) {
+            return redirect('/login')->with('error', 'Vous devez être connecté pour accéder à cette page.');
+        }
+
+        // Vérifie si l'utilisateur a le rôle d'administrateur
+        if (Auth::user()->isAdmin()) {
             return $next($request);
         }
 
+        //     // Vérifie si l'utilisateur a le rôle d'administrateur
+        // if (Auth::user()->role && Auth::user()->role->name === 'Admin') {
+        //     return $next($request);
+        // }
 
-
+        
+        // Si l'utilisateur n'est pas administrateur, redirigez-le avec un message d'erreur
         return redirect('/')->with('error', 'Vous n\'avez pas accès à l\'administration.');
     }
 }
