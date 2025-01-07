@@ -33,14 +33,14 @@
         <script src="http://localhost:8097"></script>
         <script>
             // Activez React DevTools uniquement si le serveur localhost:5173/react-devtools est disponible
-            fetch('http://localhost:5173/react-devtools')
+            fetch('http://localhost:8097')
                 .then(() => {
                     const script = document.createElement('script');
-                    script.src = 'http://localhost:5173/react-devtools';
+                    script.src = 'http://localhost:8097';
                     document.head.appendChild(script);
                 })
                 .catch(() => {
-                    console.warn('React DevTools non disponible sur http://localhost:5173/react-devtools.');
+                    console.warn('React DevTools non disponible sur http://localhost:8097.');
                 });
         </script>
     @endif

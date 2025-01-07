@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('role')->paginate(10);
-        return Inertia::render('Backend/Admin/Users/Index', ['users' => $users]);
+        return Inertia::render('Backend/Admin/Users/Index', ['users' => $users, 'roles' => Role::all(), 'search' => '']);
     }
 
     /**
@@ -60,7 +60,7 @@ class UserController extends Controller
             } else {
                 return redirect()->back()->withInput()->with('error', 'Failed to create user');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             \Log::error($e->getMessage());
             return redirect()->back()->withInput()->with('error', 'An error occurred: ' . $e->getMessage());
         }

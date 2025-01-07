@@ -25,28 +25,24 @@ const Navbar = () => {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    useEffect(() => {
-        if (user) {
-            console.log(`User role: ${user.role}`);
-        }
-    }, [user]);
 
-    const getProfileRoute = () => {
-        if (user?.role === 'Admin') {
-            return route('admin.profile');
-        } else if (user?.role === 'Instructor') {
-            return route('instructor.profile');
+
+    const getProfileLink = () => {
+        if (user?.role?.name === 'Admin') {
+            return '/admin/profile';
+        } else if (user?.role?.name === 'Instructor') {
+            return '/instructor/profile';
         } else {
-            return route('student.profile');
+            return '/students/profile';
         }
     };
-    const getDashboardRoute = () => {
-        if (user?.role === 'Admin') {
-            return route('admin.dashboard');
-        } else if (user?.role === 'Instructor') {
-            return route('instructor.dashboard');
+    const getDashboardLink = () => {
+        if (user?.role?.name === 'Admin') {
+            return '/admin/dashboard';
+        } else if (user?.role?.name === 'Instructor') {
+            return '/instructor/dashboard';
         } else {
-            return route('student.dashboard');
+            return '/student/dashboard';
         }
     };
 
@@ -54,6 +50,16 @@ const Navbar = () => {
 
     return (
         <header className="navbar-header">
+            {isAuthenticated && (
+                <div id="toast-warning" className="flex items-center w-full max-w-xs p-1 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
+                    <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+                    </svg>
+                </div>
+                <span className="ml-2 text-sm font-medium text-gray-900 dark:text-white">User Role: {user?.role?.name}</span>
+            </div>
+            )}
             {/* <header className="bg-gradient-to-r from-white/50 to-gray-500/50  pb-1 text-black/80" style={{ zIndex: 9999 }}> */}
             <div className="relative w-full px-4 max-w-7xl mx-auto">
                 <div className="flex justify-between items-center py-2">
@@ -62,6 +68,7 @@ const Navbar = () => {
                             <LogoMini className="h-18 w-48" />
                         </Link>
                     </div>
+
                     <nav className="flex items-center space-x-4">
                         <div className="hidden lg:flex space-x-4">
                             <Link href="courses/all" className="text-sm font-medium text-gray-900 hover:text-gray-900">
@@ -116,7 +123,7 @@ const Navbar = () => {
                         </div>
 
                         {/* Lien vers le Dashboard */}
-                        {/* <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                        {/* <Link href={getDashboardLink()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                             <span>Dashboard</span>
                         </Link> */}
@@ -180,7 +187,7 @@ const Navbar = () => {
                                         <ul className="py-2" aria-labelledby="user-menu-button">
                                             <li>
                                                 <Link
-                                                    href={getDashboardRoute()}
+                                                    href={getDashboardLink()}
                                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                                 >
                                                     Dashboard
@@ -212,7 +219,7 @@ const Navbar = () => {
                                             </li> */}
                                         </ul>
                                         <div className="mt-1 space-y-1">
-                                            <ResponsiveNavLink href={getProfileRoute()}>Profile</ResponsiveNavLink>
+                                            <ResponsiveNavLink href={getProfileLink()}>Profile</ResponsiveNavLink>
                                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                                 Log Out
                                             </ResponsiveNavLink>
@@ -281,7 +288,7 @@ const Navbar = () => {
                             </Link>
 
                             {/* Lien vers le Dashboard */}
-                            {/* <Link href={getDashboardRoute()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
+                            {/* <Link href={getDashboardLink()} className="flex items-center space-x-2 text-lg font-bold text-black hover:text-gray-700">
                             <BookOpen className="h-6 w-6 text-indigo-600" />
                                 <span>Dashboard</span>
                             </Link> */}
@@ -290,6 +297,7 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
+
         </header>
     );
 };

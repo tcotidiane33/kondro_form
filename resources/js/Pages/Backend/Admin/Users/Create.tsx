@@ -29,10 +29,10 @@ const Create: React.FC<CreateProps> = ({ roles }) => {
     }
 
     return (
-        <AdminLayout>
-            <div className="relative p-4 w-full max-w-2xl max-h-full p-2 mt-5 shadow-md rounded-lg">
+        // <AdminLayout>
+            <div className="relative p-4 w-full  max-w-xl max-h-full bg-gray-100 p-2 mt-5 shadow-md rounded-lg">
                 <h1 className="text-xl font-bold mb-2">Ajouter un utilisateur</h1>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
                     <div className="mb-2">
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nom</label>
                         <input
@@ -79,10 +79,10 @@ const Create: React.FC<CreateProps> = ({ roles }) => {
                             ))}
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary mt-4">Ajouter</button>
+                    <button type="submit" className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">Ajouter</button>
                 </form>
             </div>
-        </AdminLayout>
+        // </AdminLayout>
     );
 };
 

@@ -63,13 +63,7 @@ Route::middleware(['auth', 'verified', 'admin' ])->group(function () {
 
     Route::resource('lessons', LessonController::class);
     Route::resource('chapters', ChapterController::class);
-    Route::get('/backend/user', [UserController::class, 'index'])->name('user.index');
-    Route::get('/backend/user/create', [UserController::class, 'create'])->name('user.create');
-    Route::post('/backend/user', [UserController::class, 'store'])->name('user.store');
-    Route::get('/backend/user/{id}', [UserController::class, 'show'])->name('user.show');
-    Route::get('/backend/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::put('/backend/user/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/backend/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
     Route::get('materials/view', [LessonController::class, 'viewMaterials'])->name('materials.view');
     Route::post('lessons/{lesson}/materials', [LessonController::class, 'addMaterial'])->name('lessons.materials.store');
     Route::get('lessons/{lesson}/materials/{material}/edit', [LessonController::class, 'editMaterial'])->name('lessons.materials.edit');
@@ -174,9 +168,7 @@ Route::prefix('instructor')->middleware(['auth', 'verified' ])->group(function (
     Route::resource('answers', AnswerController::class);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Pour les administrateurs
-    Route::middleware(['admin' ])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
         Route::get('/courses', [AdminController::class, 'manageCourses'])->name('admin.courses.index');
@@ -203,7 +195,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
         Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-    }); // end of admin middleware
 }); // end of admin middleware
 
 require __DIR__ . '/auth.php';
