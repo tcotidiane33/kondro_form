@@ -40,25 +40,25 @@ export default function Welcome({
             <Navbar auth={auth} /> */}
 
             <Background />
-                <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-                    <div className="relative w-full px-1 max-w-2xl lg:max-w-7xl">
+            <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
+                <div className="relative w-full px-1 max-w-2xl lg:max-w-7xl">
+                  
+                    <main className='mt-4'>
+                        <Hero />
+                        <Partners />
+                        <WhyKDN />
+                        <VideoSection />
+                        <Courses />
+                        <Experts />
+                        <LearningAreas />
+                        <LearningPaths />
+                        <FeaturedCourses />
+                        <TopNews />
+                        <Contact />
+                        <Footer />
+                    </main>
 
-                        <main className='mt-4'>
-                            <Hero />
-                            <Partners />
-                            <WhyKDN />
-                            <VideoSection />
-                            <Courses />
-                            <Experts />
-                            <LearningAreas />
-                            <LearningPaths />
-                            <FeaturedCourses />
-                            <TopNews />
-                            <Contact />
-                            <Footer />
-                        </main>
-
-                        {/* <main className="mt-6">
+                    {/* <main className="mt-6">
                             <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
                                 <a
                                     href="https://laravel.com/docs"
@@ -270,11 +270,11 @@ export default function Welcome({
                             </div>
                         </main> */}
 
-                        <footer className="py-16 text-center text-sm text-black dark:text-white/70">
-                            KONDRONETWORKS INERTIAJS REACT LARAVEL + VITE TS v{laravelVersion} (PHP v{phpVersion})
-                        </footer>
-                    </div>
+                    <footer className="py-16 text-center text-sm text-black dark:text-white/70">
+                        KONDRONETWORKS INERTIAJS REACT LARAVEL + VITE TS v{laravelVersion} (PHP v{phpVersion})
+                    </footer>
                 </div>
+            </div>
             {/* </div> */}
         </PublicLayout>
     );
