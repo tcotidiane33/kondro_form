@@ -92,8 +92,9 @@ const AboutIndex: React.FC<AboutIndexProps> = ({ missions, defis, partenaires, c
                                 </div>
                             </div>
                         </div>
-                        <div className="lava-container w-full h-full absolute top-0 left-0">
-                            <img src="/assets/backgrounds/bg-lava/lava-gradient-1.webp" alt="Lava background 1" className="space-y-4 lava-image lava-image-1" />
+                        <div className="flex w-full h-full  flex-col items-center justify-center">
+
+                        <div className="lava-container ">                            <img src="/assets/backgrounds/bg-lava/lava-gradient-1.webp" alt="Lava background 1" className="space-y-4 lava-image lava-image-1" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-2.webp" alt="Lava background 2" className="space-y-4 lava-image lava-image-2" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-3.webp" alt="Lava background 3" className="space-y-4 lava-image lava-image-3" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-4.webp" alt="Lava background 4" className="space-y-4 lava-image lava-image-4" />
@@ -114,6 +115,7 @@ const AboutIndex: React.FC<AboutIndexProps> = ({ missions, defis, partenaires, c
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-19.webp" alt="Lava background 19" className="lava-image lava-image-19" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-20.webp" alt="Lava background 20" className="lava-image lava-image-20" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-21.webp" alt="Lava background 21" className="lava-image lava-image-21" />
+                        </div>
                         </div>
 
                     </div>
