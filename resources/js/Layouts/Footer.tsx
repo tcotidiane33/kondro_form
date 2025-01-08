@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <footer className="bg-gray-800 text-white py-8">
 
-            <div className="mandala-container container w-full h-full absolute top-0 left-0 z-0">
+            {/* <div className="mandala-container container w-full h-full absolute top-0 left-0 z-0">
                 <svg width="575" height="575" viewBox="0 0 675 675" fill="none" xmlns="http://www.w3.org/2000/svg" className="mandala">
                     <defs>
                         <path d="M337.5,337.5 m-320,0 a320,320 0 1,1 640,0 a320,320 0 1,1 -640,0" id="circle1"></path>
@@ -67,8 +67,8 @@ const Footer = () => {
                         <textPath textLength="1005" href="#circle5"><tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;<tspan>&lt;&gt;</tspan>&lt;/&gt;</textPath>
                     </text>
                 </svg>
-            </div>
-       
+            </div> */}
+
             <div className="container mx-auto px-4">
                 <div className="flex flex-wrap justify-between">
                     <div className="w-full sm:w-1/2 md:w-1/4 mb-6 md:mb-0">

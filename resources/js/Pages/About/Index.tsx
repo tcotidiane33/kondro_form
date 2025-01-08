@@ -59,42 +59,44 @@ const AboutIndex: React.FC<AboutIndexProps> = ({ missions, defis, partenaires, c
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <h2 className="text-3xl font-extrabold text-gray-900">À propos de nous</h2>
                 <section className="mt-2">
-                    <div className="container w-full  flex items-center justify-center bg-gray-100 rounded-lg mt-8">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                            <div className="mt-4 text-lg text-gray-700">
-                                <div className="content">
-                                    <h1 className="header">Workforce Development for Modern Networking and Cybersecurity Teams</h1>
-                                    <p className="subheader">Develop and refine skills for improved organizational resiliency with hands-on training and certifications.</p>
+                    <div className="grid gap-6 mb-6 md:grid-cols-2">
 
-                                    <div className="stats">
-                                        <div className="stat">
-                                            <h2>700+</h2>
-                                            <p>Courses</p>
-                                        </div>
-                                        <div className="stat">
-                                            <h2>50+</h2>
-                                            <p>Learning Paths</p>
-                                        </div>
-                                        <div className="stat">
-                                            <h2>10</h2>
-                                            <p>Certifications</p>
-                                        </div>
-                                        <div className="stat">
-                                            <h2>28</h2>
-                                            <p>Vendor Cert Prep</p>
-                                        </div>
-                                    </div>
+                        <div className="container items-center justify-center bg-gray-100 rounded-lg">
+                            <div className=" px-4 sm:px-6 lg:px-8 py-4">
+                                <div className=" text-lg text-gray-700">
+                                    <div className="content">
+                                        <h1 className="header">Workforce Development for Modern Networking and Cybersecurity Teams</h1>
+                                        <p className="subheader">Develop and refine skills for improved organizational resiliency with hands-on training and certifications.</p>
 
-                                    <div className="buttons">
-                                        <a href="#" className="button business">For Businesses</a>
-                                        <a href="#" className="button individual">For Individuals</a>
+                                        <div className="stats">
+                                            <div className="stat">
+                                                <h2>700+</h2>
+                                                <p>Courses</p>
+                                            </div>
+                                            <div className="stat">
+                                                <h2>50+</h2>
+                                                <p>Learning Paths</p>
+                                            </div>
+                                            <div className="stat">
+                                                <h2>10</h2>
+                                                <p>Certifications</p>
+                                            </div>
+                                            <div className="stat">
+                                                <h2>28</h2>
+                                                <p>Vendor Cert Prep</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="buttons">
+                                            <a href="#" className="button business">For Businesses</a>
+                                            <a href="#" className="button individual">For Individuals</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-full h-full  flex-col items-center justify-center">
-
-                        <div className="lava-container ">                            <img src="/assets/backgrounds/bg-lava/lava-gradient-1.webp" alt="Lava background 1" className="space-y-4 lava-image lava-image-1" />
+                        <div className="lava-container flex items-center justify-center  rounded-lg">
+                            <img src="/assets/backgrounds/bg-lava/lava-gradient-1.webp" alt="Lava background 1" className="space-y-4 lava-image lava-image-1" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-2.webp" alt="Lava background 2" className="space-y-4 lava-image lava-image-2" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-3.webp" alt="Lava background 3" className="space-y-4 lava-image lava-image-3" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-4.webp" alt="Lava background 4" className="space-y-4 lava-image lava-image-4" />
@@ -116,10 +118,7 @@ const AboutIndex: React.FC<AboutIndexProps> = ({ missions, defis, partenaires, c
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-20.webp" alt="Lava background 20" className="lava-image lava-image-20" />
                             <img src="/assets/backgrounds/bg-lava/lava-gradient-21.webp" alt="Lava background 21" className="lava-image lava-image-21" />
                         </div>
-                        </div>
-
                     </div>
-
                 </section>
                 <section className="mt-8">
                     <h3 className="text-2xl font-bold text-gray-900">Nos Missions</h3>
