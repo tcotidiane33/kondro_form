@@ -36,16 +36,18 @@ class UserPolicy
      */    /**
           * Détermine si l'utilisateur peut mettre à jour un autre utilisateur.
           */
-    public function update(User $currentUser, User $targetUser): bool
+    public function update(User $currentUser, User $user): bool
     {
         // Exemple : Seul un administrateur ou l'utilisateur lui-même peut se mettre à jour
         // return $currentUser->role_id === 1 || $currentUser->id === $targetUser->id;
         // Vérifiez si l'utilisateur actuel a la permission de mettre à jour l'utilisateur cible
-        return $currentUser->hasPermissionTo('user.edit') || $currentUser->id === $targetUser->id;
+        // return $currentUser->hasPermissionTo('user.edit') || $currentUser->id === $user->id;
+        // Vérifiez si l'utilisateur actuel a la permission de mettre à jour l'utilisateur cible
+        return $currentUser->id === $user->id || $currentUser->hasRole('Admin');
     }
-    /**
-     * Determine whether the user can delete the model.
-     */
+     /**
+         * Determine whether the user can delete the model.
+         */
     public function delete(User $user, User $model): bool
     {
         return false;

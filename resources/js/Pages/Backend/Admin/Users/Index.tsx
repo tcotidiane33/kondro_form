@@ -15,6 +15,7 @@ interface User {
     id: number;
     name: string;
     email: string;
+    image: string;
     role: {
         name: string;
     };
@@ -127,7 +128,7 @@ const Index = () => {
     };
     const averageLoginIntervals = roles.map(role => {
         const roleUsers = users.data.filter(user => user.role.name === role.name);
-        const totalInterval = roleUsers.reduce((sum, user) => sum + (user.last_login_interval || 0), 0);
+        const totalInterval = roleUsers.reduce((sum, user) => sum + 0, 0); // Replace with appropriate logic if needed
         const averageInterval = roleUsers.length > 0 ? totalInterval / roleUsers.length : 0;
         return {
             role: role.name,
@@ -162,6 +163,7 @@ const Index = () => {
                     <table className="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200">
                             <tr>
+                                <th className="px-4 py-2 text-left text-gray-600">Avatar</th>
                                 <th className="px-4 py-2 text-left text-gray-600">Nom</th>
                                 <th className="px-4 py-2 text-left text-gray-600">Email</th>
                                 <th className="px-4 py-2 text-left text-gray-600">Rôle</th>
@@ -174,10 +176,13 @@ const Index = () => {
                         <tbody>
                             {users.data.map((user) => (
                                 <tr key={user.id} className="border-b hover:bg-gray-100">
+                                    <td className="border px-4 py-2">
+                                        <img src={user.image} alt={`${user.name}'s avatar`} className="w-10 h-10 rounded-full hover:border-1" />
+                                    </td>
                                     <td className="border px-4 py-2">{user.name}</td>
                                     <td className="border px-4 py-2">{user.email}</td>
                                     <td className="border px-4 py-2">
-                                        <span className={`px-2 py-1 rounded-full text-white ${user.role.name === 'Admin' ? 'bg-red-500' : user.role.name === 'Instructor' ? 'bg-green-500' : 'bg-blue-500'}`}>
+                                        <span className={`px-2 py-1 rounded-full text-white ${user.role.name === 'Admin' ? 'bg-red-500' : user.role.name === 'Instructor' ? 'bg-green-500' : user.role.name === 'Student' ? 'bg-purple-500' : 'bg-blue-500'}`}>
                                             {user.role.name}
                                         </span>
                                     </td>
@@ -196,11 +201,9 @@ const Index = () => {
                                     <td className="border px-4 py-2">{user.last_login_at ? new Date(user.last_login_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2">{user.last_logout_at ? new Date(user.last_logout_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2 flex space-x-2 justify-center items-center">
-                                        @can('update', $user)
-                                            <InertiaLink href={route('admin.users.edit', user.id)} className="text-blue-500 hover:text-blue-700">
-                                                <i className="fas fa-edit"></i>
-                                            </InertiaLink>
-                                        @endcan
+                                        <InertiaLink href={route('admin.users.edit', user.id)} className="text-blue-500 hover:text-blue-700">
+                                            <i className="fas fa-edit"></i>
+                                        </InertiaLink>
 
                                         <InertiaLink href={route('admin.users.destroy', user.id)} method="delete" className="text-red-500 hover:text-red-700" as="button">
                                             <i className="fas fa-trash-alt"></i>

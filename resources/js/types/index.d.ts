@@ -1,5 +1,10 @@
+export interface Role {
+    id: number;
+    name: 'Admin' | 'Sudo' | 'Student'| 'Instructor'| 'Guest'; // Spécification des rôles possibles
+}
+
 export interface User {
-    role: string;
+    role: Role; // Utilisation de l'interface Role
     id: number;
     name: string;
     email: string;
@@ -17,8 +22,7 @@ export type PageProps<
     identity: string;
 };
 
-
 declare module 'path' { // Module name.
-    export function normalize( p: string ): string; // API exposed by the module.
-    export function join( ...paths: any[] ): string;
-  }
+    export function normalize(p: string): string; // API exposed by the module.
+    export function join(...paths: any[]): string;
+}

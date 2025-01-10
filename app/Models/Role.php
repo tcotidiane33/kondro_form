@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Role extends Model
+class Role extends SpatieRole
 {
     use HasFactory;
 
@@ -17,14 +18,14 @@ class Role extends Model
     protected $fillable = [
         'name',
         // 'permissions',
+        'guard_name',
         'identity',
-
     ];
 
     // relation with user
-    public function users()
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
     }
     public function students()
     {
@@ -39,8 +40,8 @@ class Role extends Model
     /**
      * The permissions that belong to the role.
       */
-      public function permissions()
+      public function permissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
       {
-          return $this->belongsToMany(Permission::class, 'permission_role');
+          return $this->belongsToMany(Permission::class, 'role_has_permissions');
       }
 }

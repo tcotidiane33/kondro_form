@@ -10,9 +10,11 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\Backend\User\AddNewRequest;
 use App\Http\Requests\Backend\User\UpdateRequest;
 use App\Http\Requests\Backend\User\UpdateProfileRequest;
+use Illuminate\Http\RedirectResponse;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -109,35 +111,49 @@ class UserController extends Controller
         // Vérifiez si l'utilisateur actuel a la permission de modifier l'utilisateur cible
         // $this->authorize('user.edit', $user);
 
+        // Vérifiez si l'utilisateur actuel a la permission de modifier l'utilisateur cible
+        $this->authorize('update', $user);
+
         return Inertia::render('Backend/Admin/Users/Edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, User $user)
+        public function update(UpdateRequest $request, User $user): RedirectResponse
     {
         // Vérifiez si l'utilisateur actuel a la permission de modifier l'utilisateur cible
         $this->authorize('update', $user);
 
         try {
-            // Passer l'utilisateur à la requête
-            $request->merge(['user' => $user]);
- 
-            \Log::info('Updating user: ' . $user->id);
+            // Valider les données de la requête
+            $validated = $request->validated();
 
-            // Mettre à jour l'utilisateur
-            $user->update($request->validated());
+            // Mettre à jour l'utilisateur avec les données validées
+            $user->update($validated);
 
-            \Log::info('User updated successfully: ' . $user->id);
+            // Mettre à jour le rôle de l'utilisateur
+            if (isset($validated['role_id'])) {
+                $user->role_id = $validated['role_id'];
+                $user->save();
+            }
 
+            // Si une image est téléchargée, la traiter
+            if ($request->hasFile('image')) {
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('uploads/users'), $imageName);
+                $user->image = $imageName;
+                $user->save();
+            }
+
+            // Rediriger avec un message de succès
             return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
         } catch (Exception $e) {
-            \Log::error('Error updating user: ' . $e->getMessage());
+            // En cas d'erreur, enregistrer le message d'erreur et rediriger avec un message d'erreur
+            Log::error('Error updating user: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur.');
         }
     }
-
     /**
      * Remove the specified resource from storage.
      */
