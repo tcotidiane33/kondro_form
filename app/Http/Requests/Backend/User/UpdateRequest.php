@@ -20,9 +20,13 @@ class UpdateRequest extends FormRequest
         // Récupérer l'utilisateur à partir de la route
         $this->user = $this->route('user'); // Correction ici : 'user' au lieu de 'admin'
 
-         // Vérifier que l'utilisateur existe et que l'utilisateur actuel a la permission de le modifier
-    return $this->user !== null && $this->user()->can('update', $this->user);
-}
+        // Vérifier que l'utilisateur existe et que l'utilisateur actuel a la permission de le modifier
+        return $this->user !== null && $this->user()->can('update', $this->user);
+
+        //  5. Vérifier les permissions spécifiques // Si vous souhaitez vérifier des permissions spécifiques (par exemple, user.edit), vous pouvez utiliser la méthode can directement avec le nom de la permission. Cependant, cela nécessite que vous ayez configuré un système de permissions dans votre application. // Par exemple, si vous avez une table permissions et que vous utilisez un package comme Spatie Laravel Permission, vous pouvez faire quelque chose comme ceci :
+        // return $this->user !== null && $this->user()->can('user.edit');
+
+    }
     /**
      * Get the validation rules that apply to the request.
      *

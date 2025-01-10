@@ -84,7 +84,7 @@ export default function CreateUser({ roles }: CreateProps) {
     }
 
     return (
-        <div className="relative p-4 bg-gray-100 p-2 mt-5 shadow-md rounded-lg">
+        <div className="relative p-4 bg-gray-100 p-2  shadow-md rounded-lg">
             <h1 className="text-xl font-bold mb-2">Ajouter un utilisateur</h1>
 
             {/* Notification */}

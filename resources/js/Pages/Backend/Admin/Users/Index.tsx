@@ -46,9 +46,9 @@ const Index = () => {
         const lastLogin = new Date(user.last_login_at);
         const lastLogout = user.last_logout_at ? new Date(user.last_logout_at) : null;
 
-                // console.log("last_login_at:", user.last_login_at);
-                // console.log("last_logout_at:", user.last_logout_at);
-                // console.log("isUserConnected:", isUserConnected(user));
+        // console.log("last_login_at:", user.last_login_at);
+        // console.log("last_logout_at:", user.last_logout_at);
+        // console.log("isUserConnected:", isUserConnected(user));
 
         // Si last_logout_at n'existe pas, l'utilisateur est considéré comme connecté
         if (!lastLogout) {
@@ -155,9 +155,9 @@ const Index = () => {
                 <div className="container-fuild mx-auto p-4">
                     <div className="flex justify-between items-center mb-4">
                         <h1 className="text-3xl font-bold text-gray-800">Gestion des utilisateurs</h1>
-                        <Link href={route('admin.users.create')} className="btn btn-primary flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                        <a href="#create-user" className="btn btn-primary flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
                             <span>Créer un utilisateur</span>
-                        </Link>
+                        </a>
                     </div>
                     <table className="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200">
@@ -196,9 +196,12 @@ const Index = () => {
                                     <td className="border px-4 py-2">{user.last_login_at ? new Date(user.last_login_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2">{user.last_logout_at ? new Date(user.last_logout_at).toLocaleString() : 'N/A'}</td>
                                     <td className="border px-4 py-2 flex space-x-2 justify-center items-center">
-                                        <InertiaLink href={route('admin.users.edit', user.id)} className="text-blue-500 hover:text-blue-700">
-                                            <i className="fas fa-edit"></i>
-                                        </InertiaLink>
+                                        @can('update', $user)
+                                            <InertiaLink href={route('admin.users.edit', user.id)} className="text-blue-500 hover:text-blue-700">
+                                                <i className="fas fa-edit"></i>
+                                            </InertiaLink>
+                                        @endcan
+
                                         <InertiaLink href={route('admin.users.destroy', user.id)} method="delete" className="text-red-500 hover:text-red-700" as="button">
                                             <i className="fas fa-trash-alt"></i>
                                         </InertiaLink>
@@ -220,7 +223,7 @@ const Index = () => {
                     </div>
                 </div>
                 <div className="grid gap-6 mb-6 md:grid-cols-2">
-                    <div className="col">
+                    <div className="col" id="create-user">
                         <CreateUser roles={roles} />
                     </div>
                     <div className="col mt-1">

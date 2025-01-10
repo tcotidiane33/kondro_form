@@ -14,8 +14,11 @@ use App\Http\Requests\Backend\User\AddNewRequest;
 use App\Http\Requests\Backend\User\UpdateRequest;
 use App\Http\Requests\Backend\User\UpdateProfileRequest;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -103,6 +106,9 @@ class UserController extends Controller
     {
         $roles = Role::all();
         $user = User::findOrFail($id);
+        // Vérifiez si l'utilisateur actuel a la permission de modifier l'utilisateur cible
+        // $this->authorize('user.edit', $user);
+
         return Inertia::render('Backend/Admin/Users/Edit', ['user' => $user, 'roles' => $roles]);
     }
 
@@ -111,15 +117,23 @@ class UserController extends Controller
      */
     public function update(UpdateRequest $request, User $user)
     {
+        // Vérifiez si l'utilisateur actuel a la permission de modifier l'utilisateur cible
+        $this->authorize('update', $user);
+
         try {
             // Passer l'utilisateur à la requête
             $request->merge(['user' => $user]);
+ 
+            \Log::info('Updating user: ' . $user->id);
 
             // Mettre à jour l'utilisateur
             $user->update($request->validated());
 
+            \Log::info('User updated successfully: ' . $user->id);
+
             return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
         } catch (Exception $e) {
+            \Log::error('Error updating user: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la mise à jour de l\'utilisateur.');
         }
     }

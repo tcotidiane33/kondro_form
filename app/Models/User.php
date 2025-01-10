@@ -8,17 +8,19 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Spatie\Permission\Traits\HasRoles; // Ajoutez cette ligne
+
 
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, SoftDeletes;
+    use HasFactory, HasApiTokens, Notifiable, SoftDeletes, HasRoles; // Ajoutez HasRoles
 
     // The attributes that are mass assignable.
     protected $fillable = [
         'name',
         'email',
         'password',
-        'contact', 
+        'contact',
         'role_id',
         'image',
         'language',
